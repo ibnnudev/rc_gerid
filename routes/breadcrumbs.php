@@ -39,7 +39,7 @@ Breadcrumbs::for('author.show', function(BreadcrumbTrail $trail, $author) {
 
 // Penulis > Edit Penulis
 Breadcrumbs::for('author.edit', function(BreadcrumbTrail $trail, $author) {
-    $trail->parent('author.show', $author);
+    $trail->parent('author', $author);
     $trail->push('Edit Penulis', route('admin.author.edit', $author->id));
 });
 
@@ -47,4 +47,22 @@ Breadcrumbs::for('author.edit', function(BreadcrumbTrail $trail, $author) {
 Breadcrumbs::for('virus', function(BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Virus', route('admin.virus.index'));
+});
+
+// Virus > Tambah Virus
+Breadcrumbs::for('virus.create', function(BreadcrumbTrail $trail) {
+    $trail->parent('virus');
+    $trail->push('Tambah Virus', route('admin.virus.create'));
+});
+
+// Virus > Detail
+Breadcrumbs::for('virus.show', function(BreadcrumbTrail $trail, $virus) {
+    $trail->parent('virus');
+    $trail->push($virus->name, route('admin.virus.show', $virus->id));
+});
+
+// Virus > Edit
+Breadcrumbs::for('virus.edit', function(BreadcrumbTrail $trail, $virus) {
+    $trail->parent('virus', $virus);
+    $trail->push('Edit', route('admin.virus.edit', $virus->id));
 });

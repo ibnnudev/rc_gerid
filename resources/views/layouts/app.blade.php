@@ -70,8 +70,10 @@
     <!-- Chart Js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 
-    <script>
+    {{-- CK Editor --}}
+    <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
 
+    <script>
         // set datatable search to text-sm
         $('input').addClass('text-sm');
 

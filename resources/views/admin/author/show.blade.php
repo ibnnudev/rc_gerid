@@ -14,6 +14,7 @@
                 </option>
             </x-select>
         </div>
+
         {{-- back --}}
         <div class="mt-4 text-end">
             <x-link-button route="{{ route('admin.author.index') }}" color="gray">
