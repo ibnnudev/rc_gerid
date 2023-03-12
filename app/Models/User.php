@@ -38,4 +38,11 @@ class User extends Authenticatable
     public function getRole() {
         return $this->role;
     }
+
+    // Relationships
+
+    public function citations()
+    {
+        return $this->hasMany(Citation::class, 'users_id');
+    }
 }

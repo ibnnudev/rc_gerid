@@ -15,7 +15,7 @@ class Sample extends Model
         'sample_code',
         'viruses_id',
         'gene_name',
-        'sequence_date',
+        'sequence_data',
         'place',
         'city',
         'subdistrict',
@@ -23,6 +23,7 @@ class Sample extends Model
         'pickup_date',
         'authors_id',
         'genotipes_id',
+        'virus_code'
     ];
 
     // Relationship
@@ -39,5 +40,23 @@ class Sample extends Model
     public function virus()
     {
         return $this->belongsTo(Virus::class, 'viruses_id');
+    }
+
+    public function citations()
+    {
+        return $this->hasMany(Citation::class, 'samples_id');
+    }
+
+    // generate virus code
+    public function generateVirusCode()
+    {
+        // // prefix : nama virus + tahun + bulan + tanggal + detik
+        // $prefix = $this->virus->name . now()->format('Ym') . now()->format('d') . now()->format('s');
+
+        // // suffix : kode genotipe + kode sample
+        // $suffix = $this->genotipe->code . $this->sample_code;
+
+        // // generate virus code
+        // $this->virus_code = $prefix . $suffix;
     }
 }

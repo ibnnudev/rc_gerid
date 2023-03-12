@@ -71,6 +71,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 
     <script>
+
+        // set datatable search to text-sm
+        $('input').addClass('text-sm');
+
         Chart.defaults.font.family = 'Lexend Deca';
         Chart.defaults.scale.grid.display = false;
         $('input[type="search"]').addClass('text-sm');

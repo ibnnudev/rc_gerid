@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Scopes\HasActiveScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Author extends Model
 {
     use HasFactory;
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new HasActiveScope);
+    }
 
     public $table = 'authors';
 
@@ -16,7 +22,8 @@ class Author extends Model
         'address',
         'phone',
         'member',
-        'institution',
+        'institutions_id',
+        'is_active'
     ];
 
     // Relationship
@@ -25,5 +32,14 @@ class Author extends Model
         return $this->hasMany(Sample::class, 'authors_id');
     }
 
+    public function institution()
+    {
+        return $this->belongsTo(Institution::class, 'institutions_id');
+    }
 
+    public function setInactive()
+    {
+        $this->is_active = false;
+        $this->save();
+    }
 }

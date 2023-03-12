@@ -19,6 +19,12 @@
         <ul class="space-y-3">
             <x-sidebar-menu name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
                 active="{{ request()->routeIs('admin.dashboard') }}" />
+            <x-sidebar-menu name="Bank Data" icon="fas fa-bank" route="{{ route('admin.bank.index') }}"
+                active="{{ request()->routeIs('admin.bank.*') }}" />
+            <x-sidebar-menu name="Data Penulis" icon="fas fa-user" route="{{ route('admin.author.index') }}"
+                active="{{ request()->routeIs('admin.author.*') }}" />
+
+
             {{-- logout --}}
             <li>
                 <form action="{{ route('logout') }}" method="POST">
