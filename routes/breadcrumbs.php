@@ -42,3 +42,9 @@ Breadcrumbs::for('author.edit', function(BreadcrumbTrail $trail, $author) {
     $trail->parent('author.show', $author);
     $trail->push('Edit Penulis', route('admin.author.edit', $author->id));
 });
+
+// Virus
+Breadcrumbs::for('virus', function(BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Virus', route('admin.virus.index'));
+});

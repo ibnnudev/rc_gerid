@@ -23,6 +23,7 @@
                 active="{{ request()->routeIs('admin.bank.*') }}" />
             <x-sidebar-menu name="Data Penulis" icon="fas fa-user" route="{{ route('admin.author.index') }}"
                 active="{{ request()->routeIs('admin.author.*') }}" />
+            <x-sidebar-menu name="Data Virus" icon="fas fa-virus" route="{{ route('admin.virus.index') }}" active="{{ request()->routeIs('admin.virus.*') }}" />
 
 
             {{-- logout --}}
@@ -39,7 +40,8 @@
             </li>
         </ul>
 
-        <div id="dropdown-cta" class="p-4 mt-12 rounded-2xl border-b border-gray-200 sm:rounded-2xl shadow-xl"
+        <!--
+            <div id="dropdown-cta" class="p-4 mt-12 rounded-2xl border-b border-gray-200 sm:rounded-2xl shadow-xl"
             role="alert">
             <div class="flex items-center text-center justify-center flex-col">
                 <div class="avatar">
@@ -62,5 +64,6 @@
                 </a>
             </div>
         </div>
+            !-->
     </div>
 </aside>

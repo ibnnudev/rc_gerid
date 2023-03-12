@@ -6,53 +6,54 @@
         <x-link-button route="{{ route('admin.author.create') }}" color="gray">
             Tambah Penulis
         </x-link-button>
+    </div>
 
-        <div class="overflow-x-auto mt-4">
-            <table id="authorsTable" class="w-full">
-                <thead>
+    <div class="overflow-x-auto mt-4">
+        <table id="authorsTable" class="w-full">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Pengarang</th>
+                    <th>Anggota</th>
+                    <th>Institusi</th>
+                    <th>Menu</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($authors as $author)
                     <tr>
-                        <th>No</th>
-                        <th>Pengarang</th>
-                        <th>Anggota</th>
-                        <th>Institusi</th>
-                        <th>Menu</th>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $author->name }}</td>
+                        <td>
+                            {{ $author->member }}
+                        </td>
+                        <td>{{ $author->institution->name }}</td>
+                        <td>
+                            <div class="lg:flex gap-x-2">
+                                <a href="{{ route('admin.author.show', $author->id) }}"
+                                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
+                                    <i class="fas fa-eye fa-sm"></i>
+                                </a>
+                                <a href="{{ route('admin.author.edit', $author->id) }}"
+                                    class="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
+                                    <i class="fas fa-edit fa-sm"></i>
+                                </a>
+                                <label for="modal" data-name="{{ $author->name }}" data-id="{{ $author->id }}"
+                                    onclick="btnDelete(this)"
+                                    class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
+                                    <i class="fas fa-trash fa-sm"></i>
+                                </label>
+                            </div>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @forelse ($authors as $author)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $author->name }}</td>
-                            <td>
-                                {{ $author->member }}
-                            </td>
-                            <td>{{ $author->institution->name }}</td>
-                            <td>
-                                <div class="lg:flex gap-x-2">
-                                    <a href="{{ route('admin.author.show', $author->id) }}"
-                                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
-                                        <i class="fas fa-eye fa-sm"></i>
-                                    </a>
-                                    <a href="{{ route('admin.author.edit', $author->id) }}"
-                                        class="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
-                                        <i class="fas fa-edit fa-sm"></i>
-                                    </a>
-                                    <label for="modal" data-name="{{ $author->name }}" data-id="{{ $author->id }}"
-                                        onclick="btnDelete(this)"
-                                        class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
-                                        <i class="fas fa-trash fa-sm"></i>
-                                    </label>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center">Tidak ada data</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                @empty
+                    <tr>
+                        <td colspan="4" class="text-center">Tidak ada data</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
     </div>
 
     <!-- Put this part before </body> tag -->
