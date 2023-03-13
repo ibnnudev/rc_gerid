@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\AuthorInterface;
+use App\Interfaces\VirusInterface;
+use App\Models\Author;
+use App\Models\Virus;
 use Illuminate\Http\Request;
 
 class BankController extends Controller
 {
+
     public function index()
     {
         return view('admin.bank.index');
@@ -14,7 +19,10 @@ class BankController extends Controller
 
     public function create()
     {
-        return view('admin.bank.create');
+        return view('admin.bank.create',[
+            'authors' => Author::all(),
+            'viruses' => Virus::all(),
+        ]);
     }
 
     /**
@@ -22,7 +30,7 @@ class BankController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

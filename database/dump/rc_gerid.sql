@@ -27,17 +27,17 @@ SET time_zone = "+00:00";
 -- Struktur dari tabel `authors`
 --
 
-CREATE TABLE `authors` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `member` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `institutions_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `is_active` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- CREATE TABLE `authors` (
+--   `id` bigint(20) UNSIGNED NOT NULL,
+--   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+--   `address` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+--   `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+--   `member` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+--   `institutions_id` bigint(20) UNSIGNED DEFAULT NULL,
+--   `created_at` timestamp NULL DEFAULT NULL,
+--   `updated_at` timestamp NULL DEFAULT NULL,
+--   `is_active` tinyint(1) NOT NULL DEFAULT 1
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data untuk tabel `authors`
