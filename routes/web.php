@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\TotalVisitorConttroller;
 use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\Admin\GenotipeController;
+use App\Http\Controllers\Admin\TransmissionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -29,6 +30,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     // Genotipe & Subtipe
     Route::resource('genotipe', GenotipeController::class, ['as' => 'admin']);
+
+    // Transmission
+    Route::resource('transmission', TransmissionController::class, ['as' => 'admin']);
 });
 
 require __DIR__ . '/auth.php';

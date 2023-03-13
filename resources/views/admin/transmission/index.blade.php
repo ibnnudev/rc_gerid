@@ -1,49 +1,39 @@
 <x-app-layout>
-    <x-breadcrumbs name="genotipe" />
-    <h1 class="font-semibold text-xl my-8">Daftar Genotipe</h1>
+    <x-breadcrumbs name="transmission" />
+    <h1 class="font-semibold text-xl my-8">Daftar Transmisi</h1>
 
     <x-card-container>
 
         <div class="text-end">
-            <x-link-button route="{{ route('admin.genotipe.create') }}" color="gray">
-                Tambah Genotipe
+            <x-link-button route="{{ route('admin.transmission.create') }}" color="gray">
+                Tambah Transmisi
             </x-link-button>
         </div>
 
         <div class="overflow-x-auto mt-4">
-            <table class="w-full" id="genotipeTable">
+            <table class="w-full" id="transmissionTable">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Genotipe & Subtipe</th>
+                        <th>Transmisi</th>
                         <th>Menu</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($genotipes as $genotipe)
+                    @forelse ($transmissions as $transmission)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>
-                                <div class="flex items-center space-x-4">
-                                    <div class="flex-1 min-w-0">
-                                        <p class="font-medium text-gray-900 dark:text-white">
-                                            {{ $genotipe->genotipe_code }}
-                                        </p>
-                                    </div>
-                                </div>
+                                {{ $transmission->name }}
                             </td>
                             <td>
                                 <div class="lg:flex gap-x-2">
-                                    <a href="{{ route('admin.genotipe.show', $genotipe->id) }}"
-                                        class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
-                                        <i class="fas fa-eye fa-sm"></i>
-                                    </a>
-                                    <a href="{{ route('admin.genotipe.edit', $genotipe->id) }}"
+                                    <a href="{{ route('admin.transmission.edit', $transmission->id) }}"
                                         class="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
                                         <i class="fas fa-edit fa-sm"></i>
                                     </a>
                                     <label for="modal"
-                                        onclick="btnDelete('{{ $genotipe->id }}', '{{ $genotipe->genotipe_code }}')"
+                                        onclick="btnDelete('{{ $transmission->id }}', '{{ $transmission->name }}')"
                                         class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
                                         <i class="fas fa-trash fa-sm"></i>
                                     </label>
@@ -95,7 +85,7 @@
                 let id = dataId;
                 let name = dataName;
                 // console.log(id, name);
-                let url = '{{ route('admin.genotipe.destroy', ':id') }}';
+                let url = '{{ route('admin.transmission.destroy', ':id') }}';
                 let urlDelete = url.replace(':id', id);
 
                 $('#data').html(name);
@@ -103,7 +93,7 @@
             }
 
             $(function() {
-                $('#genotipeTable').DataTable({
+                $('#transmissionTable').DataTable({
                     "responsive": true,
                     "autoWidth": false,
                 });

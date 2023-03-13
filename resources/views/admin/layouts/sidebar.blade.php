@@ -25,6 +25,7 @@
                 active="{{ request()->routeIs('admin.author.*') }}" />
             <x-sidebar-menu name="Data Virus" icon="fas fa-virus" route="{{ route('admin.virus.index') }}" active="{{ request()->routeIs('admin.virus.*') }}" />
             <x-sidebar-menu name="Data Genotipe" icon="fas fa-dna" route="{{ route('admin.genotipe.index') }}" active="{{ request()->routeIs('admin.genotipe.*') }}" />
+            <x-sidebar-menu name="Data Transmisi" icon="fas fa-route" route="{{ route('admin.transmission.index') }}" active="{{ request()->routeIs('admin.transmission.*') }}" />
 
 
 
