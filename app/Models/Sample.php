@@ -47,16 +47,29 @@ class Sample extends Model
         return $this->hasMany(Citation::class, 'samples_id');
     }
 
-    // generate virus code
-    public function generateVirusCode()
+    public static function generateSampleCode()
     {
-        // // prefix : nama virus + tahun + bulan + tanggal + detik
-        // $prefix = $this->virus->name . now()->format('Ym') . now()->format('d') . now()->format('s');
+        // combination SMP-Y-M-D-0001
+        $date = date('Y-m-d');
+        $date = explode('-', $date);
+        $year = $date[0];
+        $month = $date[1];
+        $day = $date[2];
 
-        // // suffix : kode genotipe + kode sample
-        // $suffix = $this->genotipe->code . $this->sample_code;
+        $sampleCode = 'SMP-' . $year . '-' . $month . '-' . $day . '-';
+        $lastSampleCode = Sample::where('sample_code', 'like', $sampleCode . '%')->orderBy('sample_code', 'desc')->first();
 
-        // // generate virus code
-        // $this->virus_code = $prefix . $suffix;
+        if ($lastSampleCode) {
+            $lastSampleCode = explode('-', $lastSampleCode->sample_code);
+            $lastSampleCode = $lastSampleCode[4];
+            $lastSampleCode = (int) $lastSampleCode;
+            $lastSampleCode += 1;
+            $lastSampleCode = str_pad($lastSampleCode, 4, '0', STR_PAD_LEFT);
+            $sampleCode .= $lastSampleCode;
+        } else {
+            $sampleCode .= '0001';
+        }
+
+        return $sampleCode;
     }
 }

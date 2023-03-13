@@ -16,6 +16,7 @@
                     <tr>
                         <th>No</th>
                         <th>Genotipe & Subtipe</th>
+                        <th>Virus Terkait</th>
                         <th>Menu</th>
                     </tr>
                 </thead>
@@ -31,6 +32,9 @@
                                         </p>
                                     </div>
                                 </div>
+                            </td>
+                            <td>
+                                {{ $genotipe->virus->name }}
                             </td>
                             <td>
                                 <div class="lg:flex gap-x-2">

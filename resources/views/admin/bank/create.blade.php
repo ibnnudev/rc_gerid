@@ -3,15 +3,42 @@
     <h1 class="font-semibold text-xl my-8">Tambah Data</h1>
 
     <x-card-container>
-        <form action="" method="POST">
+        <form action="{{route('admin.bank.store')}}" method="POST">
+            @csrf
             <div class="md:grid md:grid-cols-3 gap-x-4">
-                <x-input-single-datepicker id="pickup_date" label="Tanggal Pengumpulan Sampel" name="pickup_date" type="text" required />
+                <div>
+                    <div class="lg:flex gap-x-3 lg:gap-3">
+                        <div class="lg:w-1/2">
+                            <x-select name="pickup_month" label="Bulan" id="pickup_month" class="form-select w-full">
+                                @foreach ($months as $month)
+                                    <option value="{{ $month }}">{{ $month }}</option>
+                                @endforeach
+                            </x-select>
+                        </div>
+                        <div class="lg:w-1/2">
+                            <x-select name="pickup_year" label="Tahun" id="pickup_year" class="form-select w-full">
+                                @foreach ($years as $year)
+                                    <option value="{{ $year }}">{{ $year }}</option>
+                                @endforeach
+                            </x-select>
+                        </div>
+                    </div>
+                    {{-- label --}}
+                    <div class="mb-5">
+                        <small class="text-xs text-gray-700">Pengambilan
+                            Sampel : <span class="font-semibold" id="pickup_date"></span>
+                        </small>
+                        <input type="hidden" name="pickup_date">
+                    </div>
+                </div>
+
                 <x-select id="region" label="Provinsi" name="region" isFit="" required>
-                    <option value="">Jawa Timur</option>
-                </x-select> 
+                    @foreach ($provinces as $province)
+                        <option value="{{ $province->id }}">{{ $province->name }}</option>
+                    @endforeach
+                </x-select>
                 <x-select id="city" label="Kota/Kabupaten" name="city" isFit="" required>
-                    <option value="">Surabaya</option>
-                </x-select> 
+                </x-select>
                 <x-input id="place" label="Tempat Pengambilan Sampel" name="place" type="text" required />
                 <x-input id="title" label="Judul Artikel" name="title" type="text" required />
                 <x-select id="authors_id" label="Nama Penulis" name="authors_id" isFit="" required>
@@ -23,17 +50,16 @@
             <hr>
             <div class="md:grid md:grid-cols-3 gap-x-4">
                 <x-input id="sample_code" label="Kode Sampel" name="sample_code" type="text" required />
-                <x-select id="viruses_id" label="Nama Virus" name="viruses_id" isFit="" required>
+                <x-select id="viruses_id" label="Nama Virus" name="viruses_id" isFit="false" required>
                     @foreach ($viruses as $virus)
                         <option value="{{ $virus->id }}">{{ $virus->name }}</option>
                     @endforeach
                 </x-select>
-                <x-select id="genotipes_id" label="Genotipe & Subtipe" name="genotipes_id" isFit="" required>
-                    <option value="">CRF01_AE</option>
-                </x-select> 
+                <x-select id="genotipes_id" label="Genotipe & Subtipe" name="genotipes_id" isFit="false" required>
+                </x-select>
                 <x-input id="gene_name" label="Nama Gen" name="gene_name" type="text" required />
                 <div class="col-span-2 ">
-                    <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data" required/></textarea>
+                    <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data" required /></textarea>
                 </div>
             </div>
 
@@ -45,11 +71,71 @@
 
         </form>
     </x-card-container>
-@push('js-internal')
-    <script>
-    $('document').ready(function(){
-        $('select').select2();
-    });
-    </script>
-@endpush
+    @push('js-internal')
+        <script>
+            $('document').ready(function() {
+                let pickupMonth, pickupYear;
+                $('#pickup_month').change(function() {
+                    // get index of selected option
+                    pickupMonth = $(this).prop('selectedIndex') + 1;
+                });
+                $('#pickup_year').change(function() {
+                    pickupYear = $(this).val();
+                });
+
+                $('#pickup_month, #pickup_year').change(function() {
+                    let date = `${pickupMonth}/${pickupYear}`;
+                    // add 00
+                    if (pickupMonth < 10) {
+                        date = `0${pickupMonth}/${pickupYear}`;
+                    }
+                    $('#pickup_date').text(date);
+                    $('input[name="pickup_date"]').val(date);
+                });
+
+
+                $('#region').on('change', function() {
+                    let provinceId = $(this).val();
+                    $.ajax({
+                        url: "{{ route('admin.bank.get-city') }}",
+                        type: "POST",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            province_id: provinceId
+                        },
+                        success: function(response) {
+                            let data = response;
+                            let html = '';
+                            data.forEach(function(item) {
+                                html += `<option value="${item.id}">${item.name}</option>`;
+                            });
+                            $('#city').html(html);
+                        }
+                    });
+                });
+
+                $('#viruses_id').on('change', function() {
+                    let virusId = $(this).val();
+                    $.ajax({
+                        url: "{{ route('admin.bank.get-genotipe') }}",
+                        type: "POST",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            virus_id: virusId
+                        },
+                        success: function(response) {
+                            // console.log(response);
+                            let data = response;
+                            let html = '';
+                            data.forEach(function(item) {
+                                html +=
+                                    `<option value="${item.id}">${item.genotipe_code}</option>`;
+                            });
+                            $('#genotipes_id').html(html);
+                        }
+                    });
+                })
+            });
+        </script>
+    @endpush
 </x-app-layout>

@@ -41,4 +41,9 @@ class Virus extends Model
         $this->is_active = false;
         $this->save();
     }
+
+    public function generateVirusCode()
+    {
+        return uniqid('VIRUS-', true);
+    }
 }

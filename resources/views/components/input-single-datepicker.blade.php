@@ -18,7 +18,7 @@
         <input datepicker name={{ $name }} type="text" {!! $attributes->merge([
             'class' =>
                 'border-gray-300 focus:border-primary text-sm focus:ring-primary rounded-md shadow-sm block w-full pl-10',
-        ]) !!} placeholder="Select date">
+        ]) !!} placeholder="Pilih tanggal">
     </div>
 
 </div>

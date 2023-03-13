@@ -30,7 +30,7 @@
                             <td>
                                 <div class="flex items-center space-x-4">
                                     <div class="flex-shrink-0">
-                                        <img class="w-8 h-8 rounded-full"
+                                        <img class="w-8 h-auto rounded-full"
                                             src="{{ $virus->image ? asset('storage/virus/' . $virus->image) : asset('images/noimage.jpg') }}"
                                             alt="Neil image">
                                     </div>
@@ -43,7 +43,7 @@
                             </td>
                             <td>
                                 @foreach ($virus->genotipes as $genotipe)
-                                    {{ $genotipe->genotipe_code }}
+                                    {{ $genotipe->genotipe_code }},
                                 @endforeach
                             </td>
                             <td>

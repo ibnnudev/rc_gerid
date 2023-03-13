@@ -31,7 +31,7 @@ class GenotipeController extends Controller
      */
     public function create()
     {
-        return view('admin.genotipe.create',[
+        return view('admin.genotipe.create', [
             'viruses' => Virus::all()
         ]);
     }
@@ -41,6 +41,10 @@ class GenotipeController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'genotipe_code' => 'required|unique:genotipes,genotipe_code,NULL,id,viruses_id,' . $request->viruses_id,
+        ]);
+
         try {
             $this->genotipe->store($request->all());
             return redirect()->route('admin.genotipe.index')->with('success', 'Genotipe berhasil ditambahkan');
@@ -77,11 +81,14 @@ class GenotipeController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            'genotipe_code' => 'required|unique:genotipes,genotipe_code,' . $id . ',id,viruses_id,' . $request->viruses_id,
+        ]);
+
         try {
             $this->genotipe->update($request->all(), $id);
             return redirect()->route('admin.genotipe.index')->with('success', 'Genotipe berhasil diubah');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             return back()->with('error', 'Genotipe gagal diubah');
         }
     }

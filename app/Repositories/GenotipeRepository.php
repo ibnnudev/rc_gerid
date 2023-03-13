@@ -6,7 +6,7 @@ use App\Interfaces\GenotipeInterface;
 use App\Models\Genotipe;
 
 class GenotipeRepository implements GenotipeInterface {
-    
+
     private $genotipe;
 
     public function __construct(Genotipe $genotipe) {
@@ -21,8 +21,8 @@ class GenotipeRepository implements GenotipeInterface {
     public function store($data):bool
     {
         $this->genotipe->create([
-            'genotipe_code'            => $data['genotipe_code'],
-            'viruses_id'          => $data['viruses_id'],
+            'genotipe_code' => $data['genotipe_code'],
+            'viruses_id'    => $data['viruses_id'],
         ]);
         return true;
     }
@@ -41,7 +41,7 @@ class GenotipeRepository implements GenotipeInterface {
         return true;
 
     }
-    
+
     public function destroy($id): bool
     {
         $genotipe = $this->genotipe->find($id);
@@ -49,5 +49,5 @@ class GenotipeRepository implements GenotipeInterface {
 
         return true;
     }
-    
+
 }

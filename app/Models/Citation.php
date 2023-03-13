@@ -13,7 +13,7 @@ class Citation extends Model
 
     protected $fillable = [
         'title',
-        'author', // multi author (separated by comma)
+        'author_id', // multi author (separated by comma)
         'samples_id',
         'users_id',
     ];
@@ -28,5 +28,10 @@ class Citation extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'users_id');
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(Author::class, 'author_id');
     }
 }

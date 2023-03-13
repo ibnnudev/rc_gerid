@@ -20,6 +20,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('filter/total-visitor', [TotalVisitorConttroller::class, 'filter'])->name('admin.filter.total-visitor');
 
     // Bank Data
+    Route::post('bank/get-genotipe', [BankController::class, 'getGenotipe'])->name('admin.bank.get-genotipe');
+    Route::post('bank/get-city', [BankController::class, 'getCity'])->name('admin.bank.get-city');
     Route::resource('bank', BankController::class, ['as' => 'admin']);
 
     // Author
