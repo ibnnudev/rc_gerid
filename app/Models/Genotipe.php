@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use App\Scopes\HasActiveScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Genotipe extends Model
 {
+    protected static function booted()
+    {
+        static::addGlobalScope(new HasActiveScope);
+    }
     use HasFactory;
 
     public $table = 'genotipes';
@@ -25,5 +30,11 @@ class Genotipe extends Model
     public function virus()
     {
         return $this->belongsTo(Virus::class, 'viruses_id');
+    }
+
+    public function setInactive()
+    {
+        $this->is_active = false;
+        $this->save();
     }
 }

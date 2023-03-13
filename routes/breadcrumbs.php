@@ -66,3 +66,26 @@ Breadcrumbs::for('virus.edit', function(BreadcrumbTrail $trail, $virus) {
     $trail->parent('virus', $virus);
     $trail->push('Edit', route('admin.virus.edit', $virus->id));
 });
+
+// genotipe
+Breadcrumbs::for('genotipe', function(BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Genotipe', route('admin.genotipe.index'));
+});
+
+// Genotipe > create
+Breadcrumbs::for('genotipe.create', function(BreadcrumbTrail $trail) {
+    $trail->parent('genotipe');
+    $trail->push('Tambah Genotipe', route('admin.genotipe.create'));
+});
+
+// Genotipe > detail
+Breadcrumbs::for('genotipe.show', function(BreadcrumbTrail $trail, $genotipe) {
+    $trail->parent('genotipe');
+    $trail->push($genotipe->genotipe_code, route('admin.genotipe.show', $genotipe->id));
+});
+// Genotipe > edit
+Breadcrumbs::for('genotipe.edit', function(BreadcrumbTrail $trail, $genotipe) {
+    $trail->parent('genotipe', $genotipe);
+    $trail->push('Edit', route('admin.genotipe.edit', $genotipe->id));
+});

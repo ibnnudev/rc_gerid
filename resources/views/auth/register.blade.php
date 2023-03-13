@@ -11,6 +11,7 @@
             <a class="underline text-sm text-gray-600" href="{{ route('login') }}">
                 {{ __('Sudah punya akun?') }}
             </a>
+            
 
             <x-button type="submit" class="ml-3">
                 {{ __('Daftar') }}

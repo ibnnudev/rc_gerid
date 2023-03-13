@@ -17,8 +17,7 @@
                     {{ __('Tidak punya akun?') }}
                 </a>
             @endif
-
-            <x-button class="ml-3">Masuk</x-button>
+            <x-button class="ml-3" >Masuk</x-button>
         </div>
     </form>
 

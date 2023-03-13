@@ -104,6 +104,7 @@
 
         // set all tag <a> with cursor-pointer
         $('a').addClass('cursor-pointer');
+        $('select').select2();
     </script>
 
     @stack('js-internal')

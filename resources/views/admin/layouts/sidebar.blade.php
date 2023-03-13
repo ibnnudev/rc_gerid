@@ -24,6 +24,8 @@
             <x-sidebar-menu name="Data Penulis" icon="fas fa-user" route="{{ route('admin.author.index') }}"
                 active="{{ request()->routeIs('admin.author.*') }}" />
             <x-sidebar-menu name="Data Virus" icon="fas fa-virus" route="{{ route('admin.virus.index') }}" active="{{ request()->routeIs('admin.virus.*') }}" />
+            <x-sidebar-menu name="Data Genotipe" icon="fas fa-dna" route="{{ route('admin.genotipe.index') }}" active="{{ request()->routeIs('admin.genotipe.*') }}" />
+
 
 
             {{-- logout --}}
