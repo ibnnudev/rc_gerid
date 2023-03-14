@@ -38,9 +38,8 @@ class SampleRepository implements SampleInterface
                 'gene_name'     => $data['gene_name'],
                 'sequence_data' => $data['sequence_data'],
                 'place'         => $data['place'],
-                'city'          => $data['city'],
-                // 'subdistrict'   => $data['subdistrict'],
-                'region'        => $data['region'],
+                'regency_id'    => $data['regency_id'],
+                'province_id'   => $data['province_id'],
                 'pickup_date'   => date('Y-m-d', strtotime($data['pickup_date'])),
                 'authors_id'    => $data['authors_id'],
                 'genotipes_id'  => $data['genotipes_id'],
@@ -58,6 +57,75 @@ class SampleRepository implements SampleInterface
                 'author_id'  => $data['authors_id'],
                 'samples_id' => $sample->id,
                 'users_id'   => auth()->user()->id,
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            dd($th->getMessage());
+        }
+
+        DB::commit();
+    }
+
+    public function update($data, $id)
+    {
+        DB::beginTransaction();
+
+        // update sample
+        try {
+            $this->sample->find($id)->update([
+                'sample_code'   => $data['sample_code'],
+                'viruses_id'    => $data['viruses_id'],
+                'gene_name'     => $data['gene_name'],
+                'sequence_data' => $data['sequence_data'],
+                'place'         => $data['place'],
+                'regency_id'    => $data['regency_id'],
+                'province_id'   => $data['province_id'],
+                'pickup_date'   => date('Y-m-d', strtotime($data['pickup_date'])),
+                'authors_id'    => $data['authors_id'],
+                'genotipes_id'  => $data['genotipes_id'],
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            dd($th->getMessage());
+        }
+
+        // update citation
+        try {
+            $this->citation->where('samples_id', $id)->update([
+                'title'      => $data['title'],
+                'author_id'  => $data['authors_id'],
+                'samples_id' => $id,
+                'users_id'   => auth()->user()->id,
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            dd($th->getMessage());
+        }
+
+        DB::commit();
+    }
+
+    public function find($id)
+    {
+        return $this->sample->with('author', 'virus', 'genotipe')->find($id);
+    }
+
+    public function destroy($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $this->sample->find($id)->update([
+                'is_active' => 0,
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            dd($th->getMessage());
+        }
+
+        try {
+            $this->citation->where('samples_id', $id)->update([
+                'is_active' => 0,
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();

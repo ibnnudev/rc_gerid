@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-breadcrumbs name="author" />
-    <h1 class="font-semibold text-xl my-8">Penulis</h1>
+    <h1 class="font-semibold text-lg my-8">Penulis</h1>
 
     <div class="text-end">
         <x-link-button route="{{ route('admin.author.create') }}" color="gray">

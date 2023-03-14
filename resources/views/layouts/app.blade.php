@@ -7,6 +7,15 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <style>
+        input[type="search"] {
+            font-size: 0.75rem;
+        }
+        .dataTables_length label select option {
+            font-size: 0.75rem;
+        }
+    </style>
     <!-- Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100;200;300;400;500;600;700;800;900&display=swap"

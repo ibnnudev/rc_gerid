@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-breadcrumbs name="genotipe.edit" :data="$genotipe" />
-    <h1 class="font-semibold text-xl my-8">Edit Genotipe</h1>
+    <h1 class="font-semibold text-lg my-8">Edit Genotipe</h1>
 
     <x-card-container>
         <form action="{{ route('admin.genotipe.update', $genotipe->id) }}" method="POST">
@@ -8,7 +8,7 @@
             @method('PUT')
 
             <div class="md:grid md:grid-cols-2 gap-x-4">
-                <x-input id="genotipe" label="Genotipe & Subtipe" name="genotipe_code" type="text" required 
+                <x-input id="genotipe" label="Genotipe & Subtipe" name="genotipe_code" type="text" required
                 :value="$genotipe->genotipe_code" />
                 <x-select id="id_virus" label="Nama Virus" name="viruses_id" isFit="" required >
                     @foreach ($viruses as $virus)
@@ -23,7 +23,7 @@
                 </x-button>
             </div>
         </form>
-    </x-card-container> 
+    </x-card-container>
 
     @push('js-internal')
         <script>

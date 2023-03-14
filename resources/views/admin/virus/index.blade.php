@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-breadcrumbs name="virus" />
-    <h1 class="font-semibold text-xl my-8">Daftar Virus</h1>
+    <h1 class="font-semibold text-lg my-8">Daftar Virus</h1>
 
     <x-card-container>
 

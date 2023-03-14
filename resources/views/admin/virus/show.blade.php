@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-breadcrumbs name="virus.show" :data="$virus" />
-    <h1 class="font-semibold text-xl my-8">Detail Virus</h1>
+    <h1 class="font-semibold text-lg my-8">Detail Virus</h1>
 
     <div class="lg:flex gap-x-4">
         <div class="lg:w-1/5">

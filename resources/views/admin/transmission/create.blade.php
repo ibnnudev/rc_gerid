@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-breadcrumbs name="transmission.create" />
-    <h1 class="font-semibold text-xl my-8">Tambah Transmisi</h1>
+    <h1 class="font-semibold text-lg my-8">Tambah Transmisi</h1>
 
     <div class="lg:w-1/2">
         <x-card-container>

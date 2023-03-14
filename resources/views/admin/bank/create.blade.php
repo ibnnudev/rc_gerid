@@ -1,24 +1,24 @@
 <x-app-layout>
     <x-breadcrumbs name="bank.create" />
-    <h1 class="font-semibold text-xl my-8">Tambah Data</h1>
+    <h1 class="font-semibold text-lg my-8">Tambah Data</h1>
 
     <x-card-container>
-        <form action="{{route('admin.bank.store')}}" method="POST">
+        <form action="{{ route('admin.bank.store') }}" method="POST">
             @csrf
             <div class="md:grid md:grid-cols-3 gap-x-4">
                 <div>
                     <div class="lg:flex gap-x-3 lg:gap-3">
                         <div class="lg:w-1/2">
-                            <x-select name="pickup_month" label="Bulan" id="pickup_month" class="form-select w-full">
+                            <x-select name="pickup_month" label="Bulan" id="pickup_month" class="form-select w-full" required>
                                 @foreach ($months as $month)
-                                    <option value="{{ $month }}">{{ $month }}</option>
+                                    <option value="{{ $month }}" {{ $loop->first ? 'selected' : '' }}>{{ $month }}</option>
                                 @endforeach
                             </x-select>
                         </div>
                         <div class="lg:w-1/2">
-                            <x-select name="pickup_year" label="Tahun" id="pickup_year" class="form-select w-full">
+                            <x-select name="pickup_year" label="Tahun" id="pickup_year" class="form-select w-full" required>
                                 @foreach ($years as $year)
-                                    <option value="{{ $year }}">{{ $year }}</option>
+                                    <option value="{{ $year }}" {{ $loop->first ? 'selected' : '' }}>{{ $year }}</option>
                                 @endforeach
                             </x-select>
                         </div>
@@ -32,14 +32,16 @@
                     </div>
                 </div>
 
-                <x-select id="region" label="Provinsi" name="region" isFit="" required>
+                <x-select id="province_id" label="Provinsi" name="province_id" isFit="" required>
                     @foreach ($provinces as $province)
-                        <option value="{{ $province->id }}">{{ $province->name }}</option>
+                        <option value="{{ $province->id }}" {{ $loop->first ? 'selected' : '' }}>{{ $province->name }}
+                        </option>
                     @endforeach
                 </x-select>
-                <x-select id="city" label="Kota/Kabupaten" name="city" isFit="" required>
+                <x-select id="regency_id" label="Kota/Kabupaten" name="regency_id" isFit="" required>
                 </x-select>
-                <x-input id="place" label="Tempat Pengambilan Sampel" name="place" type="text" required />
+                <x-input id="place" label="Tempat Pengambilan Sampel" name="place" type="text"
+                    required />
                 <x-input id="title" label="Judul Artikel" name="title" type="text" required />
                 <x-select id="authors_id" label="Nama Penulis" name="authors_id" isFit="" required>
                     @foreach ($authors as $author)
@@ -59,7 +61,7 @@
                 </x-select>
                 <x-input id="gene_name" label="Nama Gen" name="gene_name" type="text" required />
                 <div class="col-span-2 ">
-                    <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data" required /></textarea>
+                    <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data" required></x-textarea>
                 </div>
             </div>
 
@@ -94,10 +96,10 @@
                 });
 
 
-                $('#region').on('change', function() {
+                $('#province_id').on('change', function() {
                     let provinceId = $(this).val();
                     $.ajax({
-                        url: "{{ route('admin.bank.get-city') }}",
+                        url: "{{ route('admin.bank.get-regency') }}",
                         type: "POST",
                         data: {
                             _token: "{{ csrf_token() }}",
@@ -109,7 +111,7 @@
                             data.forEach(function(item) {
                                 html += `<option value="${item.id}">${item.name}</option>`;
                             });
-                            $('#city').html(html);
+                            $('#regency_id').html(html);
                         }
                     });
                 });
@@ -124,7 +126,6 @@
                             virus_id: virusId
                         },
                         success: function(response) {
-                            // console.log(response);
                             let data = response;
                             let html = '';
                             data.forEach(function(item) {
@@ -136,6 +137,22 @@
                     });
                 })
             });
+
+            @if (Session::has('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: '{{ Session::get('success') }}',
+                });
+            @endif
+
+            @if (Session::has('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: '{{ Session::get('error') }}',
+                });
+            @endif
         </script>
     @endpush
 </x-app-layout>

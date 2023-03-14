@@ -33,4 +33,9 @@ class Province extends Model
         return $this->hasManyThrough(Village::class, District::class);
     }
 
+    public function samples()
+    {
+        return $this->hasManyThrough(Sample::class, District::class);
+    }
+
 }

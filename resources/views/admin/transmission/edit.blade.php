@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-breadcrumbs name="transmission.edit" :data="$transmission" />
-    <h1 class="font-semibold text-xl my-8">Edit Genotipe</h1>
+    <h1 class="font-semibold text-lg my-8">Edit Genotipe</h1>
 
     <div class="lg:w-1/2">
         <x-card-container>

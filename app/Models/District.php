@@ -29,8 +29,8 @@ class District extends Model
         return $this->hasMany(Village::class);
     }
 
-    public function province()
+    public function samples()
     {
-        return $this->belongsToThrough(Province::class, Regency::class);
+        return $this->hasMany(Sample::class);
     }
 }

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-breadcrumbs name="dashboard" />
-    <h1 class="font-semibold text-xl my-8">Dashboard</h1>
+    <h1 class="font-semibold text-lg my-8">Dashboard</h1>
 
     {{-- Statistic --}}
     <div class="xl:grid xl:grid-cols-4 gap-x-4 mb-4 sm:block">
@@ -89,7 +89,7 @@
                 <h3 class="font-semibold">Virus</h3>
                 <div>
                     {{-- input year with select2 --}}
-                    <x-select name="year" id="year" class="max-w-sm">
+                    <x-select name="yearVirus" id="yearVirus" class="max-w-sm">
                         @foreach ($years as $year)
                             <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>
                                 {{ $year }}
@@ -110,7 +110,6 @@
             let months = @json($months);
 
             $(function() {
-                $('#year').select2();
                 let year;
 
                 $('#year').on('change', function() {

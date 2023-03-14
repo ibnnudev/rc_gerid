@@ -21,7 +21,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     // Bank Data
     Route::post('bank/get-genotipe', [BankController::class, 'getGenotipe'])->name('admin.bank.get-genotipe');
-    Route::post('bank/get-city', [BankController::class, 'getCity'])->name('admin.bank.get-city');
+    Route::post('bank/get-regency', [BankController::class, 'getRegency'])->name('admin.bank.get-regency');
     Route::resource('bank', BankController::class, ['as' => 'admin']);
 
     // Author

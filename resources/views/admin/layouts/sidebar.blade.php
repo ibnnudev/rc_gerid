@@ -11,11 +11,11 @@
 <aside id="logo-sidebar"
     class="fixed top-0 left-0 z-40 w-64 h-screen border border-r transition-transform -translate-x-full sm:translate-x-0"
     aria-label="Sidebar">
-    <div class="h-full px-4 py-8 overflow-y-hidden">
+    <div class="h-full px-4 py-8 overflow-y-hidden bg-white">
         {{-- Logo --}}
-        {{-- <a href="#" class="flex items-center pl-2.5 mb-8">
-            <img src="{{ asset('assets/application/logo.png') }}" class="h-12 mr-3 sm:h-20" alt="logo" />
-        </a> --}}
+        <a href="#" class="flex items-center pl-2.5 mb-8">
+            <img src="{{ asset('assets/application/indagi.png') }}" class="mr-3 sm:h-12" alt="logo" />
+        </a>
         <ul class="space-y-3">
             <x-sidebar-menu name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
                 active="{{ request()->routeIs('admin.dashboard') }}" />

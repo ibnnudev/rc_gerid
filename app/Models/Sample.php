@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Scopes\HasActiveScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Sample extends Model
 {
     use HasFactory;
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new HasActiveScope);
+    }
 
     public $table = 'samples';
 
@@ -17,13 +23,13 @@ class Sample extends Model
         'gene_name',
         'sequence_data',
         'place',
-        'city',
-        'subdistrict',
-        'region',
         'pickup_date',
         'authors_id',
         'genotipes_id',
-        'virus_code'
+        'province_id',
+        'regency_id',
+        'virus_code',
+        'is_active'
     ];
 
     // Relationship
@@ -42,9 +48,19 @@ class Sample extends Model
         return $this->belongsTo(Virus::class, 'viruses_id');
     }
 
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id');
+    }
+
+    public function regency()
+    {
+        return $this->belongsTo(Regency::class, 'regency_id');
+    }
+
     public function citations()
     {
-        return $this->hasMany(Citation::class, 'samples_id');
+        return $this->hasOne(Citation::class, 'samples_id');
     }
 
     public static function generateSampleCode()

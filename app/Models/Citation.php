@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Scopes\HasActiveScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Citation extends Model
 {
     use HasFactory;
+
+    protected static function booted()
+    {
+        static::addGlobalScope(new HasActiveScope);
+    }
 
     public $table = 'citations';
 
@@ -16,6 +22,7 @@ class Citation extends Model
         'author_id', // multi author (separated by comma)
         'samples_id',
         'users_id',
+        'is_active'
     ];
 
     // Relationships

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-breadcrumbs name="author.show" :data="$author" />
-    <h1 class="font-semibold text-xl my-8">Detail Penulis</h1>
+    <h1 class="font-semibold text-lg my-8">Detail Penulis</h1>
 
     <x-card-container>
         <div class="md:grid md:grid-cols-2 gap-x-4">

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-breadcrumbs name="genotipe.show" :data="$genotipe" />
-    <h1 class="font-semibold text-xl my-8">Detail Genotipe</h1>
+    <h1 class="font-semibold text-lg my-8">Detail Genotipe</h1>
 
     <x-card-container>
         <div class="md:grid md:grid-cols-2 gap-x-4">
@@ -13,7 +13,7 @@
             </x-select>
         </div>
 
-        
+
         {{-- back --}}
         <div class="mt-4 text-end">
             <x-link-button route="{{ route('admin.genotipe.index') }}" color="gray">

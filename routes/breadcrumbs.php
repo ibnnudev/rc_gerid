@@ -20,6 +20,20 @@ Breadcrumbs::for('bank.create', function (BreadcrumbTrail $trail) {
     $trail->push('Tambah Bank', route('admin.bank.create'));
 });
 
+// Bank Data > Detail Bank
+Breadcrumbs::for('bank.show', function (BreadcrumbTrail $trail, $sample) {
+    $trail->parent('bank');
+    $trail->push($sample->sample_code, route('admin.bank.show', $sample->id));
+});
+
+// Bank Data > Edit Bank,
+Breadcrumbs::for('bank.edit', function (BreadcrumbTrail $trail, $sample) {
+    $trail->parent('bank');
+    $trail->push($sample->sample_code, route('admin.bank.show', $sample->id));
+    $trail->push('Edit Bank', route('admin.bank.edit', $sample->id));
+});
+
+
 // Penulis
 Breadcrumbs::for('author', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');

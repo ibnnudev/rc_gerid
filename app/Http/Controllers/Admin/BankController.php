@@ -74,7 +74,12 @@ class BankController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return view('admin.bank.show', [
+            'sample'    => $this->sample->find($id),
+            'provinces' => Province::all(),
+            'authors'   => $this->author->get(),
+            'viruses'   => $this->virus->get(),
+        ]);
     }
 
     /**
@@ -82,28 +87,56 @@ class BankController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('admin.bank.edit', [
+            'sample'    => $this->sample->find($id),
+            'authors'   => $this->author->get(),
+            'viruses'   => $this->virus->get(),
+            'provinces' => Province::all(),
+            'genotipes' => Genotipe::all(),
+            'regencies' => Regency::all(),
+            'months'    => Months::getMonths(),
+            'years'     => Years::getYears(),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $pickup_date = $request->pickup_date;
+        $month = explode('/', $pickup_date)[0];
+        $year = explode('/', $pickup_date)[1];
+
+        // conver to date
+        $pickup_date = date('Y-m-d', strtotime($year . '-' . $month . '-01'));
+        $request->merge(['pickup_date' => $pickup_date]);
+
+        try {
+            $this->sample->update($request->all(), $id);
+            return redirect()->route('admin.bank.index')->with('success', 'Data berhasil disimpan');
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            return back()->with('error', 'Data gagal disimpan');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        try {
+            $this->sample->destroy($id);
+            return redirect()->route('admin.bank.index')->with('success', 'Data berhasil dihapus');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Data gagal dihapus');
+        }
     }
 
     // Custom Function
 
-    public function getCity(Request $request)
+    public function getRegency(Request $request)
     {
         $regencies = Regency::where('province_id', $request->province_id)->get();
         return response()->json($regencies);
