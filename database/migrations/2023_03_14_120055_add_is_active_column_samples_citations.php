@@ -14,6 +14,8 @@ return new class extends Migration
         // add is_active column to sample and citation table
         Schema::table('samples', function (Blueprint $table) {
             $table->boolean('is_active')->default(true);
+            $table->unsignedBigInteger('province_id')->nullable();
+            $table->unsignedBigInteger('regency_id')->nullable();
         });
 
         Schema::table('citations', function (Blueprint $table) {

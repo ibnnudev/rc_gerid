@@ -11,10 +11,10 @@
 <aside id="logo-sidebar"
     class="fixed top-0 left-0 z-40 w-64 h-screen border border-r transition-transform -translate-x-full sm:translate-x-0"
     aria-label="Sidebar">
-    <div class="h-full px-4 py-8 overflow-y-hidden bg-white">
+    <div class="h-full px-4 py-8 overflow-y-auto bg-white">
         {{-- Logo --}}
         <a href="#" class="flex items-center pl-2.5 mb-8">
-            <img src="{{ asset('assets/application/indagi.png') }}" class="mr-3 sm:h-12" alt="logo" />
+            <img src="{{ asset('assets/application/indagi.png') }}" class="mr-3" alt="logo" />
         </a>
         <ul class="space-y-3">
             <x-sidebar-menu name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
@@ -23,9 +23,53 @@
                 active="{{ request()->routeIs('admin.bank.*') }}" />
             <x-sidebar-menu name="Data Penulis" icon="fas fa-user" route="{{ route('admin.author.index') }}"
                 active="{{ request()->routeIs('admin.author.*') }}" />
-            <x-sidebar-menu name="Data Virus" icon="fas fa-virus" route="{{ route('admin.virus.index') }}" active="{{ request()->routeIs('admin.virus.*') }}" />
-            <x-sidebar-menu name="Data Genotipe" icon="fas fa-dna" route="{{ route('admin.genotipe.index') }}" active="{{ request()->routeIs('admin.genotipe.*') }}" />
-            <x-sidebar-menu name="Data Transmisi" icon="fas fa-route" route="{{ route('admin.transmission.index') }}" active="{{ request()->routeIs('admin.transmission.*') }}" />
+            <x-sidebar-menu name="Data Virus" icon="fas fa-virus" route="{{ route('admin.virus.index') }}"
+                active="{{ request()->routeIs('admin.virus.*') }}" />
+            <x-sidebar-menu name="Data Genotipe" icon="fas fa-dna" route="{{ route('admin.genotipe.index') }}"
+                active="{{ request()->routeIs('admin.genotipe.*') }}" />
+            <x-sidebar-menu name="Data Transmisi" icon="fas fa-route" route="{{ route('admin.transmission.index') }}"
+                active="{{ request()->routeIs('admin.transmission.*') }}" />
+
+            <li>
+                <button type="button"
+                    class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 w-full"
+                    aria-controls="data-kasus" data-collapse-toggle="data-kasus">
+                    <i
+                        class="fas fa-file w-4 h-4 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                    <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Data Kasus</span>
+                    <i
+                        class="fas fa-angle-up w-3 h-3 text-gray-500 transition duration-75 transform group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                </button>
+                <ul id="data-kasus" class="hidden py-2 space-y-2">
+                    <li>
+                        <a href="#"
+                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11">
+                            HIV</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11">Hepatitis
+                            B</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11">Hepatitis
+                            C</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11">Rotavirus</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11">Norovirus</a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11">Dengue</a>
+                    </li>
+                </ul>
+            </li>
 
 
 

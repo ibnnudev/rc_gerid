@@ -12,6 +12,7 @@
         input[type="search"] {
             font-size: 0.75rem;
         }
+
         .dataTables_length label select option {
             font-size: 0.75rem;
         }
@@ -39,13 +40,15 @@
 
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
-
 </head>
 
 <body class="font-sans antialiased text-xs 2xl:text-sm overflow-hidden">
+
+    <div class="loading fixed top-0 left-0 w-full h-full bg-white z-50 flex items-center justify-center">
+        <img src="{{ asset('assets/application/loadin_gif.gif') }}" alt="loading" class="h-60">
+    </div>
+
     <div class="bg-white-200">
-        {{-- @include('admin.layouts.navigation') --}}
         @include('admin.layouts.sidebar')
 
         <div class="p-4 sm:ml-64 h-screen overflow-y-auto">
@@ -83,6 +86,11 @@
     <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
 
     <script>
+        // show loading when website loaded and all assets loaded and ajax request and stop loading when all assets loaded
+        $(window).on('load', function () {
+            $('.loading').fadeOut(500);
+        });
+
         // set datatable search to text-sm
         $('input').addClass('text-sm');
 
