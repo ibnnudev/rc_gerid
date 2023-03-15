@@ -4,7 +4,7 @@
 
     <x-card-container>
 
-        <div class="lg:flex justify-end gap-x-2">
+        <div class="lg:flex justify-end gap-x-2 gap-y-3">
             <x-link-button id="btnImport" class="bg-primary">
                 <i class="fas fa-file-excel mr-2"></i>
                 Import Data Kasus
@@ -19,7 +19,7 @@
             </x-link-button>
         </div>
 
-        <div class="overflow-x-auto mt-4">
+        <div class="mt-4">
             <table id="hivTable" class="w-full">
                 <thead>
                     <tr>
@@ -33,24 +33,6 @@
                         <th>Menu</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @forelse ($hivCases as $case)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $case->idkd }}</td>
-                            <td>{{ $case->province->name . ',' . $case->regency->name . ',' . ($case->district->name ?? null) }}</td>
-                            <td>{{$case->age}}</td>
-                            <td>{{$case->sex}}</td>
-                            <td>{{$case->transmission->name}}</td>
-                            <td>{{date('Y', strtotime($case->year))}}</td>
-                            <td></td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="10">Tidak ada data</td>
-                        </tr>
-                    @endforelse
-                </tbody>
             </table>
         </div>
     </x-card-container>
@@ -118,10 +100,48 @@
 
 
                 $('#hivTable').DataTable({
-                    "responsive": true,
-                    "processing": true,
-                    // only show 10 data per page
-                    "lengthMenu": [10, 25, 50, 75, 100],
+                    responsive: true,
+                    processing: true,
+                    serverSide: true,
+                    autoWidth: false,
+                    ajax: '{{ route('admin.hiv-case.index') }}',
+                    columns: [{
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex',
+                            orderable: false,
+                            searchable: false
+                        },
+                        {
+                            data: 'idkd',
+                            name: 'idkd'
+                        },
+                        {
+                            data: 'location',
+                            name: 'location'
+                        },
+                        {
+                            data: 'age',
+                            name: 'age'
+                        },
+                        {
+                            data: 'sex',
+                            name: 'sex'
+                        },
+                        {
+                            data: 'transmission',
+                            name: 'transmission'
+                        },
+                        {
+                            data: 'year',
+                            name: 'year'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action',
+                            orderable: false,
+                            searchable: false
+                        }
+                    ]
                 });
             });
 

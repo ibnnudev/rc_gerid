@@ -23,43 +23,6 @@
                     <th>Menu</th>
                 </tr>
             </thead>
-            <tbody>
-                @forelse ($samples as $sample)
-                    <tr>
-                        <td>{{ $sample->sample_code }}</td>
-                        <td>{{ $sample->virus->name }}</td>
-                        <td>{{ $sample->genotipe->genotipe_code }}</td>
-                        <td>{{ date('M, Y', strtotime($sample->pickup_date)) }}</td>
-                        <td>{{ $sample->place }}</td>
-                        <td>{{ $sample->gene_name }}</td>
-                        <td>
-                            {{ $sample->citations->title }}
-                        </td>
-                        <td>{{ $sample->author->name }}</td>
-                        <td>
-                            <div class="lg:flex gap-x-2">
-                                <a href="{{ route('admin.bank.show', $sample->id) }}"
-                                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
-                                    <i class="fas fa-eye fa-sm"></i>
-                                </a>
-                                <a href="{{ route('admin.bank.edit', $sample->id) }}"
-                                    class="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
-                                    <i class="fas fa-edit fa-sm"></i>
-                                </a>
-                                <label for="modal"
-                                    onclick="btnDelete('{{ $sample->id }}', '{{ $sample->sample_code }}')"
-                                    class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
-                                    <i class="fas fa-trash fa-sm"></i>
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="10" class="text-center">Tidak ada data</td>
-                    </tr>
-                @endforelse
-            </tbody>
         </table>
     </x-card-container>
 
@@ -105,13 +68,47 @@
             $(function() {
                 $('#samplesTable').DataTable({
                     responsive: true,
-                    autoWidth: false,
                     processing: true,
-                    // fit content all column
-                    columnDefs: [{
-                        targets: 'no-sort',
-                        orderable: false,
-                    }],
+                    serverSide: true,
+                    autoWidth: false,
+                    ajax: '{{ route('admin.bank.index') }}',
+                    columns: [{
+                            data: 'sample_code',
+                            name: 'sample_code'
+                        },
+                        {
+                            data: 'virus',
+                            name: 'virus'
+                        },
+                        {
+                            data: 'genotipe',
+                            name: 'genotipe'
+                        },
+                        {
+                            data: 'pickup_date',
+                            name: 'pickup_date'
+                        },
+                        {
+                            data: 'place',
+                            name: 'place'
+                        },
+                        {
+                            data: 'gene_name',
+                            name: 'gene_name'
+                        },
+                        {
+                            data: 'title',
+                            name: 'title'
+                        },
+                        {
+                            data: 'author',
+                            name: 'author'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action'
+                        },
+                    ]
                 });
             });
 

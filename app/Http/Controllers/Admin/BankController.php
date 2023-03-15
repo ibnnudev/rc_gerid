@@ -16,6 +16,8 @@ use App\Properties\Months;
 use App\Properties\Years;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\returnSelf;
+
 class BankController extends Controller
 {
     private $author;
@@ -29,11 +31,44 @@ class BankController extends Controller
         $this->sample = $sample;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.bank.index', [
-            'samples' => $this->sample->get()
-        ]);
+        if($request->ajax()) {
+            return datatables()
+            ->of($this->sample->get())
+            ->addColumn('sample_code', function($sample) {
+                return $sample->sample_code;
+            })
+            ->addColumn('virus', function($sample){
+                return $sample->virus->name;
+            })
+            ->addColumn('genotipe', function($sample){
+                return $sample->genotipe->genotipe_code;
+            })
+            ->addColumn('pickup_date', function($sample){
+                return date('d/m/Y', strtotime($sample->pickup_date));
+            })
+            ->addColumn('place', function($sample){
+                return $sample->place;
+            })
+            ->addColumn('gene_name', function($sample) {
+                return $sample->gene_name;
+            })
+            ->addColumn('title', function($sample) {
+                return $sample->citations->title;
+            })
+            ->addColumn('author', function($sample) {
+                return $sample->author->name;
+            })
+            ->addColumn('action', function($sample) {
+                return view('admin.bank.columns.action', [
+                    'sample' => $sample,
+                ]);
+            })
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('admin.bank.index');
     }
 
     public function create()
@@ -146,5 +181,11 @@ class BankController extends Controller
     {
         $genotipes = Genotipe::where('viruses_id', $request->virus_id)->get();
         return response()->json($genotipes);
+    }
+
+    public function getDistrict(Request $request)
+    {
+        $districts = District::where('regency_id', $request->regency_id)->get();
+        return response()->json($districts);
     }
 }

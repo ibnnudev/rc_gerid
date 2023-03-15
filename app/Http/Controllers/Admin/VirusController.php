@@ -16,11 +16,24 @@ class VirusController extends Controller
         $this->virus = $virus;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.virus.index', [
-            'viruses' => $this->virus->get(),
-        ]);
+        if($request->ajax()) {
+            return datatables()
+            ->of($this->virus->get())
+            ->addColumn('name', function($virus) {
+                return view('admin.virus.columns.name', ['virus' => $virus]);
+            })
+            ->addColumn('genotipe', function($virus) {
+                return view('admin.virus.columns.genotipe', ['virus' => $virus]);
+            })
+            ->addColumn('action', function($virus) {
+                return view('admin.virus.columns.action', ['virus' => $virus]);
+            })
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('admin.virus.index');
     }
 
     /**

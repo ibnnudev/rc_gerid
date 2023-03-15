@@ -16,11 +16,21 @@ class TransmissionController extends Controller
         $this->transmission = $transmission;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.transmission.index', [
-            'transmissions' => $this->transmission->get(),
-        ]);
+        if($request->ajax()) {
+            return datatables()
+            ->of($this->transmission->get())
+            ->addColumn('name', function($transmission) {
+                return $transmission->name;
+            })
+            ->addColumn('action', function($transmission) {
+                return view('admin.transmission.columns.action', ['transmission' => $transmission]);
+            })
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('admin.transmission.index');
     }
 
     /**

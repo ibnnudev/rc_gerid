@@ -10,7 +10,7 @@
             </x-link-button>
         </div>
 
-        <div class="overflow-x-auto mt-4">
+        <div class=" mt-4">
             <table class="w-full" id="transmissionTable">
                 <thead>
                     <tr>
@@ -19,35 +19,6 @@
                         <th>Menu</th>
                     </tr>
                 </thead>
-                <tbody>
-                    @forelse ($transmissions as $transmission)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>
-                                {{ $transmission->name }}
-                            </td>
-                            <td>
-                                <div class="lg:flex gap-x-2">
-                                    <a href="{{ route('admin.transmission.edit', $transmission->id) }}"
-                                        class="text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
-                                        <i class="fas fa-edit fa-sm"></i>
-                                    </a>
-                                    <label for="modal"
-                                        onclick="btnDelete('{{ $transmission->id }}', '{{ $transmission->name }}')"
-                                        class="text-white bg-gray-700 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
-                                        <i class="fas fa-trash fa-sm"></i>
-                                    </label>
-                                </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="3" class="text-center">
-                                Tidak ada data
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
             </table>
         </div>
     </x-card-container>
@@ -94,8 +65,24 @@
 
             $(function() {
                 $('#transmissionTable').DataTable({
-                    "responsive": true,
-                    "autoWidth": false,
+                    responsive: true,
+                    processing: true,
+                    serverSide: true,
+                    autoWidth: false,
+                    ajax: '{{ route('admin.transmission.index') }}',
+                    columns: [{
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex'
+                        },
+                        {
+                            data: 'name',
+                            name: 'name'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action'
+                        },
+                    ]
                 });
             });
 
