@@ -38,4 +38,9 @@ class Regency extends Model
     {
         return $this->hasManyThrough(Sample::class, District::class);
     }
+
+    public function hivCases()
+    {
+        return $this->hasManyThrough(HivCases::class, District::class);
+    }
 }

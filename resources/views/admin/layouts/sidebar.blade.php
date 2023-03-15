@@ -32,17 +32,24 @@
 
             <li>
                 <button type="button"
-                    class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 w-full"
+                    class="flex w-full items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700
+                    @if (request()->routeIs('admin.hiv-case.*')) bg-primary text-white shadow-sm hover:bg-secondary @endif
+                    "
                     aria-controls="data-kasus" data-collapse-toggle="data-kasus">
                     <i
-                        class="fas fa-file w-4 h-4 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                        class="fas fa-file w-4 h-4 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white
+                        @if (request()->routeIs('admin.hiv-case.*')) text-white @endif
+                        "></i>
                     <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Data Kasus</span>
                     <i
-                        class="fas fa-angle-up w-3 h-3 text-gray-500 transition duration-75 transform group-hover:text-gray-900 dark:group-hover:text-white"></i>
+                        class="fas fa-angle-up w-3 h-3 text-gray-500 transition duration-75 transform group-hover:text-gray-900 dark:group-hover:text-white
+                        @if (request()->routeIs('admin.hiv-case.*')) text-white @endif
+                        "></i>
                 </button>
-                <ul id="data-kasus" class="hidden py-2 space-y-2">
+                <ul id="data-kasus"
+                    class="{{ request()->routeIs('admin.hiv-case.*') ? '' : 'hidden' }} py-2 space-y-2">
                     <li>
-                        <a href="#"
+                        <a href="{{ route('admin.hiv-case.index') }}"
                             class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11">
                             HIV</a>
                     </li>

@@ -123,3 +123,9 @@ Breadcrumbs::for('transmission.edit', function (BreadcrumbTrail $trail, $transmi
     $trail->parent('transmission', $transmission);
     $trail->push('Edit', route('admin.transmission.edit', $transmission->id));
 });
+
+// HIV Cases
+Breadcrumbs::for('hiv-cases', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Kasus HIV', route('admin.hiv-case.index'));
+});

@@ -33,4 +33,9 @@ class District extends Model
     {
         return $this->hasMany(Sample::class);
     }
+
+    public function hivCases()
+    {
+        return $this->hasMany(HivCase::class);
+    }
 }

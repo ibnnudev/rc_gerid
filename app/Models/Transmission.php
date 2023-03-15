@@ -26,4 +26,11 @@ class Transmission extends Model
         $this->is_active = false;
         $this->save();
     }
+
+    // Relationships
+
+    public function hivCases()
+    {
+        return $this->hasMany(HivCases::class);
+    }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\TotalVisitorConttroller;
 use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\Admin\GenotipeController;
+use App\Http\Controllers\Admin\HivCaseController;
 use App\Http\Controllers\Admin\TransmissionController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     // Transmission
     Route::resource('transmission', TransmissionController::class, ['as' => 'admin']);
+
+    // HIV Case
+    Route::post('hiv-case/import', [HivCaseController::class, 'import'])->name('admin.hiv-case.import');
+    Route::resource('hiv-case', HivCaseController::class, ['as' => 'admin']);
 });
 
 require __DIR__ . '/auth.php';
