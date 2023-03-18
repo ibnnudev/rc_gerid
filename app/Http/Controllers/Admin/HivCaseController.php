@@ -173,8 +173,6 @@ class HivCaseController extends Controller
             'import_file' => 'required|mimes:xlsx,xls,csv'
         ]);
 
-        HivCases::truncate();
-
         Excel::import(new HivCasesImport, $request->file('import_file'));
 
         return redirect()->route('admin.hiv-case.index')->with('success', 'Data HIV berhasil diimport!');

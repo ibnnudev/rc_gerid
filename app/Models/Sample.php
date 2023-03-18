@@ -29,7 +29,8 @@ class Sample extends Model
         'province_id',
         'regency_id',
         'virus_code',
-        'is_active'
+        'is_active',
+        'sequence_data_file',
     ];
 
     // Relationship

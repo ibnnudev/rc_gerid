@@ -7,6 +7,7 @@ use App\Models\Citation;
 use App\Models\Sample;
 use App\Models\Virus;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class SampleRepository implements SampleInterface
 {
@@ -29,21 +30,27 @@ class SampleRepository implements SampleInterface
     public function store($data)
     {
         DB::beginTransaction();
+        if($data['sequence_data_file']) {
+            $filename = time() . '.' . $data['sequence_data_file']->getClientOriginalExtension();
+            $data['sequence_data_file']->storeAs('public/sequence_data', $filename);
 
+            $data['sequence_data_file'] = $filename;
+        }
         // insert sample
         try {
             $sample = $this->sample->create([
-                'sample_code'   => $data['sample_code'],
-                'viruses_id'    => $data['viruses_id'],
-                'gene_name'     => $data['gene_name'],
-                'sequence_data' => $data['sequence_data'],
-                'place'         => $data['place'],
-                'regency_id'    => $data['regency_id'],
-                'province_id'   => $data['province_id'],
-                'pickup_date'   => date('Y-m-d', strtotime($data['pickup_date'])),
-                'authors_id'    => $data['authors_id'],
-                'genotipes_id'  => $data['genotipes_id'],
-                'virus_code'    => $this->virus->generateVirusCode(),
+                'sample_code'        => $data['sample_code'],
+                'viruses_id'         => $data['viruses_id'],
+                'gene_name'          => $data['gene_name'],
+                'sequence_data'      => $data['sequence_data'] ?? null,
+                'place'              => $data['place'],
+                'regency_id'         => $data['regency_id'],
+                'province_id'        => $data['province_id'],
+                'pickup_date'        => date('Y-m-d', strtotime($data['pickup_date'])),
+                'authors_id'         => $data['authors_id'],
+                'genotipes_id'       => $data['genotipes_id'],
+                'virus_code'         => $this->virus->generateVirusCode(),
+                'sequence_data_file' => $data['sequence_data_file'] ?? null,
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -72,17 +79,34 @@ class SampleRepository implements SampleInterface
 
         // update sample
         try {
-            $this->sample->find($id)->update([
-                'sample_code'   => $data['sample_code'],
-                'viruses_id'    => $data['viruses_id'],
-                'gene_name'     => $data['gene_name'],
-                'sequence_data' => $data['sequence_data'],
-                'place'         => $data['place'],
-                'regency_id'    => $data['regency_id'],
-                'province_id'   => $data['province_id'],
-                'pickup_date'   => date('Y-m-d', strtotime($data['pickup_date'])),
-                'authors_id'    => $data['authors_id'],
-                'genotipes_id'  => $data['genotipes_id'],
+            $sample = $this->sample->find($id);
+            if(isset($data['sequence_data_file'])) {
+                // delete old file
+                if($sample->sequence_data_file) {
+                    $oldFile = 'public/sequence_data/' . $sample->sequence_data_file;
+                    if(Storage::exists($oldFile)) {
+                        Storage::delete($oldFile);
+                    }
+                }
+
+                $filename = time() . '.' . $data['sequence_data_file']->getClientOriginalExtension();
+                $data['sequence_data_file']->storeAs('public/sequence_data', $filename);
+
+                $data['sequence_data_file'] = $filename;
+            }
+
+            $sample->update([
+                'sample_code'        => $data['sample_code'],
+                'viruses_id'         => $data['viruses_id'],
+                'gene_name'          => $data['gene_name'],
+                'sequence_data'      => $data['sequence_data'] ?? null,
+                'place'              => $data['place'],
+                'regency_id'         => $data['regency_id'],
+                'province_id'        => $data['province_id'],
+                'pickup_date'        => date('Y-m-d', strtotime($data['pickup_date'])),
+                'authors_id'         => $data['authors_id'],
+                'genotipes_id'       => $data['genotipes_id'],
+                'sequence_data_file' => isset($data['sequence_data_file']) ? $data['sequence_data_file'] : $sample->sequence_data_file,
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();

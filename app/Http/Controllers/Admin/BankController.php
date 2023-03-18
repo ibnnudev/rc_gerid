@@ -33,40 +33,43 @@ class BankController extends Controller
 
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->sample->get())
-            ->addColumn('sample_code', function($sample) {
-                return $sample->sample_code;
-            })
-            ->addColumn('virus', function($sample){
-                return $sample->virus->name;
-            })
-            ->addColumn('genotipe', function($sample){
-                return $sample->genotipe->genotipe_code;
-            })
-            ->addColumn('pickup_date', function($sample){
-                return date('d/m/Y', strtotime($sample->pickup_date));
-            })
-            ->addColumn('place', function($sample){
-                return $sample->place;
-            })
-            ->addColumn('gene_name', function($sample) {
-                return $sample->gene_name;
-            })
-            ->addColumn('title', function($sample) {
-                return $sample->citations->title;
-            })
-            ->addColumn('author', function($sample) {
-                return $sample->author->name;
-            })
-            ->addColumn('action', function($sample) {
-                return view('admin.bank.columns.action', [
-                    'sample' => $sample,
-                ]);
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->sample->get())
+                ->addColumn('sample_code', function ($sample) {
+                    return $sample->sample_code;
+                })
+                ->addColumn('virus', function ($sample) {
+                    return $sample->virus->name;
+                })
+                ->addColumn('genotipe', function ($sample) {
+                    return $sample->genotipe->genotipe_code;
+                })
+                ->addColumn('pickup_date', function ($sample) {
+                    return date('d/m/Y', strtotime($sample->pickup_date));
+                })
+                ->addColumn('place', function ($sample) {
+                    return $sample->place;
+                })
+                ->addColumn('gene_name', function ($sample) {
+                    return $sample->gene_name;
+                })
+                ->addColumn('title', function ($sample) {
+                    return $sample->citations->title;
+                })
+                ->addColumn('author', function ($sample) {
+                    return $sample->author->name;
+                })
+                ->addColumn('file_sequence', function ($sample) {
+                    return view('admin.bank.columns.file_sequence', ['sample' => $sample]);
+                })
+                ->addColumn('action', function ($sample) {
+                    return view('admin.bank.columns.action', [
+                        'sample' => $sample,
+                    ]);
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
         return view('admin.bank.index');
     }

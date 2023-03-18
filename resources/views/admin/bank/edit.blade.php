@@ -3,7 +3,7 @@
     <h1 class="font-semibold text-lg my-8">Edit Data</h1>
 
     <x-card-container>
-        <form action="{{ route('admin.bank.update', $sample->id) }}" method="POST">
+        <form action="{{ route('admin.bank.update', $sample->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="md:grid md:grid-cols-3 gap-x-4">
@@ -87,14 +87,18 @@
                 </x-select>
                 <x-input id="gene_name" label="Nama Gen" name="gene_name" :value="$sample->gene_name" type="text" required />
                 <div class="col-span-2 ">
-                    <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data" required>
+                    <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data">
                         {{ $sample->sequence_data }}</x-textarea>
                 </div>
             </div>
 
+            <div class="grid grid-cols-3 gap-x-3">
+                <x-input id="sequence_data_file" label="Import Data Sekuen" name="sequence_data_file" type="file" :value="$sample->sequence_data_file" />
+            </div>
+
             <div class="text-end mt-4">
                 <x-button class="px-6">
-                    <span>Tambah</span>
+                    <span>Simpan</span>
                 </x-button>
             </div>
 

@@ -3,7 +3,7 @@
     <h1 class="font-semibold text-lg my-8">Tambah Data</h1>
 
     <x-card-container>
-        <form action="{{ route('admin.bank.store') }}" method="POST">
+        <form action="{{ route('admin.bank.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="md:grid md:grid-cols-3 gap-x-4">
                 <div>
@@ -61,8 +61,12 @@
                 </x-select>
                 <x-input id="gene_name" label="Nama Gen" name="gene_name" type="text" required />
                 <div class="col-span-2 ">
-                    <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data" required></x-textarea>
+                    <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data"></x-textarea>
                 </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-x-3">
+                <x-input id="sequence_data_file" label="File Data Sekuen" name="sequence_data_file" type="file" />
             </div>
 
             <div class="text-end mt-4">

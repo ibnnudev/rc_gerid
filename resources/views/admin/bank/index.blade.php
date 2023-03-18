@@ -20,6 +20,7 @@
                     <th>Gen</th>
                     <th>Judul</th>
                     <th>Author</th>
+                    <th>File Sequence</th>
                     <th>Menu</th>
                 </tr>
             </thead>
@@ -103,6 +104,10 @@
                         {
                             data: 'author',
                             name: 'author'
+                        },
+                        {
+                            data: 'file_sequence',
+                            name: 'file_sequence'
                         },
                         {
                             data: 'action',

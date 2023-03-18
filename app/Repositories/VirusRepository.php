@@ -43,7 +43,7 @@ class VirusRepository implements VirusInterface
     {
         $virus = $this->virus->find($id);
 
-        if ($data['image']) {
+        if (isset($data['image'])) {
 
             // delete old files
             if ($virus->image) {
@@ -57,9 +57,14 @@ class VirusRepository implements VirusInterface
             $data['image']->storeAs('public/virus', $filename);
 
             $data['image'] = $filename;
+            $virus->image = $data['image'];
         }
 
-        $virus->update($data);
+        $virus->name        = $data['name'];
+        $virus->latin_name  = $data['latin_name'];
+        $virus->description = $data['description'];
+
+        $virus->save();
 
         return true;
     }
