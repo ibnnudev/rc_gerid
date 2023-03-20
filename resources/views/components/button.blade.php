@@ -4,7 +4,7 @@
     {{ $attributes->merge([
         'type' => $type == 'submit' ? 'submit' : 'button',
         'class' =>
-            'inline-flex items-center px-4 py-2 btn-primary border border-transparent rounded-md lg:text-xs text-white bg-' .
+            'inline-flex items-center px-4 py-2 btn-primary border border-transparent rounded-md text-xs lg:text-xs text-white bg-' .
             $color .
             '-600 hover:bg-' .
             $color .

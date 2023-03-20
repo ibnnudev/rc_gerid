@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\SampleImport;
 use App\Interfaces\AuthorInterface;
 use App\Interfaces\SampleInterface;
 use App\Interfaces\VirusInterface;
@@ -15,6 +16,7 @@ use App\Models\Sample;
 use App\Properties\Months;
 use App\Properties\Years;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 use function PHPUnit\Framework\returnSelf;
 
@@ -46,10 +48,13 @@ class BankController extends Controller
                     return $sample->genotipe->genotipe_code;
                 })
                 ->addColumn('pickup_date', function ($sample) {
-                    return date('d/m/Y', strtotime($sample->pickup_date));
+                    return date('Y', strtotime($sample->pickup_date));
                 })
                 ->addColumn('place', function ($sample) {
                     return $sample->place;
+                })
+                ->addColumn('province', function ($sample) {
+                    return $sample->province->name;
                 })
                 ->addColumn('gene_name', function ($sample) {
                     return $sample->gene_name;
@@ -190,5 +195,16 @@ class BankController extends Controller
     {
         $districts = District::where('regency_id', $request->regency_id)->get();
         return response()->json($districts);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'import_file' => 'required|mimes:xls,xlsx'
+        ]);
+
+        Excel::import(new SampleImport, $request->file('import_file'));
+
+        return redirect()->route('admin.bank.index')->with('success', 'Data berhasil diimport');
     }
 }

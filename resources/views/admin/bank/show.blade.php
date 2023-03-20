@@ -49,7 +49,8 @@
                 </x-select>
                 <x-input id="gene_name" label="Nama Gen" :value="$sample->gene_name" name="gene_name" type="text" required />
                 <div class="col-span-2 ">
-                    <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data" required>{{$sample->sequence_data}}</x-textarea>
+                    <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data" required>
+                        {{ $sample->sequence_data }}</x-textarea>
                 </div>
             </div>
 
@@ -77,7 +78,11 @@
                     `<option value="${@json($sample->province_id)}" selected>${@json($sample->province->name)}</option>`
                 );
                 $('#regency_id').append(
-                    `<option value="${@json($sample->regency_id)}" selected>${@json($sample->regency->name)}</option>`
+                    @if ($sample->regency_id != null)
+                        `<option value="${@json($sample->regency_id)}" selected>${@json($sample->regency->name)}</option>`
+                    @else
+                        `<option value="" selected>Pilih Kota/Kabupaten</option>`
+                    @endif
                 );
                 $('#viruses_id').append(
                     `<option value="${@json($sample->viruses_id)}" selected>${@json($sample->virus->name)}</option>`

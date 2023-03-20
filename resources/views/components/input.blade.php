@@ -2,11 +2,11 @@
 
 <div class="form-control input-{{ $name }}">
     <label class="label">
-        <span class="font-medium lg:text-xs text-gray-700 2xl:label-text">{{ $label }}
+        <span class="font-medium lg:text-xs text-xs text-gray-700 2xl:label-text">{{ $label }}
             {!! $required == true ? '<sup class="text-error">*</sup>' : '' !!}</span>
     </label>
     <input name="{{ $name }}" {!! $attributes->merge([
-        'class' => 'border-gray-300 focus:border-primary lg:text-xs focus:ring-primary rounded-md shadow-sm',
+        'class' => 'border-gray-300 focus:border-primary text-xs lg:text-xs focus:ring-primary rounded-md shadow-sm',
     ]) !!} />
     @if ($tip)
         <label class="label">

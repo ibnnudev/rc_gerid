@@ -3,20 +3,29 @@
     <h1 class="font-semibold text-lg my-8">Daftar Kasus HIV</h1>
 
     <x-card-container>
-
-        <div class="lg:flex justify-end gap-x-2 gap-y-3">
-            <x-link-button id="btnImport" class="bg-primary">
-                <i class="fas fa-file-excel mr-2"></i>
-                Import Data Kasus
-            </x-link-button>
-            <form action="{{ route('admin.hiv-case.import') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="file" name="import_file" hidden>
-                <input type="submit" hidden>
-            </form>
-            <x-link-button route="{{ route('admin.hiv-case.create') }}" color="gray">
-                Tambah Kasus
-            </x-link-button>
+        <div class="flex justify-between">
+            <div>
+                <select name="filter" id="filter">
+                    <option disabled>Pilih Tampilan</option>
+                    <option value="all">Semua</option>
+                    <option value="province">Provinsi</option>
+                    <option value="tahun">Tahun</option>
+                </select>
+            </div>
+            <div class="gap-x-2 lg:inline-flex">
+                <x-link-button id="btnImport" class="bg-primary">
+                    <i class="fas fa-file-excel mr-2"></i>
+                    Import Data Kasus
+                </x-link-button>
+                <form action="{{ route('admin.hiv-case.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="import_file" hidden>
+                    <input type="submit" hidden>
+                </form>
+                <x-link-button route="{{ route('admin.hiv-case.create') }}" color="gray">
+                    Tambah Kasus
+                </x-link-button>
+            </div>
         </div>
 
         <div class="mt-4">
@@ -96,6 +105,13 @@
                             Swal.showLoading()
                         },
                     });
+                });
+
+                $('#filter').on('change', function(){
+                    let value = $(this).val();
+
+                    // filter datatable by province
+                    $('#hivTable').DataTable().column(2).search(value).draw();
                 });
 
 

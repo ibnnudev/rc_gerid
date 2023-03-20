@@ -3,10 +3,19 @@
     <h1 class="font-semibold text-lg my-8">Bank Data</h1>
 
     <x-card-container>
-        <div class="text-end mb-4">
+        <div class="sm:flex justify-end mb-4 gap-x-2">
             <x-link-button route="{{ route('admin.bank.create') }}" color="gray">
                 Tambah Bank Data
             </x-link-button>
+            <x-link-button id="btnImport" class="bg-primary">
+                <i class="fas fa-file-excel mr-2"></i>
+                Import Data Kasus
+            </x-link-button>
+            <form id="formImport" action="{{ route('admin.bank.import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="file" name="import_file" hidden>
+                <input type="submit" hidden>
+            </form>
         </div>
 
         <table id="samplesTable" class="w-full">
@@ -17,6 +26,7 @@
                     <th>Genotipe & Subtipe</th>
                     <th>Tanggal</th>
                     <th>Tempat</th>
+                    <th>Provinsi</th>
                     <th>Gen</th>
                     <th>Judul</th>
                     <th>Author</th>
@@ -66,7 +76,28 @@
                 document.querySelector('.modal-action form').action = urlDelete;
             }
 
+            $('#btnImport').click(function() {
+                $('input[name="import_file"]').click();
+
+                $('input[name="import_file"]').change(function() {
+                    $('#formImport').submit();
+                });
+            });
+
             $(function() {
+
+                $('#formImport').on('submit', function() {
+                    Swal.fire({
+                        title: 'Mohon tunggu',
+                        text: 'Sedang memproses data',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading()
+                        },
+                    });
+                });
+
+
                 $('#samplesTable').DataTable({
                     responsive: true,
                     processing: true,
@@ -92,6 +123,10 @@
                         {
                             data: 'place',
                             name: 'place'
+                        },
+                        {
+                            data: 'province',
+                            name: 'province'
                         },
                         {
                             data: 'gene_name',

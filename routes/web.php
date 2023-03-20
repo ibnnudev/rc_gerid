@@ -21,6 +21,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('filter/total-visitor', [TotalVisitorConttroller::class, 'filter'])->name('admin.filter.total-visitor');
 
     // Bank Data
+    Route::post('bank/import', [BankController::class, 'import'])->name('admin.bank.import');
     Route::post('bank/get-district', [BankController::class, 'getDistrict'])->name('admin.bank.get-district');
     Route::post('bank/get-genotipe', [BankController::class, 'getGenotipe'])->name('admin.bank.get-genotipe');
     Route::post('bank/get-regency', [BankController::class, 'getRegency'])->name('admin.bank.get-regency');
