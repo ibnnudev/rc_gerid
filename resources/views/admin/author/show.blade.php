@@ -9,9 +9,13 @@
             <x-input id="member" disabled label="Anggota" name="member" type="text" :value="$author->member" />
             <x-input id="address" disabled label="Alamat" name="address" type="text" :value="$author->address" />
             <x-select id="institutions_id" disabled label="Institusi" name="institutions_id" isFit="">
-                <option value="{{ $author->institution }}">
-                    {{ $author->institution->name }}
-                </option>
+                @if ($author->institutions_id != null)
+                    <option value="{{ $author->institutions_id }}" selected>
+                        {{ $author->institution->name }}
+                    </option>
+                @else
+                    <option value="" selected disabled>Pilih Institusi</option>
+                @endif
             </x-select>
         </div>
 

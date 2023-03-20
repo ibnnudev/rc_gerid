@@ -18,9 +18,27 @@ class AuthorController extends Controller
 
     public function index(Request $request)
     {
-        return view('admin.author.index', [
-            'authors' => $this->author->get(),
-        ]);
+        if($request->ajax()) {
+            return datatables()
+            ->of($this->author->get())
+            ->addColumn('name', function($author) {
+                return $author->name;
+            })
+            ->addColumn('member', function($author) {
+                return $author->member;
+            })
+            ->addColumn('institution', function($author) {
+                return $author->institution->name ?? '-';
+            })
+            ->addColumn('action', function($author) {
+                return view('admin.author.columns.action', [
+                    'author' => $author
+                ]);
+            })
+            ->addIndexColumn()
+            ->make(true);
+        }
+        return view('admin.author.index');
     }
 
     public function create()

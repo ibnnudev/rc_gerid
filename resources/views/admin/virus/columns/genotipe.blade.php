@@ -1,6 +1,5 @@
-@foreach ($virus->genotipes as $genotipe)
-    {{ $genotipe->genotipe_code }} @if ($loop->last)
-    @else
-        —
-    @endif
-@endforeach
+<ul>
+    @foreach ($virus->genotipes as $genotipe)
+        <li>{{ $genotipe->genotipe_code }}</li>
+    @endforeach
+</ul>

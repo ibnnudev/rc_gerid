@@ -99,7 +99,7 @@
                 </div>
             </div>
             <div style="height: 300px" class="relative">
-                <canvas id="totalVisitorsChart" class="absolute z-10"></canvas>
+                <canvas id="totalSampleVirus" class="absolute z-10"></canvas>
             </div>
         </x-card-container>
     </div>

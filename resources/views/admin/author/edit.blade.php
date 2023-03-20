@@ -12,11 +12,15 @@
                 <x-input id="member" required label="Anggota" name="member" type="text" :value="$author->member" />
                 <x-input id="address" required label="Alamat" name="address" type="text" :value="$author->address" />
                 <x-select id="institutions_id" label="Institusi" name="institutions_id" isFit="" required>
+                    <option value="" disabled>Pilih Institusi</option>
                     @foreach ($institutions as $institution)
-                        <option value="{{ $institution->id }}"
-                            {{ $institution->id == $author->institution->id ? 'selected' : '' }}>
-                            {{ $institution->name }}
-                        </option>
+                        @if ($author->institutions_id != null)
+                            <option value="{{ $institution->id }}"
+                                {{ $institution->id == $author->institution->id ? 'selected' : '' }}>
+                                {{ $institution->name }} </>
+                            @else
+                            <option value="{{ $institution->id }}">{{ $institution->name }}</option>
+                        @endif
                     @endforeach
                 </x-select>
                 <div></div>
@@ -39,7 +43,6 @@
                     text: '{{ Session::get('success') }}',
                 });
             @endif
-
             @if (Session::has('error'))
                 Swal.fire({
                     icon: 'error',

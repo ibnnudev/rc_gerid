@@ -54,14 +54,14 @@ class BankController extends Controller
                     return $sample->place;
                 })
                 ->addColumn('province', function ($sample) {
-                    return $sample->province->name;
+                    return $sample->province->name ?? null;
                 })
                 ->addColumn('gene_name', function ($sample) {
                     return $sample->gene_name;
                 })
-                ->addColumn('title', function ($sample) {
-                    return $sample->citations->title;
-                })
+                // ->addColumn('title', function ($sample) {
+                //     return $sample->citations->title;
+                // })
                 ->addColumn('author', function ($sample) {
                     return $sample->author->name;
                 })

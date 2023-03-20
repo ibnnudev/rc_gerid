@@ -28,7 +28,7 @@
                     <th>Tempat</th>
                     <th>Provinsi</th>
                     <th>Gen</th>
-                    <th>Judul</th>
+                    {{-- <th>Judul</th> --}}
                     <th>Author</th>
                     <th>File Sequence</th>
                     <th>Menu</th>
@@ -132,10 +132,10 @@
                             data: 'gene_name',
                             name: 'gene_name'
                         },
-                        {
-                            data: 'title',
-                            name: 'title'
-                        },
+                        // {
+                        //     data: 'title',
+                        //     name: 'title'
+                        // },
                         {
                             data: 'author',
                             name: 'author'

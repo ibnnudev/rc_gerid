@@ -9,7 +9,6 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Sample;
 use App\Models\Virus;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -29,20 +28,20 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
     public function model(array $row)
     {
         $sampleCode = $row[0] ?? null;
-        $virus      = $this->virus($row[1]);
-        $genotipe   = $this->genotipe($row[2]);
+        $virus      = $row[1] == null ? null : $this->virus($row[1]);
+        $genotipe   = $row[2] == null ? null : $this->genotipe($row[2], $virus);
 
         $pickup_month = $row[3] ?? null;
         $pickup_year  = $row[4] ?? null;
         $pickup_date  = $this->pickupDate($pickup_month, $pickup_year);
 
         $place         = $row[5] ?? null;
-        $province      = $this->province($row[6]) ?? null;
+        $province      = $row[6] == null ? null : $this->province($row[6]);
         $regency       = $row[7] == null ? null : $this->regency($row[7], $province);
         $gene          = $row[8] ?? null;
         $sequence_data = $row[9] ?? null;
         $title         = $row[10] ?? null;
-        $authors       = $this->authors($row[11]) ?? null;
+        $authors       = $row[11] == null ? null : $this->authors($row[11]);
 
         $data = [
             'sample_code'   => $sampleCode,
@@ -70,10 +69,11 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
     public function authors($param)
     {
         $name = explode(',', $param)[0];
-        $author = Author::where('name', 'like', '%' . $name . '%')->first();
+        $author = Author::where('name', '=', $name)->first();
         if ($author == null || $author->name != $name) {
             $firstAuthor = $name;
-            $author      = Author::create([
+            $author = Author::create([
+                'id'     => Author::max('id') + 1,
                 'name'   => $firstAuthor,
                 'member' => $param
             ]);
@@ -103,12 +103,17 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
     {
         $param = strtoupper($param);
         $regency = Regency::where('name', 'like', '%' . $param . '%')->first();
+        // dd($regency);
         if ($regency == null || $regency->name != $param) {
-            $regency = Regency::create([
-                'id'          => Regency::max('id') + 1,
-                'name'        => $param,
-                'province_id' => $province
-            ]);
+            if ($province == null) {
+                $province = $regency->province_id;
+            } else {
+                $regency = Regency::create([
+                    'id'          => Regency::max('id') + 1,
+                    'name'        => $param,
+                    'province_id' => $province
+                ]);
+            }
             return $regency->id;
         } else {
             return $regency->id;
@@ -133,21 +138,16 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
     public function virus($param)
     {
         $virus = Virus::where('name', 'like', '%' . $param . '%')->first();
-        if ($virus == null || $virus->name != $param) {
-            $virus = Virus::create(['name' => $param]);
-            return $virus->id;
-        } else {
-            return $virus->id;
-        }
+        return $virus->id;
     }
 
-    public function genotipe($param)
+    public function genotipe($param, $virus)
     {
         $genotipe = Genotipe::where('genotipe_code', 'like', '%' . $param . '%')->first();
-        if ($genotipe == null || $genotipe->genotipe_code != $param) {
+        if ($genotipe == null || $genotipe->genotipe_code != $param || $genotipe->viruses_id != $virus) {
             $genotipe = Genotipe::create([
                 'genotipe_code' => $param,
-                'viruses_id'    => $this->virus($param)
+                'viruses_id'    => $virus
             ]);
             return $genotipe->id;
         } else {
