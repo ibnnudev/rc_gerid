@@ -20,18 +20,11 @@ class Citation extends Model
     protected $fillable = [
         'title',
         'author_id', // multi author (separated by comma)
-        'samples_id',
         'users_id',
         'is_active'
     ];
 
     // Relationships
-
-    public function sample()
-    {
-        return $this->belongsTo(Sample::class, 'samples_id');
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class, 'users_id');
@@ -40,5 +33,16 @@ class Citation extends Model
     public function author()
     {
         return $this->belongsTo(Author::class, 'author_id');
+    }
+
+    public function sample()
+    {
+        return $this->hasMany(Sample::class, 'citation_id');
+    }
+
+    public function setInactive()
+    {
+        $this->is_active = 0;
+        $this->save();
     }
 }

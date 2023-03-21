@@ -27,14 +27,15 @@ class Author extends Model
     ];
 
     // Relationship
-    public function samples()
-    {
-        return $this->hasMany(Sample::class, 'authors_id');
-    }
 
     public function institution()
     {
         return $this->belongsTo(Institution::class, 'institutions_id');
+    }
+
+    public function citation()
+    {
+        return $this->hasMany(Citation::class, 'author_id');
     }
 
     public function setInactive()

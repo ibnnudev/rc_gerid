@@ -36,12 +36,13 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
         $pickup_date  = $this->pickupDate($pickup_month, $pickup_year);
 
         $place         = $row[5] ?? null;
-        $province      = $row[6] == null ? null : $this->province($row[6]);
-        $regency       = $row[7] == null ? null : $this->regency($row[7], $province);
+        $province      = $row[6]  == null ? null : $this->province($row[6]);
+        $regency       = $row[7]  == null ? null : $this->regency($row[7], $province);
         $gene          = $row[8] ?? null;
         $sequence_data = $row[9] ?? null;
         $title         = $row[10] ?? null;
         $authors       = $row[11] == null ? null : $this->authors($row[11]);
+        $citation_id   = $this->citation($title, $authors);
 
         $data = [
             'sample_code'   => $sampleCode,
@@ -50,20 +51,29 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
             'sequence_data' => $sequence_data,
             'place'         => $place,
             'pickup_date'   => $pickup_date,
-            'authors_id'    => $authors,
+            'citation_id'   => $citation_id,
             'genotipes_id'  => $genotipe,
             'province_id'   => $province,
             'regency_id'    => $regency,
         ];
 
-        $sample = Sample::create($data);
+        return new Sample($data);
+    }
 
-        return new Citation([
-            'title'      => $title,
-            'samples_id' => $sample->id,
-            'authors_id' => $authors,
-            'users_id'   => auth()->user()->id
-        ]);
+    public function citation($title, $authors)
+    {
+        $citation = Citation::where('title', '=', $title)->first();
+        if ($citation == null || $citation->title != $title) {
+            $citation = Citation::create([
+                'id'      => Citation::max('id') + 1,
+                'title'   => $title,
+                'authors' => $authors,
+                'users_id' => auth()->user()->id
+            ]);
+            return $citation->id;
+        } else {
+            return $citation->id;
+        }
     }
 
     public function authors($param)
@@ -103,7 +113,6 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
     {
         $param = strtoupper($param);
         $regency = Regency::where('name', 'like', '%' . $param . '%')->first();
-        // dd($regency);
         if ($regency == null || $regency->name != $param) {
             if ($province == null) {
                 $province = $regency->province_id;

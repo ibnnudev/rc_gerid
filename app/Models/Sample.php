@@ -24,7 +24,7 @@ class Sample extends Model
         'sequence_data',
         'place',
         'pickup_date',
-        'authors_id',
+        'citation_id',
         'genotipes_id',
         'province_id',
         'regency_id',
@@ -34,9 +34,9 @@ class Sample extends Model
     ];
 
     // Relationship
-    public function author()
+    public function citation()
     {
-        return $this->belongsTo(Author::class, 'authors_id');
+        return $this->belongsTo(Citation::class, 'citation_id');
     }
 
     public function genotipe()
@@ -57,11 +57,6 @@ class Sample extends Model
     public function regency()
     {
         return $this->belongsTo(Regency::class, 'regency_id');
-    }
-
-    public function citations()
-    {
-        return $this->hasOne(Citation::class, 'samples_id');
     }
 
     public static function generateSampleCode()

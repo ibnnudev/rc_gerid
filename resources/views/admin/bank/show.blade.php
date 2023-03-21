@@ -34,7 +34,7 @@
                 </x-select>
                 <x-input id="place" label="Tempat Pengambilan Sampel" :value="$sample->place" name="place"
                     type="text" required />
-                <x-input id="title" label="Judul Artikel" name="title" :value="$sample->citations->title" type="text"
+                <x-input id="title" label="Judul Artikel" name="title" :value="$sample->citation->sample" type="text"
                     required />
                 <x-select id="authors_id" label="Nama Penulis" name="authors_id" isFit="" required>
                 </x-select>

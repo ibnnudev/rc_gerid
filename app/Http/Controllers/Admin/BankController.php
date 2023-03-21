@@ -8,6 +8,7 @@ use App\Interfaces\AuthorInterface;
 use App\Interfaces\SampleInterface;
 use App\Interfaces\VirusInterface;
 use App\Models\Author;
+use App\Models\Citation;
 use App\Models\District;
 use App\Models\Genotipe;
 use App\Models\Province;
@@ -39,31 +40,31 @@ class BankController extends Controller
             return datatables()
                 ->of($this->sample->get())
                 ->addColumn('sample_code', function ($sample) {
-                    return $sample->sample_code;
+                    return $sample->sample_code ?? null;
                 })
                 ->addColumn('virus', function ($sample) {
-                    return $sample->virus->name;
+                    return $sample->virus->name ?? null;
                 })
                 ->addColumn('genotipe', function ($sample) {
-                    return $sample->genotipe->genotipe_code;
+                    return $sample->genotipe->genotipe_code ?? null;
                 })
                 ->addColumn('pickup_date', function ($sample) {
                     return date('Y', strtotime($sample->pickup_date));
                 })
                 ->addColumn('place', function ($sample) {
-                    return $sample->place;
+                    return $sample->place ?? null;
                 })
                 ->addColumn('province', function ($sample) {
                     return $sample->province->name ?? null;
                 })
                 ->addColumn('gene_name', function ($sample) {
-                    return $sample->gene_name;
+                    return $sample->gene_name ?? null;
                 })
                 // ->addColumn('title', function ($sample) {
                 //     return $sample->citations->title;
                 // })
-                ->addColumn('author', function ($sample) {
-                    return $sample->author->name;
+                ->addColumn('citation', function ($sample) {
+                    return $sample->citation->title ?? null;
                 })
                 ->addColumn('file_sequence', function ($sample) {
                     return view('admin.bank.columns.file_sequence', ['sample' => $sample]);
@@ -82,11 +83,12 @@ class BankController extends Controller
     public function create()
     {
         return view('admin.bank.create', [
-            'authors'    => $this->author->get(),
-            'viruses'    => $this->virus->get(),
-            'provinces'  => Province::all(),
-            'months'     => Months::getMonths(),
-            'years'      => Years::getYears(),
+            'authors'   => $this->author->get(),
+            'viruses'   => $this->virus->get(),
+            'provinces' => Province::all(),
+            'months'    => Months::getMonths(),
+            'years'     => Years::getYears(),
+            'citations' => Citation::all()
         ]);
     }
 
@@ -139,6 +141,7 @@ class BankController extends Controller
             'regencies' => Regency::all(),
             'months'    => Months::getMonths(),
             'years'     => Years::getYears(),
+            'citations' => Citation::all()
         ]);
     }
 
@@ -147,12 +150,10 @@ class BankController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $pickup_date = $request->pickup_date;
-        $month = explode('/', $pickup_date)[0];
-        $year = explode('/', $pickup_date)[1];
+        $months = Months::getMonths();
+        $month = array_search($request->pickup_month, $months) + 1;
+        $pickup_date = date('Y-m-d', strtotime($request->pickup_year . '-' . $month . '-01'));
 
-        // conver to date
-        $pickup_date = date('Y-m-d', strtotime($year . '-' . $month . '-01'));
         $request->merge(['pickup_date' => $pickup_date]);
 
         try {

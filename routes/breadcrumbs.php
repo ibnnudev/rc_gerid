@@ -148,3 +148,27 @@ Breadcrumbs::for('hiv-cases.edit', function (BreadcrumbTrail $trail, $case) {
     $trail->push($case->idkd, route('admin.hiv-case.show', $case->id));
     $trail->push('Edit', route('admin.hiv-case.edit', $case->id));
 });
+
+// Citation
+Breadcrumbs::for('citation', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Sitasi', route('admin.citation.index'));
+});
+
+// Citation > Create
+Breadcrumbs::for('citation.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('citation');
+    $trail->push('Tambah Sitasi', route('admin.citation.create'));
+});
+
+// Citation > Edit
+Breadcrumbs::for('citation.edit', function (BreadcrumbTrail $trail, $citation) {
+    $trail->parent('citation', $citation->title);
+    $trail->push('Edit', route('admin.citation.edit', $citation->id));
+});
+
+// Citation > Show
+Breadcrumbs::for('citation.show', function (BreadcrumbTrail $trail, $citation) {
+    $trail->parent('citation', $citation->title);
+    $trail->push('Detail', route('admin.citation.show', $citation->id));
+});

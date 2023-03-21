@@ -141,12 +141,12 @@
 
                 $('#virusContainer #year').on('change', function() {
                     virusYear = $(this).val();
-
                 });
             });
         </script>
 
         {{-- Total Visitor Chart --}}
         <script src="{{ asset('js/total-visitors.js') }}"></script>
+        <script src="{{ asset('js/total-virus-sample.js') }}"></script>
     @endpush
 </x-app-layout>

@@ -28,8 +28,7 @@
                     <th>Tempat</th>
                     <th>Provinsi</th>
                     <th>Gen</th>
-                    {{-- <th>Judul</th> --}}
-                    <th>Author</th>
+                    <th>Sitasi</th>
                     <th>File Sequence</th>
                     <th>Menu</th>
                 </tr>
@@ -137,8 +136,8 @@
                         //     name: 'title'
                         // },
                         {
-                            data: 'author',
-                            name: 'author'
+                            data: 'citation',
+                            name: 'citation'
                         },
                         {
                             data: 'file_sequence',

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\SampleInterface;
+use App\Models\Author;
 use App\Models\Citation;
 use App\Models\Sample;
 use App\Models\Virus;
@@ -14,29 +15,53 @@ class SampleRepository implements SampleInterface
     private $sample;
     private $citation;
     private $virus;
+    private $author;
 
-    public function __construct(Sample $sample, Citation $citation, Virus $virus)
+    public function __construct(Sample $sample, Citation $citation, Virus $virus, Author $author)
     {
         $this->sample   = $sample;
         $this->citation = $citation;
         $this->virus    = $virus;
+        $this->author   = $author;
     }
 
     public function get()
     {
-        return $this->sample->with('author', 'virus', 'genotipe')->get();
+        return $this->sample->with('virus', 'genotipe')->get();
     }
 
     public function store($data)
     {
         DB::beginTransaction();
-        if($data['sequence_data_file']) {
+
+        if(isset($data['sequence_data_file'])) {
             $filename = time() . '.' . $data['sequence_data_file']->getClientOriginalExtension();
             $data['sequence_data_file']->storeAs('public/sequence_data', $filename);
 
             $data['sequence_data_file'] = $filename;
         }
-        // insert sample
+
+        if(isset($data['new_title'])) {
+            // insert to authors
+            try {
+                $author = $this->author->create([
+                    'name'   => $data['new_author'],
+                    'member' => $data['new_member']
+                ]);
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                dd($th->getMessage());
+            }
+
+            // insert to citations
+            $citation = $this->citation->create([
+                'title'     => $data['new_title'],
+                'author_id' => $author->id,
+                'users_id'  => auth()->user()->id,
+            ]);
+        }
+
+        // insert to samples
         try {
             $sample = $this->sample->create([
                 'sample_code'        => $data['sample_code'],
@@ -47,23 +72,10 @@ class SampleRepository implements SampleInterface
                 'regency_id'         => $data['regency_id'],
                 'province_id'        => $data['province_id'],
                 'pickup_date'        => date('Y-m-d', strtotime($data['pickup_date'])),
-                'authors_id'         => $data['authors_id'],
+                'citation_id'        => isset($data['new_title']) ? $citation->id : $data['citation_id'],
                 'genotipes_id'       => $data['genotipes_id'],
                 'virus_code'         => $this->virus->generateVirusCode(),
                 'sequence_data_file' => $data['sequence_data_file'] ?? null,
-            ]);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            dd($th->getMessage());
-        }
-
-        // insert citation
-        try {
-            $this->citation->create([
-                'title'      => $data['title'],
-                'author_id'  => $data['authors_id'],
-                'samples_id' => $sample->id,
-                'users_id'   => auth()->user()->id,
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -104,22 +116,9 @@ class SampleRepository implements SampleInterface
                 'regency_id'         => $data['regency_id'],
                 'province_id'        => $data['province_id'],
                 'pickup_date'        => date('Y-m-d', strtotime($data['pickup_date'])),
-                'authors_id'         => $data['authors_id'],
+                'citation_id'        => $data['title'],
                 'genotipes_id'       => $data['genotipes_id'],
                 'sequence_data_file' => isset($data['sequence_data_file']) ? $data['sequence_data_file'] : $sample->sequence_data_file,
-            ]);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            dd($th->getMessage());
-        }
-
-        // update citation
-        try {
-            $this->citation->where('samples_id', $id)->update([
-                'title'      => $data['title'],
-                'author_id'  => $data['authors_id'],
-                'samples_id' => $id,
-                'users_id'   => auth()->user()->id,
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -131,7 +130,7 @@ class SampleRepository implements SampleInterface
 
     public function find($id)
     {
-        return $this->sample->with('author', 'virus', 'genotipe')->find($id);
+        return $this->sample->with('virus', 'genotipe')->find($id);
     }
 
     public function destroy($id)

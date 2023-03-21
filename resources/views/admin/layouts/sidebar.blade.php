@@ -21,14 +21,16 @@
                 active="{{ request()->routeIs('admin.dashboard') }}" />
             <x-sidebar-menu name="Bank Data" icon="fas fa-bank" route="{{ route('admin.bank.index') }}"
                 active="{{ request()->routeIs('admin.bank.*') }}" />
-            <x-sidebar-menu name="Data Penulis" icon="fas fa-user" route="{{ route('admin.author.index') }}"
+            <x-sidebar-menu name="Penulis" icon="fas fa-user" route="{{ route('admin.author.index') }}"
                 active="{{ request()->routeIs('admin.author.*') }}" />
-            <x-sidebar-menu name="Data Virus" icon="fas fa-virus" route="{{ route('admin.virus.index') }}"
+            <x-sidebar-menu name="Virus" icon="fas fa-virus" route="{{ route('admin.virus.index') }}"
                 active="{{ request()->routeIs('admin.virus.*') }}" />
-            <x-sidebar-menu name="Data Genotipe" icon="fas fa-dna" route="{{ route('admin.genotipe.index') }}"
+            <x-sidebar-menu name="Genotipe" icon="fas fa-dna" route="{{ route('admin.genotipe.index') }}"
                 active="{{ request()->routeIs('admin.genotipe.*') }}" />
-            <x-sidebar-menu name="Data Transmisi" icon="fas fa-route" route="{{ route('admin.transmission.index') }}"
+            <x-sidebar-menu name="Transmisi" icon="fas fa-route" route="{{ route('admin.transmission.index') }}"
                 active="{{ request()->routeIs('admin.transmission.*') }}" />
+            <x-sidebar-menu name="Sitasi" icon="fas fa-lines-leaning" route="{{ route('admin.citation.index') }}"
+                active="{{ request()->routeIs('admin.citation.*') }}" />
 
             <li>
                 <button type="button"
@@ -40,7 +42,7 @@
                         class="fas fa-file w-4 h-4 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white
                         @if (request()->routeIs('admin.hiv-case.*')) text-white @endif
                         "></i>
-                    <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Data Kasus</span>
+                    <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Kasus</span>
                     <i
                         class="fas fa-angle-up w-3 h-3 text-gray-500 transition duration-75 transform group-hover:text-gray-900 dark:group-hover:text-white
                         @if (request()->routeIs('admin.hiv-case.*')) text-white @endif

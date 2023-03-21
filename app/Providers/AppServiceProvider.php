@@ -17,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(\App\Interfaces\TransmissionInterface::class, \App\Repositories\TransmissionRepository::class);
         $this->app->bind(\App\Interfaces\SampleInterface::class, \App\Repositories\SampleRepository::class);
         $this->app->bind(\App\Interfaces\HivCaseInterface::class, \App\Repositories\HivCaseRepository::class);
+        $this->app->bind(\App\Interfaces\CitationInterface::class, \App\Repositories\CitationRepository::class);
     }
 
     /**
