@@ -9,6 +9,7 @@ use App\Models\Virus;
 use App\Models\Visitor;
 use App\Properties\Months;
 use App\Properties\Years;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -28,7 +29,6 @@ class DashboardController extends Controller
 
         $years = Years::getYears();
 
-
         return view('admin.dashboard.index', [
             'totalSamples'         => $samples->count(),
             'totalSampleToday'     => $samples->where('created_at', '>=', now()->startOfDay())->count(),
@@ -39,26 +39,50 @@ class DashboardController extends Controller
             'months'               => $months,
             'totalVisitorPerMonth' => $totalVisitorPerMonth,
             'years'                => $years,
+            'samplePerYear'        => $this->samplePerYear(date('Y')),
         ]);
     }
 
-    public function samplePerMonth($yearParam)
+    // public function samplePerMonth($yearParam)
+    // {
+    //     $year = date('Y', strtotime($yearParam));
+    //     // dd($year);
+    //     $months  = Months::getMonths();
+    //     $viruses = Virus::all();
+
+    //     $samplesPerMonth = [];
+
+    //     foreach ($viruses as $virus) {
+    //         $samplesPerMonth[$virus->name] = [];
+
+    //         foreach ($months as $month) {
+    //             // get the number of samples for each virus in each month by year of pickup_date
+    //             $samplesPerMonth[$virus->name][] = Sample::whereMonth('pickup_date', array_search($month, $months) + 1)
+    //                 ->whereYear('pickup_date', $year)
+    //                 ->where('viruses_id', $virus->id)
+    //                 ->count();
+    //         }
+    //     }
+
+    //     return $samplesPerMonth;
+    // }
+
+    public function samplePerYear($yearParam)
     {
-        $year = date('Y', strtotime($yearParam));
-        // dd($year);
         $months  = Months::getMonths();
         $viruses = Virus::all();
 
         $samplesPerMonth = [];
+
+        $samples = Sample::whereYear('pickup_date', $yearParam)->get();
 
         foreach ($viruses as $virus) {
             $samplesPerMonth[$virus->name] = [];
 
             foreach ($months as $month) {
                 // get the number of samples for each virus in each month by year of pickup_date
-                $samplesPerMonth[$virus->name][] = Sample::whereMonth('pickup_date', array_search($month, $months) + 1)
-                    ->whereYear('pickup_date', $year)
-                    ->where('viruses_id', $virus->id)
+                $samplesPerMonth[$virus->name][] = $samples->where('viruses_id', $virus->id)
+                    ->where('pickup_date', '>=', date('Y-m-d', strtotime($yearParam . '-' . array_search($month, $months) + 1 . '-01')))
                     ->count();
             }
         }
@@ -66,26 +90,57 @@ class DashboardController extends Controller
         return $samplesPerMonth;
     }
 
-    public function samplePerYear($yearParam)
+    public function filterVisitor(Request $request)
     {
-        $year = date('Y', strtotime($yearParam));
-        $months  = Months::getMonths();
-        $viruses = Virus::all();
+        $visitors = Visitor::all();
+        $months = Months::getMonths();
+        $totalVisitorPerMonth = [];
 
-        $samplesPerMonth = [];
-
-        foreach ($viruses as $virus) {
-            $samplesPerMonth[$virus->name] = [];
+        if ($request->has('year')) {
+            $visitors = $visitors->where('created_at', '>=', $request->year . '-01-01')
+                ->where('created_at', '<=', $request->year . '-12-31');
 
             foreach ($months as $month) {
-                // get the number of samples for each virus in each month by year of pickup_date
-                $samplesPerMonth[$virus->name][] = Sample::whereMonth('pickup_date', array_search($month, $months) + 1)
-                    ->whereYear('pickup_date', $year)
-                    ->where('viruses_id', $virus->id)
+                $totalVisitorPerMonth[] = Visitor::whereMonth('created_at', array_search($month, $months) + 1)
+                    ->where('created_at', '>=', $request->year . '-01-01')
+                    ->where('created_at', '<=', $request->year . '-12-31')
                     ->count();
             }
         }
 
-        return $samplesPerMonth;
+        return response()->json([
+            'totalVisitors'        => $visitors->count(),
+            'totalVisitorPerMonth' => $totalVisitorPerMonth,
+            'months'               => $months,
+        ]);
+    }
+
+    public function filterSample(Request $request) {
+        $samples = Sample::all();
+        $months = Months::getMonths();
+        $viruses = Virus::all();
+
+        $samplesPerMonth = [];
+
+        if ($request->has('year')) {
+            $samples = $samples->where('pickup_date', '>=', $request->year . '-01-01')
+                ->where('pickup_date', '<=', $request->year . '-12-31');
+
+            foreach ($viruses as $virus) {
+                $samplesPerMonth[$virus->name] = [];
+
+                foreach ($months as $month) {
+                    // get the number of samples for each virus in each month by year of pickup_date
+                    $samplesPerMonth[$virus->name][] = $samples->where('viruses_id', $virus->id)
+                        ->where('pickup_date', '>=', date('Y-m-d', strtotime($request->year . '-' . array_search($month, $months) + 1 . '-01')))
+                        ->count();
+                }
+            }
+        }
+
+        return response()->json([
+            'samplePerYear' => $samplesPerMonth,
+            'months'        => $months,
+        ]);
     }
 }

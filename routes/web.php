@@ -16,10 +16,10 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
-    Route::get('/', DashboardController::class)->name('admin.dashboard');
 
-    // Filter Total Visitor
-    Route::get('filter/total-visitor', [TotalVisitorConttroller::class, 'filter'])->name('admin.filter.total-visitor');
+    Route::post('/filter-visitor', [DashboardController::class, 'filterVisitor'])->name('admin.dashboard.filter-visitor');
+    Route::post('/filter-sample', [DashboardController::class, 'filterSample'])->name('admin.dashboard.filter-sample');
+    Route::get('/', DashboardController::class)->name('admin.dashboard');
 
     // Bank Data
     Route::post('bank/import', [BankController::class, 'import'])->name('admin.bank.import');

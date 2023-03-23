@@ -9,6 +9,7 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Sample;
 use App\Models\Virus;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -44,6 +45,14 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
         $authors       = $row[11] == null ? null : $this->authors($row[11]);
         $citation_id   = $this->citation($title, $authors);
 
+        /* check if sample code is already exist */
+        $sample = Sample::pluck('sample_code', 'id')->toArray();
+        $sample = array_search($sampleCode, $sample);
+
+        if (!empty($sample)) {
+            return null;
+        }
+
         $data = [
             'sample_code'   => $sampleCode,
             'viruses_id'    => $virus,
@@ -62,8 +71,10 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
 
     public function citation($title, $authors)
     {
-        $citation = Citation::where('title', '=', $title)->first();
-        if ($citation == null || $citation->title != $title) {
+        $citation = Citation::pluck('title', 'id')->toArray();
+        $citation = array_search($title, $citation);
+
+        if (empty($citation) && $title != null && $authors != null) {
             $citation = Citation::create([
                 'id'      => Citation::max('id') + 1,
                 'title'   => $title,
@@ -72,15 +83,17 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
             ]);
             return $citation->id;
         } else {
-            return $citation->id;
+            return $citation;
         }
     }
 
     public function authors($param)
     {
         $name = explode(',', $param)[0];
-        $author = Author::where('name', '=', $name)->first();
-        if ($author == null || $author->name != $name) {
+        $author = Author::pluck('name', 'id')->toArray();
+        $author = array_search($name, $author);
+
+        if (empty($author)) {
             $firstAuthor = $name;
             $author = Author::create([
                 'id'     => Author::max('id') + 1,
@@ -89,22 +102,24 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
             ]);
             return $author->id;
         } else {
-            return $author->id;
+            return $author;
         }
     }
 
     public function province($param)
     {
         $param = strtoupper($param);
-        $province = Province::where('name', 'like', '%' . $param . '%')->first();
-        if ($province == null || $province->name != $param) {
+        $province = Province::pluck('name', 'id')->toArray();
+        $province = array_search($param, $province);
+
+        if (empty($province)) {
             $province = Province::create([
                 'id'   => Province::max('id') + 1,
                 'name' => $param
             ]);
             return $province->id;
         } else {
-            return $province->id;
+            return $province;
         }
     }
 
@@ -152,15 +167,19 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
 
     public function genotipe($param, $virus)
     {
-        $genotipe = Genotipe::where('genotipe_code', 'like', '%' . $param . '%')->first();
-        if ($genotipe == null || $genotipe->genotipe_code != $param || $genotipe->viruses_id != $virus) {
+        $genotipe = Genotipe::pluck('genotipe_code', 'id')->toArray();
+        $genotipe = array_search($param, $genotipe);
+
+        if(empty($genotipe)) {
             $genotipe = Genotipe::create([
+                'id' => Genotipe::max('id') + 1,
                 'genotipe_code' => $param,
                 'viruses_id'    => $virus
             ]);
+
             return $genotipe->id;
         } else {
-            return $genotipe->id;
+            return $genotipe;
         }
     }
 }

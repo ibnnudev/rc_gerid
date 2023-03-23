@@ -85,11 +85,11 @@
         </x-card-container>
 
         <x-card-container>
-            <div class="flex justify-between items-center" id="virusContainer">
+            <div class="flex justify-between items-center">
                 <h3 class="font-semibold">Virus</h3>
                 <div>
                     {{-- input year with select2 --}}
-                    <x-select name="yearVirus" id="yearVirus" class="max-w-sm">
+                    <x-select name="sampleYear" id="sampleYear" class="max-w-sm">
                         @foreach ($years as $year)
                             <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>
                                 {{ $year }}
@@ -98,7 +98,7 @@
                     </x-select>
                 </div>
             </div>
-            <div style="height: 300px" class="relative">
+            <div style="height: 300px" class="relative" id="sampleVirusContainer">
                 <canvas id="totalSampleVirus" class="absolute z-10"></canvas>
             </div>
         </x-card-container>
@@ -108,6 +108,7 @@
         <script>
             let totalVisitorPerMonth = @json($totalVisitorPerMonth);
             let months = @json($months);
+            let samplePerYear = @json($samplePerYear);
 
             $(function() {
                 let year;
@@ -115,8 +116,8 @@
                 $('#year').on('change', function() {
                     year = $(this).val();
                     $.ajax({
-                        type: "GET",
-                        url: "{{ route('admin.filter.total-visitor') }}",
+                        type: "POST",
+                        url: "{{ route('admin.dashboard.filter-visitor') }}",
                         data: {
                             _token: "{{ csrf_token() }}",
                             year: year
@@ -136,11 +137,108 @@
                     });
                 });
 
-                $('#virusContainer #year').select2();
-                let virusYear;
+                $('#sampleYear').on('change', function() {
+                    totalSampleVirusChart.destroy();
+                    $('#totalSampleVirus').remove();
+                    $('#sampleVirusContainer').append(
+                        '<canvas id="totalSampleVirus" class="absolute z-10"></canvas>');
+                    year = $(this).val();
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('admin.dashboard.filter-sample') }}",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            year: year
+                        },
+                        dataType: "json",
+                        success: function(response) {
+                            samplePerYear = response.samplePerYear;
+                            months = response.months;
 
-                $('#virusContainer #year').on('change', function() {
-                    virusYear = $(this).val();
+                            let backgroundColor = [
+                                // generate 6 random color
+                                "rgba(25, 116, 59, 0.1)",
+                                "rgba(255, 0, 0, 0.1)",
+                                "rgba(0, 0, 255, 0.1)",
+                                "rgb(250, 128, 114, 0.1)",
+                                "rgba(255, 0, 255, 0.1)",
+                                "rgba(0, 255, 255, 0.1)",
+                            ];
+
+                            let borderColor = [
+                                // generate 6 random color
+                                "#19743b",
+                                "#ff0000",
+                                "#0000ff",
+                                "#FA8072",
+                                "#ff00ff",
+                                "#00ffff",
+                            ];
+
+                            let samples = [];
+
+                            for (let i = 0; i < Object.keys(samplePerYear).length; i++) {
+                                samples.push({
+                                    label: Object.keys(samplePerYear)[i],
+                                    data: Object.values(samplePerYear)[i],
+                                    backgroundColor: backgroundColor[i],
+                                    borderColor: borderColor[i],
+                                    borderWidth: 1,
+                                });
+                            }
+
+                            let totalSampleVirusCtx = document
+                                .getElementById("totalSampleVirus")
+                                .getContext("2d");
+
+                            let totalSampleVirusChart = new Chart(totalSampleVirusCtx, {
+                                type: "bar",
+                                data: {
+                                    labels: months.map((m) => m.slice(0, 3)),
+                                    datasets: samples,
+                                },
+                                options: {
+                                    maintainAspectRatio: false,
+                                    reponsive: true,
+                                    plugins: {
+                                        legend: {
+                                            labels: {
+                                                usePointStyle: true,
+                                                boxWidth: 5,
+                                                boxHeight: 5,
+                                            },
+                                        },
+                                    },
+                                    scales: {
+                                        y: {
+                                            // stack the bar
+                                            stacked: true,
+                                            grid: {
+                                                display: false,
+                                            },
+                                            ticks: {
+                                                beginAtZero: true,
+                                                precision: 0,
+                                                stepSize: 1,
+                                            },
+                                        },
+                                        x: {
+                                            // stack the bar
+                                            stacked: true,
+                                            grid: {
+                                                display: false,
+                                            },
+                                            ticks: {
+                                                beginAtZero: true,
+                                                precision: 0,
+                                                stepSize: 1,
+                                            },
+                                        },
+                                    },
+                                },
+                            });
+                        }
+                    });
                 });
             });
         </script>
