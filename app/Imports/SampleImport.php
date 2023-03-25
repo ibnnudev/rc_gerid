@@ -9,7 +9,6 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Sample;
 use App\Models\Virus;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -43,7 +42,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
         $sequence_data = $row[9] ?? null;
         $title         = $row[10] ?? null;
         $authors       = $row[11] == null ? null : $this->authors($row[11]);
-        $citation_id   = $this->citation($title, $authors);
+        $citation_id   = isset($title, $authors) ? $this->citation($title, $authors) : null;
 
         /* check if sample code is already exist */
         $sample = Sample::pluck('sample_code', 'id')->toArray();
@@ -76,9 +75,9 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
 
         if (empty($citation) && $title != null && $authors != null) {
             $citation = Citation::create([
-                'id'      => Citation::max('id') + 1,
-                'title'   => $title,
-                'authors' => $authors,
+                'id'       => Citation::max('id') + 1,
+                'title'    => $title,
+                'authors'  => $authors,
                 'users_id' => auth()->user()->id
             ]);
             return $citation->id;

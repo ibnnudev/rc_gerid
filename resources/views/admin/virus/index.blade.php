@@ -2,6 +2,69 @@
     <x-breadcrumbs name="virus" />
     <h1 class="font-semibold text-lg my-8">Daftar Virus</h1>
 
+    {{-- Statistic --}}
+    <div class="xl:grid xl:grid-cols-6 gap-x-3 mb-4 sm:block">
+        {{-- Total HIV --}}
+        <div class="stats shadow mb-4 w-full overflow-hidden">
+            <div class="stat w-full">
+                <div class="stat-title">Hepatitis B</div>
+                <div class="stat-value text-sm mt-2">
+                    {{-- TODO: tampilin datanya --}}
+                    0
+                </div>
+            </div>
+        </div>
+        {{-- Total HIV --}}
+        <div class="stats shadow mb-4 w-full overflow-hidden">
+            <div class="stat w-full">
+                <div class="stat-title">Kasus Hepatitis C</div>
+                <div class="stat-value text-sm mt-2">
+                    {{-- TODO: tampilin datanya --}}
+                    0
+                </div>
+            </div>
+        </div>
+        {{-- Total HIV --}}
+        <div class="stats shadow mb-4 w-full overflow-hidden">
+            <div class="stat w-full">
+                <div class="stat-title">Kasus Dengue</div>
+                <div class="stat-value text-sm mt-2">
+                    {{-- TODO: tampilin datanya --}}
+                    0
+                </div>
+            </div>
+        </div>
+        {{-- Total HIV --}}
+        <div class="stats shadow mb-4 w-full overflow-hidden">
+            <div class="stat w-full">
+                <div class="stat-title">Kasus Norovirus</div>
+                <div class="stat-value text-sm mt-2">
+                    {{-- TODO: tampilin datanya --}}
+                    0
+                </div>
+            </div>
+        </div>
+        {{-- Total HIV --}}
+        <div class="stats shadow mb-4 w-full overflow-hidden">
+            <div class="stat w-full">
+                <div class="stat-title">Kasus Rotavirus</div>
+                <div class="stat-value text-sm mt-2">
+                    {{-- TODO: tampilin datanya --}}
+                    0
+                </div>
+            </div>
+        </div>
+        {{-- Total HIV --}}
+        <div class="stats shadow mb-4 w-full overflow-hidden">
+            <div class="stat w-full">
+                <div class="stat-title">Kasus HIV</div>
+                <div class="stat-value text-sm mt-2">
+                    {{ number_format($totalHIVCases, 0, ',', '.') }}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <x-card-container>
 
         <div class="text-end">
@@ -55,7 +118,7 @@
     @push('js-internal')
         <script>
             function btnDelete(dataId, dataName) {
-                let id   = dataId;
+                let id = dataId;
                 let name = dataName;
                 console.log(id, name);
                 let url = '{{ route('admin.virus.destroy', ':id') }}';
@@ -70,13 +133,28 @@
                     responsive: true,
                     processing: true,
                     serverSide: true,
+                    autoWidth: false,
                     ajax: '{{ route('admin.virus.index') }}',
-                    columns: [
-                        { data: 'DT_RowIndex', name: 'DT_RowIndex' },
-                        { data: 'name', name: 'name' },
-                        { data: 'genotipe', name: 'genotipe' },
-                        { data: 'latin_name', name: 'latin_name' },
-                        { data: 'action', name: 'action' },
+                    columns: [{
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex'
+                        },
+                        {
+                            data: 'name',
+                            name: 'name'
+                        },
+                        {
+                            data: 'genotipe',
+                            name: 'genotipe'
+                        },
+                        {
+                            data: 'latin_name',
+                            name: 'latin_name'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action'
+                        },
                     ]
                 });
             });

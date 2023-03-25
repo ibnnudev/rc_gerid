@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\HivCaseInterface;
 use App\Interfaces\VirusInterface;
 use Illuminate\Http\Request;
 
@@ -10,10 +11,12 @@ class VirusController extends Controller
 {
 
     private $virus;
+    private $hivCase;
 
-    public function __construct(VirusInterface $virus)
+    public function __construct(VirusInterface $virus, HivCaseInterface $hivCase)
     {
         $this->virus = $virus;
+        $this->hivCase = $hivCase;
     }
 
     public function index(Request $request)
@@ -33,7 +36,9 @@ class VirusController extends Controller
             ->addIndexColumn()
             ->make(true);
         }
-        return view('admin.virus.index');
+        return view('admin.virus.index', [
+            'totalHIVCases' => $this->hivCase->get()->count(),
+        ]);
     }
 
     /**

@@ -1,5 +1,5 @@
 <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button"
-    class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+    class="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:focus:ring-gray-600">
     <span class="sr-only">Open sidebar</span>
     <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <path clip-rule="evenodd" fill-rule="evenodd"
@@ -34,48 +34,47 @@
 
             <li>
                 <button type="button"
-                    class="flex w-full items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700
-                    @if (request()->routeIs('admin.hiv-case.*')) bg-primary text-white shadow-sm hover:bg-secondary @endif
+                    class="flex w-full items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100
+                    @if (request()->routeIs('admin.cases.*')) bg-primary text-white shadow-sm hover:bg-secondary @endif
                     "
                     aria-controls="data-kasus" data-collapse-toggle="data-kasus">
                     <i
-                        class="fas fa-file w-4 h-4 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white
-                        @if (request()->routeIs('admin.hiv-case.*')) text-white @endif
+                        class="fas fa-hospital-user w-4 h-4 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white
+                        @if (request()->routeIs('admin.cases.*')) text-white @endif
                         "></i>
                     <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Kasus</span>
                     <i
-                        class="fas fa-angle-up w-3 h-3 text-gray-500 transition duration-75 transform group-hover:text-gray-900 dark:group-hover:text-white
-                        @if (request()->routeIs('admin.hiv-case.*')) text-white @endif
+                        class="fas w-3 h-3 text-gray-500 transition duration-75 transform group-hover:text-gray-900 dark:group-hover:text-white
+                        @if (request()->routeIs('admin.cases.*')) fa-angle-up text-white @else fa-angle-down @endif
                         "></i>
                 </button>
-                <ul id="data-kasus"
-                    class="{{ request()->routeIs('admin.hiv-case.*') ? '' : 'hidden' }} py-2 space-y-2">
+                <ul id="data-kasus" class="{{ request()->routeIs('admin.cases.hiv') ? '' : 'hidden' }} py-2 space-y-2">
                     <li>
-                        <a href="{{ route('admin.hiv-case.index') }}"
-                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11">
+                        <a href="{{ route('admin.cases.hiv') }}"
+                            class="{{ request()->routeIs('admin.cases.hiv') ? 'bg-gray-100' : '' }} flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">
                             HIV</a>
                     </li>
                     <li>
                         <a href="#"
-                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11">Hepatitis
+                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Hepatitis
                             B</a>
                     </li>
                     <li>
                         <a href="#"
-                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11">Hepatitis
+                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Hepatitis
                             C</a>
                     </li>
                     <li>
                         <a href="#"
-                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11">Rotavirus</a>
+                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Rotavirus</a>
                     </li>
                     <li>
                         <a href="#"
-                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11">Norovirus</a>
+                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Norovirus</a>
                     </li>
                     <li>
                         <a href="#"
-                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 pl-11">Dengue</a>
+                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Dengue</a>
                     </li>
                 </ul>
             </li>
@@ -87,7 +86,7 @@
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit"
-                        class="flex w-full items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                        class="flex w-full items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100">
                         <i
                             class="fas fa-sign-out-alt w-4 h-4 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i>
                         <span class="ml-3">Keluar</span>

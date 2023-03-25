@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthorController;
 use App\Http\Controllers\Admin\BankController;
+use App\Http\Controllers\Admin\CasesController;
 use App\Http\Controllers\Admin\CitationController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\TotalVisitorConttroller;
@@ -43,6 +44,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     // HIV Case
     Route::post('hiv-case/import', [HivCaseController::class, 'import'])->name('admin.hiv-case.import');
     Route::resource('hiv-case', HivCaseController::class, ['as' => 'admin']);
+
+    // Cases
+    Route::get('cases/hiv', [CasesController::class, 'hiv'])->name('admin.cases.hiv');
 
     // Citation
     Route::resource('citation', CitationController::class, ['as' => 'admin']);

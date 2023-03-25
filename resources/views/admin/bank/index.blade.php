@@ -3,13 +3,12 @@
     <h1 class="font-semibold text-lg my-8">Bank Data</h1>
 
     <x-card-container>
-        <div class="sm:flex justify-end mb-4 gap-x-2">
-            <x-link-button route="{{ route('admin.bank.create') }}" color="gray">
+        <div class="sm:flex justify-end mb-4">
+            <x-link-button route="{{ route('admin.bank.create') }}" class="mr-2" color="gray">
                 Tambah Bank Data
             </x-link-button>
             <x-link-button id="btnImport" class="bg-primary">
-                <i class="fas fa-file-excel mr-2"></i>
-                Import Data Kasus
+                Import Sampel
             </x-link-button>
             <form id="formImport" action="{{ route('admin.bank.import') }}" method="POST" enctype="multipart/form-data">
                 @csrf

@@ -44,9 +44,9 @@
 
 <body class="font-sans antialiased text-xs 2xl:text-sm overflow-hidden">
 
-    <div class="loading fixed top-0 left-0 w-full h-full bg-white z-50 flex items-center justify-center">
+    {{-- <div class="loading fixed top-0 left-0 w-full h-full bg-white z-50 flex items-center justify-center">
         <img src="{{ asset('assets/application/loadin_gif.gif') }}" alt="loading" class="h-60">
-    </div>
+    </div> --}}
 
     <div class="bg-white-200">
         @include('admin.layouts.sidebar')
@@ -87,9 +87,9 @@
 
     <script>
         // show loading when website loaded and all assets loaded and ajax request and stop loading when all assets loaded
-        $(window).on('load', function () {
-            $('.loading').fadeOut(500);
-        });
+        // $(window).on('load', function () {
+        //     $('.loading').fadeOut(500);
+        // });
 
         // set datatable search to text-sm
         $('input').addClass('text-sm');

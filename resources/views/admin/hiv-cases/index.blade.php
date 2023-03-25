@@ -4,18 +4,11 @@
 
     <x-card-container>
         <div class="flex justify-between">
-            <div>
-                <select name="filter" id="filter">
-                    <option disabled>Pilih Tampilan</option>
-                    <option value="all">Semua</option>
-                    <option value="province">Provinsi</option>
-                    <option value="tahun">Tahun</option>
-                </select>
-            </div>
-            <div class="gap-x-2 lg:inline-flex">
+            <div></div>
+            <div class="gap-x-1 lg:inline-flex">
                 <x-link-button id="btnImport" class="bg-primary">
                     <i class="fas fa-file-excel mr-2"></i>
-                    Import Data Kasus
+                    Import Kasus
                 </x-link-button>
                 <form action="{{ route('admin.hiv-case.import') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -120,7 +113,7 @@
                     processing: true,
                     serverSide: true,
                     autoWidth: false,
-                    ajax: '{{ route('admin.hiv-case.index') }}',
+                    ajax: '{{ route('admin.cases.hiv') }}',
                     columns: [{
                             data: 'DT_RowIndex',
                             name: 'DT_RowIndex',

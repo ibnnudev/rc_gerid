@@ -77,7 +77,8 @@
             </x-select>
             <x-select id="title" label="Judul Artikel" name="title" isFit="" required>
                 @foreach ($citations as $citation)
-                    <option data-author-id="{{$citation->author_id}}" value="{{ $citation->id }}" {{ $loop->first ? 'selected' : '' }}>{{ $citation->title }}
+                    <option data-author-id="{{ $citation->author_id }}" value="{{ $citation->id }}"
+                        {{ $loop->first ? 'selected' : '' }}>{{ $citation->title }}
                     </option>
                 @endforeach
             </x-select>
@@ -120,10 +121,10 @@
                     // clear all option and replace with matched author
                     $('#title').empty();
                     @foreach ($citations as $citation)
-                        if ({{ $citation->author_id }} == authorId) {
+                        @if ($citation->author_id == $author->id)
                             $('#title').append(
                                 `<option value="{{ $citation->id }}">{{ $citation->title }}</option>`);
-                        }
+                        @endif
                     @endforeach
                 });
 
@@ -146,6 +147,7 @@
                     if (pickupMonth < 10) {
                         date = `0${pickupMonth}/${pickupYear}`;
                     }
+
                     $('#pickup_date').text(date);
                     $('input[name="pickup_date"]').val(date);
                 });
