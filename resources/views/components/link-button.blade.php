@@ -2,7 +2,7 @@
 
 <a href="{{ $route }}" {!! $attributes->merge([
     'class' =>
-        'inline-flex items-center px-4 py-2 border border-transparent rounded-md lg:text-xs text-white bg-' .
+        'inline-flex h-fit items-center px-4 py-2 border border-transparent rounded-md lg:text-xs text-white bg-' .
         $color .
         '-800 hover:bg-' .
         $color .

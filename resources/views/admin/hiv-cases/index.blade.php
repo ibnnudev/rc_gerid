@@ -3,11 +3,43 @@
     <h1 class="font-semibold text-lg my-8">Daftar Kasus HIV</h1>
 
     <x-card-container>
-        <div class="flex justify-between">
-            <div></div>
-            <div class="gap-x-1 lg:inline-flex">
+        <div class="sm:flex justify-between items-end">
+            <div class="lg:flex gap-x-2">
+                {{-- Filter provinsi --}}
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="text-xs font-medium">Filter Provinsi</span>
+                    </label>
+                    <select class="select select-bordered" name="provinceFilter" id="provinceFilter">
+                        <option disabled selected>Pilih provinsi</option>
+                        @forelse ($provinces as $province)
+                            <option value="{{$province->id}}">{{$province->name}}</option>
+                        @empty
+                            <option disabled selected>Tidak ada provinsi</option>
+                        @endforelse
+                    </select>
+                </div>
+
+                {{-- Filter tahun --}}
+                <div class="form-control w-full max-w-xs">
+                    <label class="label">
+                        <span class="text-xs font-medium">Filter Tahun</span>
+                    </label>
+                    <select class="select select-bordered" name="yearFilter" id="yearFilter">
+                        <option disabled selected>Pilih provinsi</option>
+                        @forelse ($years as $year)
+                            <option value="{{ $year }}">{{ $year }}</option>
+                        @empty
+                            <option disabled selected>Tidak ada provinsi</option>
+                        @endforelse
+                    </select>
+                </div>
+            </div>
+            <div class="block md:flex gap-x-2">
+                <x-link-button route="{{ route('admin.hiv-case.create') }}" color="gray">
+                    Tambah Kasus
+                </x-link-button>
                 <x-link-button id="btnImport" class="bg-primary">
-                    <i class="fas fa-file-excel mr-2"></i>
                     Import Kasus
                 </x-link-button>
                 <form action="{{ route('admin.hiv-case.import') }}" method="POST" enctype="multipart/form-data">
@@ -15,9 +47,6 @@
                     <input type="file" name="import_file" hidden>
                     <input type="submit" hidden>
                 </form>
-                <x-link-button route="{{ route('admin.hiv-case.create') }}" color="gray">
-                    Tambah Kasus
-                </x-link-button>
             </div>
         </div>
 
@@ -100,7 +129,7 @@
                     });
                 });
 
-                $('#filter').on('change', function(){
+                $('#filter').on('change', function() {
                     let value = $(this).val();
 
                     // filter datatable by province
@@ -152,6 +181,22 @@
                         }
                     ]
                 });
+
+                $('#provinceFilter').on('change', function() {
+                    let value = $(this).val();
+                    let url = "{{ route('admin.cases.hiv') }}";
+                    url = url + '?province=' + value;
+
+                    $('#hivTable').DataTable().ajax.url(url).load();
+                })
+
+                $('#yearFilter').on('change', function() {
+                    let value = $(this).val();
+                    let url = "{{ route('admin.cases.hiv') }}";
+                    url = url + '?year=' + value;
+
+                    $('#hivTable').DataTable().ajax.url(url).load();
+                })
             });
 
             @if (Session::has('success'))

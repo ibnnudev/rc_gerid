@@ -3,7 +3,7 @@
     <h1 class="font-semibold text-lg my-8">Bank Data</h1>
 
     <x-card-container>
-        <div class="sm:flex justify-end mb-4">
+        <div class="sm:flex justify-end items-end mb-4">
             <x-link-button route="{{ route('admin.bank.create') }}" class="mr-2" color="gray">
                 Tambah Bank Data
             </x-link-button>

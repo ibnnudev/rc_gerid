@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Interfaces\HivCaseInterface;
 use App\Interfaces\TransmissionInterface;
 use App\Interfaces\VirusInterface;
+use App\Models\Province;
+use App\Properties\Years;
 use Illuminate\Http\Request;
 
 class CasesController extends Controller
@@ -19,9 +21,19 @@ class CasesController extends Controller
 
     public function hiv(Request $request)
     {
+        $cases = $this->hivCase->get();
+
+        if(request()->has('province')) {
+            $cases = $cases->where('province_id', request('province'));
+        }
+
+        if(request()->has('year')) {
+            $cases = $cases->where('year', request('year'));
+        }
+
         if ($request->ajax()) {
             return datatables()
-                ->of($this->hivCase->get())
+                ->of($cases)
                 ->addColumn('idkd', function ($case) {
                     return $case->idkd;
                 })
@@ -47,6 +59,9 @@ class CasesController extends Controller
                 ->make(true);
         }
 
-        return view('admin.hiv-cases.index');
+        return view('admin.hiv-cases.index', [
+            'provinces' => Province::all(),
+            'years'     => Years::getYears()
+        ]);
     }
 }
