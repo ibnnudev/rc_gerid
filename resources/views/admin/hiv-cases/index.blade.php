@@ -26,7 +26,7 @@
                         <span class="text-xs font-medium">Filter Tahun</span>
                     </label>
                     <select class="select select-bordered" name="yearFilter" id="yearFilter">
-                        <option disabled selected>Pilih provinsi</option>
+                        <option disabled selected>Pilih Tahun</option>
                         @forelse ($years as $year)
                             <option value="{{ $year }}">{{ $year }}</option>
                         @empty
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <div class="mt-4">
+        <div class="mt-4 overflow-x-auto">
             <table id="hivTable" class="w-full">
                 <thead>
                     <tr>

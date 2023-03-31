@@ -8,4 +8,8 @@ interface SampleInterface {
     public function store($data);
     public function update($data, $id);
     public function destroy($id);
+
+    // Advanced Search
+    public function getAttributes();
+    public function advancedSearch($data);
 }

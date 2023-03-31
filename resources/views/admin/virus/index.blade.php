@@ -73,7 +73,7 @@
             </x-link-button>
         </div>
 
-        <div class="mt-4">
+        <div class="mt-4 overflow-x-auto">
             <table class="w-full" id="virusTable">
                 <thead>
                     <tr>

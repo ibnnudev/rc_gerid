@@ -33,6 +33,12 @@ Breadcrumbs::for('bank.edit', function (BreadcrumbTrail $trail, $sample) {
     $trail->push('Edit Bank', route('admin.bank.edit', $sample->id));
 });
 
+// Bank Data > Advanced Search
+Breadcrumbs::for('bank.advanced-search', function (BreadcrumbTrail $trail) {
+    $trail->parent('bank');
+    $trail->push('Pencarian Data', route('admin.bank.advanced-search'));
+});
+
 
 // Penulis
 Breadcrumbs::for('author', function (BreadcrumbTrail $trail) {

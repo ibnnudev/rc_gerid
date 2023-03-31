@@ -3,36 +3,46 @@
     <h1 class="font-semibold text-lg my-8">Bank Data</h1>
 
     <x-card-container>
-        <div class="sm:flex justify-end items-end mb-4">
-            <x-link-button route="{{ route('admin.bank.create') }}" class="mr-2" color="gray">
-                Tambah Bank Data
-            </x-link-button>
-            <x-link-button id="btnImport" class="bg-primary">
-                Import Sampel
-            </x-link-button>
-            <form id="formImport" action="{{ route('admin.bank.import') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="file" name="import_file" hidden>
-                <input type="submit" hidden>
-            </form>
+        <div class="sm:flex justify-between items-center mb-4">
+            <div>
+                <x-link-button route="{{ route('admin.bank.advanced-search') }}" color="gray">
+                    Pencarian Advanced
+                </x-link-button>
+            </div>
+            <div class="sm:flex">
+                <x-link-button route="{{ route('admin.bank.create') }}" class="mr-2" color="gray">
+                    Tambah Bank Data
+                </x-link-button>
+                <x-link-button id="btnImport" class="bg-primary">
+                    Import Sampel
+                </x-link-button>
+                <form id="formImport" action="{{ route('admin.bank.import') }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="import_file" hidden>
+                    <input type="submit" hidden>
+                </form>
+            </div>
         </div>
 
-        <table id="samplesTable" class="w-full">
-            <thead>
-                <tr>
-                    <th>Kd. Sampel</th>
-                    <th>Virus</th>
-                    <th>Genotipe & Subtipe</th>
-                    <th>Tanggal</th>
-                    <th>Tempat</th>
-                    <th>Provinsi</th>
-                    <th>Gen</th>
-                    <th>Sitasi</th>
-                    <th>File Sequence</th>
-                    <th>Menu</th>
-                </tr>
-            </thead>
-        </table>
+        <div class="overflow-auto">
+            <table id="samplesTable" class="w-full">
+                <thead>
+                    <tr>
+                        <th>Kd. Sampel</th>
+                        <th>Virus</th>
+                        <th>Genotipe & Subtipe</th>
+                        <th>Tanggal</th>
+                        <th>Tempat</th>
+                        <th>Provinsi</th>
+                        <th>Gen</th>
+                        <th>Sitasi</th>
+                        <th>File Sequence</th>
+                        <th>Menu</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </x-card-container>
 
     <!-- Put this part before </body> tag -->

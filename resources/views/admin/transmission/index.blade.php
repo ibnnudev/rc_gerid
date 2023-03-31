@@ -10,7 +10,7 @@
             </x-link-button>
         </div>
 
-        <div class=" mt-4">
+        <div class="overflow-x-auto mt-4">
             <table class="w-full" id="transmissionTable">
                 <thead>
                     <tr>

@@ -16,10 +16,9 @@ use App\Models\Regency;
 use App\Models\Sample;
 use App\Properties\Months;
 use App\Properties\Years;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-
-use function PHPUnit\Framework\returnSelf;
 
 class BankController extends Controller
 {
@@ -207,5 +206,19 @@ class BankController extends Controller
         Excel::import(new SampleImport, $request->file('import_file'));
 
         return redirect()->route('admin.bank.index')->with('success', 'Data berhasil diimport');
+    }
+
+    public function advancedSearch(Request $request) {
+        $attributes = $this->sample->getAttributes();
+        return view('admin.bank.advance-search', [
+            'attributes' => $attributes,
+        ]);
+    }
+
+    public function getData(Request $request) {
+        $samples = $this->sample->advancedSearch($request->all());
+        return view('admin.bank.tables.table-content', [
+            'samples' => $samples,
+        ])->render();
     }
 }

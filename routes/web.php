@@ -23,6 +23,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('/', DashboardController::class)->name('admin.dashboard');
 
     // Bank Data
+    Route::get('bank/print', [BankController::class, 'print'])->name('admin.bank.print');
+    Route::get('bank/get-data', [BankController::class, 'getData'])->name('admin.bank.get-data');
+    Route::get('bank/advanced-search', [BankController::class, 'advancedSearch'])->name('admin.bank.advanced-search');
     Route::post('bank/import', [BankController::class, 'import'])->name('admin.bank.import');
     Route::post('bank/get-district', [BankController::class, 'getDistrict'])->name('admin.bank.get-district');
     Route::post('bank/get-genotipe', [BankController::class, 'getGenotipe'])->name('admin.bank.get-genotipe');
