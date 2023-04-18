@@ -32,25 +32,25 @@
                 </x-select>
                 <x-select id="regency_id" label="Kota/Kabupaten" name="regency_id" isFit="" required>
                 </x-select>
-                <x-input id="place" label="Tempat Pengambilan Sampel" :value="$sample->place" name="place"
+                <x-input id="place" label="Tempat Pengambilan Sampel" :value="$sample->place ?? null" name="place"
                     type="text" required />
-                <x-input id="title" label="Judul Artikel" name="title" :value="$sample->citation->sample" type="text"
+                <x-input id="title" label="Judul Artikel" name="title" :value="$sample->citation->title ?? null" type="text"
                     required />
                 <x-select id="authors_id" label="Nama Penulis" name="authors_id" isFit="" required>
                 </x-select>
             </div>
             <hr>
             <div class="md:grid md:grid-cols-3 gap-x-4">
-                <x-input id="sample_code" label="Kode Sampel" :value="$sample->sample_code" name="sample_code" type="text"
+                <x-input id="sample_code" label="Kode Sampel" :value="$sample->sample_code ?? null" name="sample_code" type="text"
                     required />
                 <x-select id="viruses_id" label="Nama Virus" name="viruses_id" isFit="false" required>
                 </x-select>
                 <x-select id="genotipes_id" label="Genotipe & Subtipe" name="genotipes_id" isFit="false" required>
                 </x-select>
-                <x-input id="gene_name" label="Nama Gen" :value="$sample->gene_name" name="gene_name" type="text" required />
+                <x-input id="gene_name" label="Nama Gen" :value="$sample->gene_name ?? null" name="gene_name" type="text" required />
                 <div class="col-span-2 ">
                     <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data" required>
-                        {{ $sample->sequence_data }}</x-textarea>
+                        {{ $sample->sequence_data ?? null }}</x-textarea>
                 </div>
             </div>
 
@@ -74,21 +74,25 @@
                 $('#pickup_month').append(`<option value="${pickup_month}" selected>${pickup_month}</option>`);
                 $('#pickup_year').append(`<option value="${pickup_year}" selected>${pickup_year}</option>`);
 
+                $('#authors_id').append(
+                    `<option value="${@json($sample->citation->authors_id)}" selected>${@json($sample->citation->author->name)}</option>`
+                );
+
                 $('#province_id').append(
-                    `<option value="${@json($sample->province_id)}" selected>${@json($sample->province->name)}</option>`
+                    `<option value="${@json($sample->province_id)}" selected>${@json($sample->province->name ?? null)}</option>`
                 );
                 $('#regency_id').append(
                     @if ($sample->regency_id != null)
-                        `<option value="${@json($sample->regency_id)}" selected>${@json($sample->regency->name)}</option>`
+                        `<option value="${@json($sample->regency_id)}" selected>${@json($sample->regency->name ?? null)}</option>`
                     @else
                         `<option value="" selected>Pilih Kota/Kabupaten</option>`
                     @endif
                 );
                 $('#viruses_id').append(
-                    `<option value="${@json($sample->viruses_id)}" selected>${@json($sample->virus->name)}</option>`
+                    `<option value="${@json($sample->viruses_id)}" selected>${@json($sample->virus->name ?? null)}</option>`
                 );
                 $('#genotipes_id').append(
-                    `<option value="${@json($sample->genotipes_id)}" selected>${@json($sample->genotipe->name)}</option>`
+                    `<option value="${@json($sample->genotipes_id)}" selected>${@json($sample->genotipe->genotipe_code ?? null)}</option>`
                 );
 
                 // set all select2 disabled

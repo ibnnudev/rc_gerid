@@ -9,6 +9,7 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Sample;
 use App\Models\Virus;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -77,7 +78,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
             $citation = Citation::create([
                 'id'       => Citation::max('id') + 1,
                 'title'    => $title,
-                'authors'  => $authors,
+                'author_id'  => $authors,
                 'users_id' => auth()->user()->id
             ]);
             return $citation->id;
@@ -145,6 +146,26 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
 
     public function pickupDate($pickup_month, $pickup_year)
     {
+        // translate indonesia month to english month in number
+        $month = [
+            'Januari'   => '01',
+            'Februari'  => '02',
+            'Maret'     => '03',
+            'April'     => '04',
+            'Mei'       => '05',
+            'Juni'      => '06',
+            'Juli'      => '07',
+            'Agustus'   => '08',
+            'September' => '09',
+            'Oktober'   => '10',
+            'November'  => '11',
+            'Desember'  => '12',
+        ];
+
+        if (array_key_exists($pickup_month, $month)) {
+            $pickup_month = $month[$pickup_month];
+        }
+
         if ($pickup_month != null && $pickup_year != null) {
             $pickup_date = $pickup_year . '-' . $pickup_month . '-01';
         } else if ($pickup_month == null && $pickup_year != null) {
@@ -155,7 +176,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
             $pickup_date = null;
         }
 
-        return date('Y-m-d', strtotime($pickup_date));
+        return $pickup_date;
     }
 
     public function virus($param)

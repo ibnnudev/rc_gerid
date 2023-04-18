@@ -2,6 +2,64 @@
     <x-breadcrumbs name="bank" />
     <h1 class="font-semibold text-lg my-8">Bank Data</h1>
 
+    {{-- Statistic --}}
+    <div class="xl:grid xl:grid-cols-6 gap-x-3 mb-2 sm:block">
+        {{-- Total HIV --}}
+        <div class="stats shadow mb-4 w-full overflow-hidden">
+            <div class="stat w-full">
+                <div class="stat-title">Sampel Hepatitis B</div>
+                <div class="stat-value text-sm mt-2">
+                    {{ number_format($totalSample->where('virus.name', 'Hepatitis B')->count(), 0, ',', '.') ?? 0 }}
+                </div>
+            </div>
+        </div>
+        {{-- Total HIV --}}
+        <div class="stats shadow mb-4 w-full overflow-hidden">
+            <div class="stat w-full">
+                <div class="stat-title">Sampel Hepatitis C</div>
+                <div class="stat-value text-sm mt-2">
+                    {{ number_format($totalSample->where('virus.name', 'Hepatitis C')->count(), 0, ',', '.') ?? 0 }}
+                </div>
+            </div>
+        </div>
+        {{-- Total HIV --}}
+        <div class="stats shadow mb-4 w-full overflow-hidden">
+            <div class="stat w-full">
+                <div class="stat-title">Sampel Dengue</div>
+                <div class="stat-value text-sm mt-2">
+                    {{ number_format($totalSample->where('virus.name', 'Dengue')->count(), 0, ',', '.') ?? 0 }}
+                </div>
+            </div>
+        </div>
+        {{-- Total HIV --}}
+        <div class="stats shadow mb-4 w-full overflow-hidden">
+            <div class="stat w-full">
+                <div class="stat-title">Sampel Norovirus</div>
+                <div class="stat-value text-sm mt-2">
+                    {{ number_format($totalSample->where('virus.name', 'Norovirus')->count(), 0, ',', '.') ?? 0 }}
+                </div>
+            </div>
+        </div>
+        {{-- Total HIV --}}
+        <div class="stats shadow mb-4 w-full overflow-hidden">
+            <div class="stat w-full">
+                <div class="stat-title">Sampel Rotavirus</div>
+                <div class="stat-value text-sm mt-2">
+                    {{ number_format($totalSample->where('virus.name', 'Rotavirus')->count(), 0, ',', '.') ?? 0 }}
+                </div>
+            </div>
+        </div>
+        {{-- Total HIV --}}
+        <div class="stats shadow mb-4 w-full overflow-hidden">
+            <div class="stat w-full">
+                <div class="stat-title">Sampel HIV</div>
+                <div class="stat-value text-sm mt-2">
+                    {{ number_format($totalSample->where('virus.name', 'HIV')->count(), 0, ',', '.') ?? 0 }}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <x-card-container>
         <div class="sm:flex justify-between items-center mb-4">
             <div>

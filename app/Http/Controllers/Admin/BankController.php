@@ -7,13 +7,11 @@ use App\Imports\SampleImport;
 use App\Interfaces\AuthorInterface;
 use App\Interfaces\SampleInterface;
 use App\Interfaces\VirusInterface;
-use App\Models\Author;
 use App\Models\Citation;
 use App\Models\District;
 use App\Models\Genotipe;
 use App\Models\Province;
 use App\Models\Regency;
-use App\Models\Sample;
 use App\Properties\Months;
 use App\Properties\Years;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -59,9 +57,6 @@ class BankController extends Controller
                 ->addColumn('gene_name', function ($sample) {
                     return $sample->gene_name ?? null;
                 })
-                // ->addColumn('title', function ($sample) {
-                //     return $sample->citations->title;
-                // })
                 ->addColumn('citation', function ($sample) {
                     return $sample->citation->title ?? null;
                 })
@@ -76,7 +71,9 @@ class BankController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
-        return view('admin.bank.index');
+        return view('admin.bank.index', [
+            'totalSample' => $this->sample->get(),
+        ]);
     }
 
     public function create()
