@@ -38,6 +38,10 @@ class User extends Authenticatable
     public function getRole() {
         return $this->role;
     }
+    
+    public function getName($id) {
+        return $this->where('id', $id)->first()->name;
+    }
 
     // Relationships
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('citations', function (Blueprint $table) {
             // drop foreign key and column samples_id
             // check it
-            if(Schema::hasColumn('citations', 'samples_id') && Schema::hasForeign('citations', 'citations_samples_id_foreign')) {
+            if(Schema::hasColumn('citations', 'samples_id') ) {
                 $table->dropForeign('citations_samples_id_foreign');
                 $table->dropColumn('samples_id');
             }

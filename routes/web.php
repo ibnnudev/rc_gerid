@@ -10,10 +10,18 @@ use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\Admin\GenotipeController;
 use App\Http\Controllers\Admin\HivCaseController;
 use App\Http\Controllers\Admin\TransmissionController;
+use App\Http\Controllers\Frontend\FrontendController;
 use Illuminate\Support\Facades\Route;
 
+// Frontend
+Route::get('/home', [FrontendController::class, 'home'])->name('home');
+Route::get('/detail-virus/{id}', [FrontendController::class, 'detail'])->name('detail-virus');
+Route::post('/list-citation', [FrontendController::class, 'listCitations'])->name('listCitation');
+Route::get('/detail-citation/{id}', [FrontendController::class, 'detailCitation'])->name('detailCitation');
+Route::get('/detail-fasta/{id}', [FrontendController::class, 'detailFasta'])->name('detailFasta');
+
 Route::get('/', function () {
-    return view('auth.login');
+    return redirect()->route('home');
 });
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {

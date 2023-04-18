@@ -40,6 +40,11 @@ class Citation extends Model
         return $this->hasMany(Sample::class, 'citation_id');
     }
 
+    public function sampleCitation()
+    {
+        return $this->hasMany(Sample::class, 'citation_id')->with('virus','genotipe');
+    }
+
     public function setInactive()
     {
         $this->is_active = 0;
