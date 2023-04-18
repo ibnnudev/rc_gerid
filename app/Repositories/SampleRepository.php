@@ -146,14 +146,14 @@ class SampleRepository implements SampleInterface
             dd($th->getMessage());
         }
 
-        try {
-            $this->citation->where('samples_id', $id)->update([
-                'is_active' => 0,
-            ]);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            dd($th->getMessage());
-        }
+        // try {
+        //     $this->citation->where('samples_id', $id)->update([
+        //         'is_active' => 0,
+        //     ]);
+        // } catch (\Throwable $th) {
+        //     DB::rollBack();
+        //     dd($th->getMessage());
+        // }
 
         DB::commit();
     }
