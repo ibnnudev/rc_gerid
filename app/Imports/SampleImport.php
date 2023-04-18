@@ -77,7 +77,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow
             $citation = Citation::create([
                 'id'       => Citation::max('id') + 1,
                 'title'    => $title,
-                'authors'  => $authors,
+                'author_id'  => $authors,
                 'users_id' => auth()->user()->id
             ]);
             return $citation->id;
