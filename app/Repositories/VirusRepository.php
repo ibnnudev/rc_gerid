@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\VirusInterface;
 use App\Models\Virus;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class VirusRepository implements VirusInterface
 {
@@ -24,7 +25,8 @@ class VirusRepository implements VirusInterface
     {
         if ($data['image']) {
             $filename = time() . '.' . $data['image']->getClientOriginalExtension();
-            $data['image']->storeAs('public/virus', $filename);
+            $data['image']->move(public_path('images'), $filename);
+            // $data['image']->storeAs('public/virus', $filename);
 
             $data['image'] = $filename;
         }
@@ -47,15 +49,13 @@ class VirusRepository implements VirusInterface
 
             // delete old files
             if ($virus->image) {
-                $oldFile = 'public/virus/' . $virus->image;
-                if (Storage::exists($oldFile)) {
-                    Storage::delete($oldFile);
+                if (file_exists(public_path('images/') . $virus->image)) {
+                    File::delete(public_path('images/') . $virus->image);
                 }
             }
 
             $filename = time() . '.' . $data['image']->getClientOriginalExtension();
-            $data['image']->storeAs('public/virus', $filename);
-
+            $data['image']->move(public_path('images'), $filename);
             $data['image'] = $filename;
             $virus->image = $data['image'];
         }

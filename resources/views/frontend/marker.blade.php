@@ -2,9 +2,11 @@
 @include('frontend.component-map.mapMarker')
 @section('content')
 
-<section class="bg-white mt-2 mb-2 m">
+<section class="bg-white mt-2 mb-2 ">
     <div class="grid grid-cols-1 gap-4 place-items-center max-w-screen px-4 shadow  lg:pb-8 lg:px-25  ">
         <div class="py-2">
+             <img class="h-16 w-16 md:w-40 md:h-40 mx-auto mb-4 pt-4"  src="{{ $virus->image ? asset('images/' . $virus->image)  : asset('images/noimage.jpg') }}"  alt="">
+            <p class="text-center text-xl font-bold pb-2">{{ $virus->name }}</p>
             {{-- text  Desciption--}}
                 {!! htmlspecialchars_decode(nl2br($virus->description )) !!}
             {{-- grid gambar --}}
@@ -77,12 +79,11 @@
                 <div>
                     {{-- input year with select2 --}}
                     <x-select name="year" id="year" class="max-w-sm">
-                        <option value="">sa</option>
-                        {{-- @foreach ($years as $year)
-                            <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>
-                                {{ $year }}
+                        @foreach ($years as $year)
+                            <option value="{{ $year->year }}" {{ $year == date('Y') ? 'selected' : '' }}>
+                                {{ $year->year }}
                             </option>
-                        @endforeach --}}
+                        @endforeach
                     </x-select>
                 </div>
             </div>
@@ -90,19 +91,17 @@
                 <canvas id="persebaranVirus" class="absolute z-10"></canvas>
             </div>
         </x-card-container>
-
         <x-card-container>
             <div class="flex justify-between items-center">
                 <h3 class="font-semibold">Persebaran Virus {{ $virus->name }} berdasarkan Gen</h3>
                 <div>
                     {{-- input year with select2 --}}
                     <x-select name="sampleYear" id="sampleYear" class="max-w-sm">
-                        <option value="">2020</option>
-                        {{-- @foreach ($years as $year)
-                            <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>
-                                {{ $year }}
+                        @foreach ($years as $year)
+                            <option value="{{ $year->year }}" {{ $year->year == date('Y') ? 'selected' : '' }}>
+                                {{ $year->year }}
                             </option>
-                        @endforeach --}}
+                        @endforeach
                     </x-select>
                 </div>
             </div>
@@ -110,12 +109,46 @@
                 <canvas id="persebaranVirusByGen" class="absolute z-10"></canvas>
             </div>
         </x-card-container>
+       
     </div>
+    <x-card-container>
+        <div class="flex justify-between items-center">
+            <h3 class="font-semibold">Persebaran Virus {{ $virus->name }} berdasarkan Gen</h3>
+            <div class="grid grid-cols-2">
+                {{-- input year with select2 --}}
+                <x-select name="sampleYear" id="sampleYear" class="max-w-xs">
+                    @foreach ($provinces as $province)
+                        <option value="{{ $province->id }}" {{ $loop->first ? 'selected' : '' }}>{{ $province->name }}
+                        </option>
+                    @endforeach
+                    {{-- @foreach ($years as $year)
+                        <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>
+                            {{ $year }}
+                        </option>
+                    @endforeach --}}
+                </x-select>
+                {{-- input year with select2 --}}
+                <x-select name="sampleYear" id="sampleYear" class="max-w-sm ">
+                    @foreach ($years as $year)
+                        <option value="{{ $year->year }}">{{ $year->year }}</option>
+                    @endforeach
+                    {{-- @foreach ($years as $year)
+                        <option value="{{ $year }}" {{ $year == date('Y') ? 'selected' : '' }}>
+                            {{ $year }}
+                        </option>
+                    @endforeach --}}
+                </x-select>
+            </div>
+        </div>
+        <div style="height: 300px" class="relative" id="sampleVirusContainer">
+            <canvas id="groupChart" class="absolute z-10"></canvas>
+        </div>
+    </x-card-container>
 </section>
 @endsection
 @push('js-internal')
     <script>
-        var chart = new Chart(document.getElementById("persebaranVirusByGen").getContext('2d'), {
+        var Genchart = new Chart(document.getElementById("persebaranVirusByGen").getContext('2d'), {
             type: 'bar',
             data: {
                 labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'September', 'Oktober', 'November', 'Desember'], 
@@ -125,15 +158,15 @@
                 // put 0, if there is no data for the particular bar
                 datasets: [{
                     label: 'CRF01_AE',
-                    data: [2, 8, 10, 10, 200, 300],
+                    data: [2, 8, 10, 10, 200, 300, 400, 300,100,400, 300,100],
                     backgroundColor: '#22aa99'
                 }, {
                     label: 'CRF01_AG',
-                    data: [100, 8, 10, 10, 200, 300],
+                    data: [100, 8, 10, 10, 200, 300,300,100,400, 300,100],
                     backgroundColor: '#994499'
                 }, {
                     label: 'B[0]',
-                    data: [50, 8, 10, 10, 200, 300],
+                    data: [50, 8, 10, 10, 200, 300,300,100,400, 300,100],
                     backgroundColor: '#316395'
                 }]
             },
@@ -175,6 +208,118 @@
                         },
                     },
                 },
+            },
+            });
+        var Genchart = new Chart(document.getElementById("persebaranVirus").getContext('2d'), {
+            type: "pie",
+            data: {
+                labels: ['CRF01_AE', 'CRF01_AG', 'B[0]'],
+                datasets: [{
+                backgroundColor: ['#316395', '#22AA99', '#994499'],
+                data: [200,300, 400]
+                }]
+            },
+             options: {
+                maintainAspectRatio: false,
+                reponsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                            boxWidth: 5,
+                            boxHeight: 5,
+                        },
+                    },
+                },
+                scales: {
+                    y: {
+                        // stack the bar
+                        stacked: true,
+                        grid: {
+                            display: false,
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            precision: 0,
+                            stepSize: 1,
+                        },
+                    },
+                    x: {
+                        // stack the bar
+                        stacked: true,
+                        grid: {
+                            display: false,
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            precision: 0,
+                            stepSize: 1,
+                        },
+                    },
+                },
+            },
+            });
+        var Genchart = new Chart(document.getElementById("groupChart").getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus","September", "Oktober", "November", "Desember"],
+                datasets: [
+                    {
+                        label: "CRF01_AE",
+                        backgroundColor: '#316395',
+                        data: [3,7,4,6,20,60,12,21,32,22,21,21]
+                    },
+                    {
+                        label: "CRF01_AG",
+                        backgroundColor: '#22AA99',
+                        data: [4,3,5,6,20,60,12,21,32,22,21,21]
+                    },
+                    {
+                        label: "B[0]",
+                        backgroundColor: '#994499',
+                        data: [7,2,6,6,20,60,12,21,32,22,21,21]
+                    }
+                ]
+            },
+             options: {
+                maintainAspectRatio: false,
+                barValueSpacing: 20,
+                // reponsive: true,
+                // plugins: {
+                //     legend: {
+                //         labels: {
+                //             usePointStyle: true,
+                //             boxWidth: 5,
+                //             boxHeight: 5,
+                //         },
+                //     },
+                // },
+                // scales: {
+                //     y: {
+                //         // stack the bar
+                //         stacked: true,
+                //         grid: {
+                //             display: false,
+                //         },
+                //         ticks: {
+                //             beginAtZero: true,
+                //             precision: 0,
+                //             stepSize: 1,
+                //         },
+                //     },
+                //     x: {
+                //         // stack the bar
+                //         stacked: true,
+                //         grid: {
+                //             display: false,
+                //         },
+                //         ticks: {
+                //             beginAtZero: true,
+                //             precision: 0,
+                //             stepSize: 1,
+                //         },
+                //     },
+                // },
             },
             });
     </script>
