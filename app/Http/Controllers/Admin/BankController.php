@@ -17,6 +17,7 @@ use App\Properties\Years;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 
 class BankController extends Controller
 {
@@ -200,19 +201,27 @@ class BankController extends Controller
             'import_file' => 'required|mimes:xls,xlsx'
         ]);
 
-        Excel::import(new SampleImport, $request->file('import_file'));
-
-        return redirect()->route('admin.bank.index')->with('success', 'Data berhasil diimport');
+        try {
+            Excel::import(new SampleImport, $request->file('import_file'));
+            return redirect()->route('admin.bank.index')->with('success', 'Data berhasil diimport');
+        } catch (ValidationException $e) {
+            return view('admin.bank.index', [
+                'failures' => $e->failures(),
+                'totalSample' => $this->sample->get(),
+            ]);
+        }
     }
 
-    public function advancedSearch(Request $request) {
+    public function advancedSearch(Request $request)
+    {
         $attributes = $this->sample->getAttributes();
         return view('admin.bank.advance-search', [
             'attributes' => $attributes,
         ]);
     }
 
-    public function getData(Request $request) {
+    public function getData(Request $request)
+    {
         $samples = $this->sample->advancedSearch($request->all());
         return view('admin.bank.tables.table-content', [
             'samples' => $samples,
