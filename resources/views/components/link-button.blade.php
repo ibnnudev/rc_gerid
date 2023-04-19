@@ -1,4 +1,4 @@
-@props(['route' => '#', 'color' => 'green', 'id' => ''])
+@props(['route' => '#', 'color' => 'green', 'id' => '', 'target' => '_self'])
 
 <a href="{{ $route }}" {!! $attributes->merge([
     'class' =>
@@ -13,4 +13,5 @@
         '-900 focus:outline-none focus:ring-2 focus:ring-' .
         $color .
         '-500 focus:ring-offset-2 transition ease-in-out duration-150',
-]) !!} id="{{$id}}">{{ $slot }}</a>
+]) !!} id="{{ $id }}"
+    target="{{ $target }}">{{ $slot }}</a>
