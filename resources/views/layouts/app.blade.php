@@ -29,6 +29,8 @@
 
     <!-- Datatable -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.3.3/css/rowReorder.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.jqueryui.min.css">
@@ -50,10 +52,6 @@
 
 <body class="font-sans antialiased text-xs 2xl:text-sm overflow-hidden">
 
-    {{-- <div class="loading fixed top-0 left-0 w-full h-full bg-white z-50 flex items-center justify-center">
-        <img src="{{ asset('assets/application/loadin_gif.gif') }}" alt="loading" class="h-60">
-    </div> --}}
-
     <div class="bg-white-200">
         @include('admin.layouts.sidebar')
 
@@ -72,6 +70,8 @@
     <!-- Datatable -->
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/rowreorder/1.3.3/js/dataTables.rowReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/dataTables.jqueryui.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
@@ -98,11 +98,6 @@
     <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
 
     <script>
-        // show loading when website loaded and all assets loaded and ajax request and stop loading when all assets loaded
-        // $(window).on('load', function () {
-        //     $('.loading').fadeOut(500);
-        // });
-
         // set datatable search to text-sm
         $('input').addClass('text-sm');
 

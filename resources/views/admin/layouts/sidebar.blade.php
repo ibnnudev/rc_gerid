@@ -21,63 +21,73 @@
                 active="{{ request()->routeIs('admin.dashboard') }}" />
             <x-sidebar-menu name="Bank Data" icon="fas fa-bank" route="{{ route('admin.bank.index') }}"
                 active="{{ request()->routeIs('admin.bank.*') }}" />
-            <x-sidebar-menu name="Penulis" icon="fas fa-user" route="{{ route('admin.author.index') }}"
-                active="{{ request()->routeIs('admin.author.*') }}" />
-            <x-sidebar-menu name="Virus" icon="fas fa-virus" route="{{ route('admin.virus.index') }}"
-                active="{{ request()->routeIs('admin.virus.*') }}" />
-            <x-sidebar-menu name="Genotipe" icon="fas fa-dna" route="{{ route('admin.genotipe.index') }}"
-                active="{{ request()->routeIs('admin.genotipe.*') }}" />
-            <x-sidebar-menu name="Transmisi" icon="fas fa-route" route="{{ route('admin.transmission.index') }}"
-                active="{{ request()->routeIs('admin.transmission.*') }}" />
-            <x-sidebar-menu name="Sitasi" icon="fas fa-lines-leaning" route="{{ route('admin.citation.index') }}"
-                active="{{ request()->routeIs('admin.citation.*') }}" />
+            @if (auth()->user()->role == 'admin')
+                <x-sidebar-menu name="Penulis" icon="fas fa-user" route="{{ route('admin.author.index') }}"
+                    active="{{ request()->routeIs('admin.author.*') }}" />
+                <x-sidebar-menu name="Virus" icon="fas fa-virus" route="{{ route('admin.virus.index') }}"
+                    active="{{ request()->routeIs('admin.virus.*') }}" />
+                <x-sidebar-menu name="Genotipe" icon="fas fa-dna" route="{{ route('admin.genotipe.index') }}"
+                    active="{{ request()->routeIs('admin.genotipe.*') }}" />
+                <x-sidebar-menu name="Transmisi" icon="fas fa-route" route="{{ route('admin.transmission.index') }}"
+                    active="{{ request()->routeIs('admin.transmission.*') }}" />
+                <x-sidebar-menu name="Sitasi" icon="fas fa-lines-leaning" route="{{ route('admin.citation.index') }}"
+                    active="{{ request()->routeIs('admin.citation.*') }}" />
+                <li>
+                    <button type="button"
+                        class="flex w-full items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100
+                            @if (request()->routeIs('admin.cases.*')) bg-primary text-white shadow-sm hover:bg-secondary @endif
+                            "
+                        aria-controls="data-kasus" data-collapse-toggle="data-kasus">
+                        <i
+                            class="fas fa-hospital-user w-4 h-4 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white
+                                @if (request()->routeIs('admin.cases.*')) text-white @endif
+                                "></i>
+                        <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Kasus</span>
+                        <i
+                            class="fas w-3 h-3 text-gray-500 transition duration-75 transform group-hover:text-gray-900 dark:group-hover:text-white
+                                @if (request()->routeIs('admin.cases.*')) fa-angle-up text-white @else fa-angle-down @endif
+                                "></i>
+                    </button>
+                    <ul id="data-kasus"
+                        class="{{ request()->routeIs('admin.cases.hiv') ? '' : 'hidden' }} py-2 space-y-2">
+                        <li>
+                            <a href="{{ route('admin.cases.hiv') }}"
+                                class="{{ request()->routeIs('admin.cases.hiv') ? 'bg-gray-100' : '' }} flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">
+                                HIV</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Hepatitis
+                                B</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Hepatitis
+                                C</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Rotavirus</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Norovirus</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Dengue</a>
+                        </li>
+                    </ul>
+                </li>
 
-            <li>
-                <button type="button"
-                    class="flex w-full items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100
-                    @if (request()->routeIs('admin.cases.*')) bg-primary text-white shadow-sm hover:bg-secondary @endif
-                    "
-                    aria-controls="data-kasus" data-collapse-toggle="data-kasus">
-                    <i
-                        class="fas fa-hospital-user w-4 h-4 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white
-                        @if (request()->routeIs('admin.cases.*')) text-white @endif
-                        "></i>
-                    <span class="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Kasus</span>
-                    <i
-                        class="fas w-3 h-3 text-gray-500 transition duration-75 transform group-hover:text-gray-900 dark:group-hover:text-white
-                        @if (request()->routeIs('admin.cases.*')) fa-angle-up text-white @else fa-angle-down @endif
-                        "></i>
-                </button>
-                <ul id="data-kasus" class="{{ request()->routeIs('admin.cases.hiv') ? '' : 'hidden' }} py-2 space-y-2">
-                    <li>
-                        <a href="{{ route('admin.cases.hiv') }}"
-                            class="{{ request()->routeIs('admin.cases.hiv') ? 'bg-gray-100' : '' }} flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">
-                            HIV</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Hepatitis
-                            B</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Hepatitis
-                            C</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Rotavirus</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Norovirus</a>
-                    </li>
-                    <li>
-                        <a href="#"
-                            class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Dengue</a>
-                    </li>
-                </ul>
-            </li>
+                {{-- divider --}}
+                <li class="border-t border-gray-200"></li>
+
+                {{-- manajemen pengguna --}}
+                <x-sidebar-menu name="Manajemen Pengguna" icon="fas fa-user-group"
+                    route="{{ route('admin.user-management.index') }}"
+                    active="{{ request()->routeIs('admin.user-management.*') }}" />
+            @endif
 
 
 

@@ -241,6 +241,14 @@
                     });
                 });
             });
+
+            @if (Session::has('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: '{{ Session::get('error') }}',
+                })
+            @endif
         </script>
 
         {{-- Total Visitor Chart --}}

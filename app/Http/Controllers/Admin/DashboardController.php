@@ -43,30 +43,6 @@ class DashboardController extends Controller
         ]);
     }
 
-    // public function samplePerMonth($yearParam)
-    // {
-    //     $year = date('Y', strtotime($yearParam));
-    //     // dd($year);
-    //     $months  = Months::getMonths();
-    //     $viruses = Virus::all();
-
-    //     $samplesPerMonth = [];
-
-    //     foreach ($viruses as $virus) {
-    //         $samplesPerMonth[$virus->name] = [];
-
-    //         foreach ($months as $month) {
-    //             // get the number of samples for each virus in each month by year of pickup_date
-    //             $samplesPerMonth[$virus->name][] = Sample::whereMonth('pickup_date', array_search($month, $months) + 1)
-    //                 ->whereYear('pickup_date', $year)
-    //                 ->where('viruses_id', $virus->id)
-    //                 ->count();
-    //         }
-    //     }
-
-    //     return $samplesPerMonth;
-    // }
-
     public function samplePerYear($yearParam)
     {
         $months  = Months::getMonths();
@@ -115,7 +91,8 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function filterSample(Request $request) {
+    public function filterSample(Request $request)
+    {
         $samples = Sample::all();
         $months = Months::getMonths();
         $viruses = Virus::all();

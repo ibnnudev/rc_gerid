@@ -5,11 +5,11 @@ use App\Http\Controllers\Admin\BankController;
 use App\Http\Controllers\Admin\CasesController;
 use App\Http\Controllers\Admin\CitationController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\TotalVisitorConttroller;
 use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\Admin\GenotipeController;
 use App\Http\Controllers\Admin\HivCaseController;
 use App\Http\Controllers\Admin\TransmissionController;
+use App\Http\Controllers\Admin\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,6 +18,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
+    // Dashboard
     Route::post('/filter-visitor', [DashboardController::class, 'filterVisitor'])->name('admin.dashboard.filter-visitor');
     Route::post('/filter-sample', [DashboardController::class, 'filterSample'])->name('admin.dashboard.filter-sample');
     Route::get('/', DashboardController::class)->name('admin.dashboard');
@@ -53,6 +54,12 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     // Citation
     Route::resource('citation', CitationController::class, ['as' => 'admin']);
+
+    // Management User
+    Route::post('user-management/role', [UserManagementController::class, 'role'])->name('admin.user-management.role');
+    Route::get('user-management/activate/{id}', [UserManagementController::class, 'activate'])->name('admin.user-management.activate');
+    Route::get('user-management/deactivate/{id}', [UserManagementController::class, 'deactivate'])->name('admin.user-management.deactivate');
+    Route::resource('user-management', UserManagementController::class, ['as' => 'admin']);
 });
 
 require __DIR__ . '/auth.php';

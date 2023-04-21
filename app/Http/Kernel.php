@@ -2,10 +2,13 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\EnsureHasRole;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
+    protected $routeMiddleware = [
+    ];
     /**
      * The application's global HTTP middleware stack.
      *
@@ -63,5 +66,6 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'role' => \App\Http\Middleware\Role::class,
     ];
 }

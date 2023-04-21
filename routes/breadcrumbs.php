@@ -178,3 +178,9 @@ Breadcrumbs::for('citation.show', function (BreadcrumbTrail $trail, $citation) {
     $trail->parent('citation', $citation->title);
     $trail->push('Detail', route('admin.citation.show', $citation->id));
 });
+
+// User Management
+Breadcrumbs::for('user-management', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Manajemen Pengguna', route('admin.user-management.index'));
+});
