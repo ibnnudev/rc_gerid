@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ActivateUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UserManagementController extends Controller
 {
@@ -98,6 +100,8 @@ class UserManagementController extends Controller
         $user = User::find($id);
         $user->is_active = 1;
         $user->save();
+
+        Mail::send(new ActivateUser($user));
 
         return redirect()->back()->with('success', 'Berhasil mengaktifkan akun');
     }

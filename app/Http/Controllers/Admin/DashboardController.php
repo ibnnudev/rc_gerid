@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewUserRegistered;
 use App\Models\Author;
 use App\Models\Sample;
 use App\Models\Virus;

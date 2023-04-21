@@ -36,6 +36,11 @@ class AuthenticatedSessionController extends Controller
                 'date'       => date('Y-m-d')
             ]);
 
+            if (Auth::user()->is_active == 0) {
+                Auth::guard('web')->logout();
+                return redirect()->back()->with('error', 'Akun kamu belum aktif, silahkan hubungi admin');
+            }
+
             return redirect()->intended(RouteServiceProvider::HOME);
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Email atau password salah');
