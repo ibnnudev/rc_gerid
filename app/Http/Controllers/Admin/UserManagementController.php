@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ActivateUser;
+use App\Mail\DeactivateUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -111,6 +112,8 @@ class UserManagementController extends Controller
         $user = User::find($id);
         $user->is_active = 0;
         $user->save();
+
+        Mail::send(new DeactivateUser($user));
 
         return redirect()->back()->with('success', 'Berhasil menonaktifkan akun');
     }

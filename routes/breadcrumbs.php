@@ -39,6 +39,24 @@ Breadcrumbs::for('bank.advanced-search', function (BreadcrumbTrail $trail) {
     $trail->push('Pencarian Data', route('admin.bank.advanced-search'));
 });
 
+// Import Request
+Breadcrumbs::for('import-request', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Daftar Permintaan', route('admin.import-request.index'));
+});
+
+// Import Request > Create
+Breadcrumbs::for('import-request.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('import-request');
+    $trail->push('Tambah Permintaan', route('admin.import-request.create'));
+});
+
+// Import Request > Edit
+Breadcrumbs::for('import-request.edit', function (BreadcrumbTrail $trail, $importRequest) {
+    $trail->parent('import-request');
+    $trail->push('Edit Permintaan', route('admin.import-request.edit', $importRequest->id));
+});
+
 
 // Penulis
 Breadcrumbs::for('author', function (BreadcrumbTrail $trail) {

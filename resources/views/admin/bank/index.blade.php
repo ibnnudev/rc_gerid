@@ -105,8 +105,8 @@
             </div>
             <div class="sm:flex">
                 {{-- download button --}}
-                <x-link-button id="btnDownload" class="mr-2" route="{{ asset('assets/file/format data sekuen.xlsx') }}"
-                    color="gray" target="_blank">
+                <x-link-button id="btnDownload" class="mr-2"
+                    route="{{ asset('assets/file/format data sekuen.xlsx') }}" color="gray" target="_blank">
                     <i class="fas fa-download mr-2"></i>
                     Unduh Template
                 </x-link-button>
@@ -256,7 +256,28 @@
                             data: 'action',
                             name: 'action'
                         },
-                    ]
+                    ],
+                    /*
+                        dom: 'Bfrtip',
+                    buttons: [{
+                        extend: 'csv',
+                        filename: 'Data Sample',
+                        bom: true
+                    }, {
+                        extend: 'excel',
+                        filename: 'Data Sample',
+                        bom: true,
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            }
+                        }
+                    }, {
+                        extend: 'print',
+                        filename: 'Data Sample',
+                        bom: true
+                    }],
+                    */
                 });
             });
 

@@ -19,9 +19,9 @@
         <ul class="space-y-3">
             <x-sidebar-menu name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
                 active="{{ request()->routeIs('admin.dashboard') }}" />
-            <x-sidebar-menu name="Bank Data" icon="fas fa-bank" route="{{ route('admin.bank.index') }}"
-                active="{{ request()->routeIs('admin.bank.*') }}" />
             @if (auth()->user()->role == 'admin')
+                <x-sidebar-menu name="Bank Data" icon="fas fa-bank" route="{{ route('admin.bank.index') }}"
+                    active="{{ request()->routeIs('admin.bank.*') }}" />
                 <x-sidebar-menu name="Penulis" icon="fas fa-user" route="{{ route('admin.author.index') }}"
                     active="{{ request()->routeIs('admin.author.*') }}" />
                 <x-sidebar-menu name="Virus" icon="fas fa-virus" route="{{ route('admin.virus.index') }}"
@@ -89,7 +89,8 @@
                     active="{{ request()->routeIs('admin.user-management.*') }}" />
             @endif
 
-
+            <x-sidebar-menu name="Daftar Permintaan" icon="fas fa-code-pull-request" route="{{ route('admin.import-request.index') }}"
+                active="{{ request()->routeIs('admin.import-request.*') }}" />
 
             {{-- logout --}}
             <li>

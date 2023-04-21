@@ -4,7 +4,7 @@
             Nonaktifkan
         </x-link-button>
     @else
-        <x-link-button route="{{route('admin.user-management.activate', $id)}}" color="gray">
+        <x-link-button route="{{route('admin.user-management.activate', $id)}}" class="bg-primary">
             Aktifkan
         </x-link-button>
     @endif

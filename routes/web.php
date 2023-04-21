@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\Admin\GenotipeController;
 use App\Http\Controllers\Admin\HivCaseController;
+use App\Http\Controllers\Admin\ImportRequestController;
 use App\Http\Controllers\Admin\TransmissionController;
 use App\Http\Controllers\Admin\UserManagementController;
 use Illuminate\Support\Facades\Route;
@@ -60,6 +61,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('user-management/activate/{id}', [UserManagementController::class, 'activate'])->name('admin.user-management.activate');
     Route::get('user-management/deactivate/{id}', [UserManagementController::class, 'deactivate'])->name('admin.user-management.deactivate');
     Route::resource('user-management', UserManagementController::class, ['as' => 'admin']);
+
+    // Import Request
+    Route::resource('import-request', ImportRequestController::class, ['as' => 'admin']);
 });
 
 require __DIR__ . '/auth.php';
