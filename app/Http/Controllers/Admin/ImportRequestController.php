@@ -5,41 +5,44 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Interfaces\ImportRequestInterface;
 use Illuminate\Http\Request;
-
-use function Pest\Laravel\json;
-
 class ImportRequestController extends Controller
 {
 
     private $importRequest;
 
-    public function __construct(ImportRequestInterface $importRequest) {
+    public function __construct(ImportRequestInterface $importRequest)
+    {
         $this->importRequest = $importRequest;
     }
 
     public function index(Request $request)
     {
-        if($request->ajax())
-        {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->importRequest->get())
-            ->addColumn('file', function($data) {
-                return view('admin.bank.import-request.columns.file', ['data' => $data]);
-            })
-            ->addColumn('created_at', function($data) {
-                return date('d-m-Y H:i', strtotime($data->created_at));
-            })
-            ->addColumn('description', function($data) {
-                return $data->description;
-            })
-            ->addColumn('status', function($data) {
-                return view('admin.bank.import-request.columns.status', ['data' => $data]);
-            })
-            ->addColumn('action', function($data) {
-                return view('admin.bank.import-request.columns.action', ['data' => $data]);
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->importRequest->get())
+                ->addColumn('file', function ($data) {
+                    return view('admin.bank.import-request.columns.file', ['data' => $data]);
+                })
+                ->addColumn('file_code', function ($data) {
+                    $file_code = $data->file_code;
+                    $file_code = substr($file_code, 0, -3);
+                    $file_code = $file_code . "***";
+                    return $file_code;
+                })
+                ->addColumn('created_at', function ($data) {
+                    return date('d-m-Y H:i', strtotime($data->created_at));
+                })
+                ->addColumn('description', function ($data) {
+                    return $data->description;
+                })
+                ->addColumn('status', function ($data) {
+                    return view('admin.bank.import-request.columns.status', ['data' => $data]);
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.bank.import-request.columns.action', ['data' => $data]);
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
         return view('admin.bank.import-request.index');
     }
@@ -72,7 +75,7 @@ class ImportRequestController extends Controller
 
     public function edit(string $id)
     {
-        return view('admin.bank.import-request.edit', ['data'=> $this->importRequest->find($id)]);
+        return view('admin.bank.import-request.edit', ['data' => $this->importRequest->find($id)]);
     }
 
     public function update(Request $request, string $id)
@@ -95,6 +98,49 @@ class ImportRequestController extends Controller
     {
         try {
             $this->importRequest->destroy($id);
+            return response()->json(true);
+        } catch (\Throwable $th) {
+            return response()->json(false);
+        }
+    }
+
+    public function admin(Request $request)
+    {
+        if ($request->ajax()) {
+            return datatables()
+                ->of($this->importRequest->get())
+                ->addColumn('file', function ($data) {
+                    return view('admin.bank.import-request.columns.file', ['data' => $data]);
+                })
+                ->addColumn('file_code', function ($data) {
+                    $file_code = $data->file_code;
+                    $file_code = substr($file_code, 0, -3);
+                    $file_code = $file_code . "***";
+                    return $file_code;
+                })
+                ->addColumn('created_at', function ($data) {
+                    return date('d-m-Y H:i', strtotime($data->created_at));
+                })
+                ->addColumn('description', function ($data) {
+                    return $data->description;
+                })
+                ->addColumn('status', function ($data) {
+                    return view('admin.bank.import-request.columns.status', ['data' => $data]);
+                })
+                ->addColumn('action', function ($data) {
+                    return view('admin.bank.import-request.admin.columns.action', ['data' => $data]);
+                })
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view('admin.bank.import-request.admin.index');
+    }
+
+    public function changeStatus(Request $request)
+    {
+        $status = $request->status == 'accepted' ? 1 : ($request->status == 'rejected' ? 2 : 0);
+        try {
+            $this->importRequest->changeStatus($request->id, $status, $request->reason);
             return response()->json(true);
         } catch (\Throwable $th) {
             return response()->json(false);

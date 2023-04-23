@@ -20,6 +20,7 @@ class ImportRequest extends Model
 
     protected $fillable = [
         'filename',
+        'file_code',
         'status',
         'imported_by',
         'accepted_by',

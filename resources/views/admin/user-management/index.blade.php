@@ -51,13 +51,17 @@
                                         title: 'Berhasil!',
                                         text: 'Role pengguna berhasil diubah.',
                                         icon: 'success',
-                                    })
+                                    }).then(() => {
+                                        $('#usersTable').DataTable().ajax.reload();
+                                    });
                                 } else {
                                     Swal.fire({
                                         title: 'Gagal!',
                                         text: 'Role pengguna gagal diubah.',
                                         icon: 'error',
-                                    })
+                                    }).then(() => {
+                                        $('#usersTable').DataTable().ajax.reload();
+                                    });
                                 }
                             },
                         });

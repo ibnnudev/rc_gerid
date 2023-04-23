@@ -81,6 +81,7 @@
                 <tr>
                     <th>#</th>
                     <th>File</th>
+                    <th>Kode File</th>
                     <th>Waktu</th>
                     <th>Deskripsi</th>
                     <th>Status</th>
@@ -142,6 +143,10 @@
                         {
                             data: 'file',
                             name: 'file'
+                        },
+                        {
+                            data: 'file_code',
+                            name: 'file_code'
                         },
                         {
                             data: 'created_at',

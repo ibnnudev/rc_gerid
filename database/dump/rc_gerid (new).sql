@@ -9334,6 +9334,12 @@ INSERT IGNORE INTO `hiv_cases` (`id`, `idkd`, `idkd_address`, `latitude`, `longi
 	(1472, 'ZULK900719', 'KEC SIMOKERTO, SURABAYA', '-7.246270666775558', '112.75497354231211', 3578, 3578220, 35, 'Pusat', 1, 31, '30-34', 1, 1, '2016', 1, '2023-03-16 23:38:21', '2023-03-16 23:38:21');
 /*!40000 ALTER TABLE `hiv_cases` ENABLE KEYS */;
 
+-- Membuang data untuk tabel rc_gerid.import_requests: ~0 rows (lebih kurang)
+/*!40000 ALTER TABLE `import_requests` DISABLE KEYS */;
+INSERT IGNORE INTO `import_requests` (`id`, `filename`, `status`, `imported_by`, `accepted_by`, `rejected_by`, `rejected_reason`, `accepted_reason`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
+	(1, '16821069576442ea4dcb41e.xlsx', 1, 2, 1, NULL, NULL, 'dataset kamu bagus', 'Hidup ini singkat', 1, '2023-04-21 19:07:20', '2023-04-22 21:47:13');
+/*!40000 ALTER TABLE `import_requests` ENABLE KEYS */;
+
 -- Membuang data untuk tabel rc_gerid.institutions: ~137 rows (lebih kurang)
 /*!40000 ALTER TABLE `institutions` DISABLE KEYS */;
 INSERT IGNORE INTO `institutions` (`id`, `code`, `name`, `created_at`, `updated_at`) VALUES
@@ -9517,7 +9523,9 @@ INSERT IGNORE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(36, '2023_03_20_120939_update_member_column', 14),
 	(39, '2023_03_21_135433_update_samples_column', 15),
 	(40, '2023_03_21_135914_update_citations_column', 16),
-	(41, '2023_03_22_231037_update_genotipe_code_genotipes', 17);
+	(41, '2023_03_22_231037_update_genotipe_code_genotipes', 17),
+	(42, '2023_04_20_213704_add_is_active_users', 18),
+	(44, '2023_04_21_181257_create_import_request_table', 19);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Membuang data untuk tabel rc_gerid.password_reset_tokens: ~0 rows (lebih kurang)
@@ -10431,10 +10439,13 @@ INSERT IGNORE INTO `transmissions` (`id`, `name`, `is_active`, `created_at`, `up
 	(9, 'Perinatal', 1, '2023-03-13 07:19:11', '2023-03-13 07:19:31');
 /*!40000 ALTER TABLE `transmissions` ENABLE KEYS */;
 
--- Membuang data untuk tabel rc_gerid.users: ~0 rows (lebih kurang)
+-- Membuang data untuk tabel rc_gerid.users: ~4 rows (lebih kurang)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT IGNORE INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `google_id`, `role`, `avatar`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(1, 'Fiki', 'fiki@gmail.com', NULL, '$2y$10$2nCOPj3dOvC82XUoPeZRCOu8Vn.rozM4Oe6DxFrVYWcot4q2ODZEO', NULL, 'user', NULL, NULL, '2023-03-11 23:11:39', '2023-03-11 23:11:39');
+INSERT IGNORE INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `is_active`, `google_id`, `role`, `avatar`, `remember_token`, `created_at`, `updated_at`) VALUES
+	(1, 'Admin', 'admin@gmail.com', NULL, '$2y$10$2nCOPj3dOvC82XUoPeZRCOu8Vn.rozM4Oe6DxFrVYWcot4q2ODZEO', 1, NULL, 'admin', NULL, NULL, '2023-03-11 23:11:39', '2023-04-20 23:04:22'),
+	(2, 'ibnu', 'ibnu@gmail.com', NULL, '$2y$10$0lUJcNV9gzGepNNTktt/1eQWLC5K0MBnSL5Wih9qnlNTUCLoGnoa.', 1, NULL, 'user', NULL, NULL, '2023-04-20 22:13:45', '2023-04-22 13:10:08'),
+	(6, 'Fiki Naki', 'fiki@gmail.com', NULL, '$2y$10$kEd/K9A473DY9yaxmfjCBe38oCZu5qNQwTRxh42cYOjZsx9nCSsDG', 0, NULL, 'user', NULL, NULL, '2023-04-21 07:22:54', '2023-04-21 07:22:54'),
+	(7, 'Contoh', 'contoh@gmail.com', NULL, '$2y$10$S4IjkdfZyam7AUVYeK/r3e05wdZx.lcTyRfCfAJCFujrbhdzOZ3DC', 0, NULL, 'user', NULL, NULL, '2023-04-21 07:27:13', '2023-04-21 17:36:40');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 -- Membuang data untuk tabel rc_gerid.villages: ~24.816 rows (lebih kurang)
@@ -35764,7 +35775,7 @@ INSERT IGNORE INTO `viruses` (`id`, `image`, `name`, `latin_name`, `description`
 	(17, '1678718289.png', 'HIV', 'Human Immunodeficiency Virus', '<p><em>Human Immunodeficiency virus </em>(HIV) merupakan virus yang menyerang manusia dan menyebabkan menurunnya kekebalan tubuh. Jika infeksi HIV ini tidak segera tertangani maka akan berkembang menjadi <em>acquired immunodeficiency syndrome (</em>AIDS). Pada kondisi AIDS ini penderita tidak mampu untuk melawan infeksi sekunder yang rentan diderita oleh pasien. Oleh karena itu penanganan yang tepat mampu menekan progresivitas infeksi HIV sehingga jumlah kasus AIDS dapat terus ditekan.&nbsp;</p>\r\n\r\n<p>Kasus HIV pertama kali diteemukan di Bali pada tahun 1987 (1). Kemunculan kasus di Indonesia ini terjadi hamper 7 tahun setelah setelah kasus pertama mmuncul di tahun 1980 di Afrika Barat. Jika melihat pohon kekerabatan jenis HIV yang ditemukan ini dibedakan menjadi dua type yakni HIV-1 dan HIV-2 dengan jumlah kasus HIV-1 di dunia lebih dominan (2).&nbsp;</p>\r\n\r\n<p><cite>HIV-1 sendiri dibedakan menjadi 3 grup yakni M (major), N (non-major), O (outlier). Grup M merupakan grup yang mendominasi sirkulasi HIV-1 dan dapat dibbedakan menjadi beberapa subtype dan rekombinan (3). Sedangkan rekombinan yang banyak ditemukan di Asia Tenggara ddan juga Indonesia adalah rekombinan CRF-01_AE (4). Studi subtype HIV-1 ini memberikan implikasi kepada studi tingkat perekembangan penyakit (perbedaan progresivitas penynakit), tanggapan terhadap antiretroviral (termasuk resistensi obat) seerta pengembangan vaksin</cite></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p>Referensi</p>\r\n\r\n<p>1. Purwaningsih SS, Widayatun N. Perkembangan HIV dan AIDS di Indonesia: Tinjauan Sosio Demografis. J Kependud Indones [Internet]. 2008;3(2):75&ndash;95. Available from: http://ejurnal.kependudukan.lipi.go.id/index.php/jki/article/view/170</p>\r\n\r\n<p>2. Sharp PM, Hahn BH. Origins of HIV and the AIDS pandemic. Cold Spring Harb Perspect Med. 2011 Sep;1(1):a006841.&nbsp;</p>\r\n\r\n<p>3. Taylor BS, Sobieszczyk ME, McCutchan FE, Hammer SM. The challenge of HIV-1 subtype diversity. N Engl J Med. 2008 Apr;358(15):1590&ndash;602.&nbsp;</p>\r\n\r\n<p>4. Kotaki T, Khairunisa SQ, Sukartiningrum SD. High Prevalence of HIV-1 CRF01 _ AE Viruses among Female Commercial Sex Workers Residing in Surabaya , Indonesia. 2013;8(12).&nbsp;</p>\r\n\r\n<p>5. Tompa R. Understanding HIV`s evolutionary past- and future [Internet]. 2017 [cited 2023 Mar 10]. Available from: https://www.fredhutch.org/en/news/center-news/2017/11/hiv-evolutionary-past-and-future.html</p>\r\n\r\n<p>&nbsp;</p>', '2023-03-13 14:38:09', '2023-03-18 08:38:54', 1);
 /*!40000 ALTER TABLE `viruses` ENABLE KEYS */;
 
--- Membuang data untuk tabel rc_gerid.visitors: ~20 rows (lebih kurang)
+-- Membuang data untuk tabel rc_gerid.visitors: ~58 rows (lebih kurang)
 /*!40000 ALTER TABLE `visitors` DISABLE KEYS */;
 INSERT IGNORE INTO `visitors` (`id`, `ip_address`, `user_agent`, `date`, `created_at`, `updated_at`) VALUES
 	(1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36', '2023-03-12', '2023-03-12 01:03:50', '2023-03-12 01:03:50'),
@@ -35805,7 +35816,31 @@ INSERT IGNORE INTO `visitors` (`id`, `ip_address`, `user_agent`, `date`, `create
 	(36, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-18', '2023-04-18 02:57:41', '2023-04-18 02:57:41'),
 	(37, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-18', '2023-04-18 03:13:44', '2023-04-18 03:13:44'),
 	(38, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-18', '2023-04-18 10:44:53', '2023-04-18 10:44:53'),
-	(39, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-19', '2023-04-19 05:21:35', '2023-04-19 05:21:35');
+	(39, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-19', '2023-04-19 05:21:35', '2023-04-19 05:21:35'),
+	(40, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-20', '2023-04-20 21:40:30', '2023-04-20 21:40:30'),
+	(41, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-20', '2023-04-20 21:43:32', '2023-04-20 21:43:32'),
+	(42, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-20', '2023-04-20 21:43:44', '2023-04-20 21:43:44'),
+	(43, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0', '2023-04-20', '2023-04-20 22:36:38', '2023-04-20 22:36:38'),
+	(44, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-20', '2023-04-20 23:05:46', '2023-04-20 23:05:46'),
+	(45, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-20', '2023-04-20 23:14:01', '2023-04-20 23:14:01'),
+	(46, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-20', '2023-04-20 23:18:55', '2023-04-20 23:18:55'),
+	(47, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-20', '2023-04-20 23:19:57', '2023-04-20 23:19:57'),
+	(48, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-20', '2023-04-20 23:20:07', '2023-04-20 23:20:07'),
+	(49, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-20', '2023-04-20 23:20:26', '2023-04-20 23:20:26'),
+	(50, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-20', '2023-04-20 23:20:52', '2023-04-20 23:20:52'),
+	(51, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-20', '2023-04-20 23:21:54', '2023-04-20 23:21:54'),
+	(52, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-21', '2023-04-21 05:53:58', '2023-04-21 05:53:58'),
+	(53, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-21', '2023-04-21 06:04:53', '2023-04-21 06:04:53'),
+	(54, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-21', '2023-04-21 06:48:42', '2023-04-21 06:48:42'),
+	(55, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-21', '2023-04-21 07:23:45', '2023-04-21 07:23:45'),
+	(56, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-21', '2023-04-21 07:25:08', '2023-04-21 07:25:08'),
+	(57, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-21', '2023-04-21 07:27:41', '2023-04-21 07:27:41'),
+	(58, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-21', '2023-04-21 07:27:55', '2023-04-21 07:27:55'),
+	(59, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-21', '2023-04-21 17:31:00', '2023-04-21 17:31:00'),
+	(60, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-21', '2023-04-21 18:01:16', '2023-04-21 18:01:16'),
+	(61, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-22', '2023-04-22 12:30:58', '2023-04-22 12:30:58'),
+	(62, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-22', '2023-04-22 21:38:47', '2023-04-22 21:38:47'),
+	(63, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36', '2023-04-22', '2023-04-22 21:39:22', '2023-04-22 21:39:22');
 /*!40000 ALTER TABLE `visitors` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

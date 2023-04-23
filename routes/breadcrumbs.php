@@ -57,6 +57,12 @@ Breadcrumbs::for('import-request.edit', function (BreadcrumbTrail $trail, $impor
     $trail->push('Edit Permintaan', route('admin.import-request.edit', $importRequest->id));
 });
 
+// Import Request (Admin)
+Breadcrumbs::for('import-request.admin', function(BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Daftar Permintaan', route('admin.import-request.admin'));
+});
+
 
 // Penulis
 Breadcrumbs::for('author', function (BreadcrumbTrail $trail) {

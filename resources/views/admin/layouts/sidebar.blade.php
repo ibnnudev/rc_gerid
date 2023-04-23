@@ -89,8 +89,15 @@
                     active="{{ request()->routeIs('admin.user-management.*') }}" />
             @endif
 
-            <x-sidebar-menu name="Daftar Permintaan" icon="fas fa-code-pull-request" route="{{ route('admin.import-request.index') }}"
-                active="{{ request()->routeIs('admin.import-request.*') }}" />
+            @if (auth()->user()->role == 'admin')
+                <x-sidebar-menu name="Daftar Permintaan" icon="fas fa-code-pull-request"
+                    route="{{ route('admin.import-request.admin') }}"
+                    active="{{ request()->routeIs('admin.import-request.*') }}" />
+            @else
+                <x-sidebar-menu name="Daftar Permintaan" icon="fas fa-code-pull-request"
+                    route="{{ route('admin.import-request.index') }}"
+                    active="{{ request()->routeIs('admin.import-request.*') }}" />
+            @endif
 
             {{-- logout --}}
             <li>

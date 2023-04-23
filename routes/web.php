@@ -63,6 +63,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::resource('user-management', UserManagementController::class, ['as' => 'admin']);
 
     // Import Request
+    Route::post('import-request/change-status', [ImportRequestController::class, 'changeStatus'])->name('admin.import-request.change-status');
+    Route::get('import-request/admin', [ImportRequestController::class, 'admin'])->name('admin.import-request.admin');
     Route::resource('import-request', ImportRequestController::class, ['as' => 'admin']);
 });
 

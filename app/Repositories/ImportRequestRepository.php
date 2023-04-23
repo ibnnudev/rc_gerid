@@ -3,7 +3,10 @@
 namespace App\Repositories;
 
 use App\Interfaces\ImportRequestInterface;
+use App\Mail\NewImportRequest;
+use App\Mail\StatusActivationImportRequest;
 use App\Models\ImportRequest;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class ImportRequestRepository implements ImportRequestInterface
@@ -27,11 +30,14 @@ class ImportRequestRepository implements ImportRequestInterface
 
         $user = auth()->user()->id;
 
-        $this->importRequest->create([
+        $importRequest = $this->importRequest->create([
             'filename' => $data['file'],
+            'file_code' => uniqid(),
             'imported_by' => $user,
             'description' => $data['description']
         ]);
+
+        Mail::send(new NewImportRequest(auth()->user(), $importRequest->file_code));
 
         return true;
     }
@@ -60,6 +66,7 @@ class ImportRequestRepository implements ImportRequestInterface
         }
 
         $importRequest->description = $data['description'];
+        $importRequest->status = 0;
         $importRequest->save();
 
         return true;
@@ -67,8 +74,45 @@ class ImportRequestRepository implements ImportRequestInterface
 
     public function destroy($id)
     {
-        return $this->importRequest->find($id)->update([
-            'is_active' => 0
-        ]);
+        $importRequest = $this->importRequest->find($id);
+        // delete file
+        if ($importRequest->filename) {
+            $oldFile = 'public/import-request/' . $importRequest->filename;
+            if(Storage::exists($oldFile)) {
+                Storage::delete($oldFile);
+            }
+        }
+
+        $importRequest->delete();
+        return true;
+    }
+
+    public function changeStatus($id, $status, $reason)
+    {
+        $importRequest = $this->importRequest->find($id);
+
+        if($status == 1) {
+            $importRequest->accepted_by       = auth()->user()->id;
+            $importRequest->accepted_reason   = $reason;
+            $importRequest->rejected_by       = null;
+            $importRequest->rejected_reason   = null;
+        } elseif($status == 2) {
+            $importRequest->rejected_by       = auth()->user()->id;
+            $importRequest->rejected_reason   = $reason;
+            $importRequest->accepted_by       = null;
+            $importRequest->accepted_reason   = null;
+        } elseif($status == 0) {
+            $importRequest->rejected_by       = null;
+            $importRequest->accepted_by       = null;
+            $importRequest->rejected_reason   = null;
+            $importRequest->accepted_reason   = null;
+        }
+
+        $importRequest->status                = $status;
+        $importRequest->save();
+
+        Mail::send(new StatusActivationImportRequest($status, $importRequest->file_code, $reason, auth()->user()));
+
+        return true;
     }
 }
