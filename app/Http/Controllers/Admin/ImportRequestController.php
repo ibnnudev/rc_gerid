@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\NewImportRequestValidator;
 use App\Interfaces\ImportRequestInterface;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
+
 class ImportRequestController extends Controller
 {
 
@@ -144,6 +148,28 @@ class ImportRequestController extends Controller
             return response()->json(true);
         } catch (\Throwable $th) {
             return response()->json(false);
+        }
+    }
+
+    public function validationFile(Request $request)
+    {
+        try {
+            Excel::import(new NewImportRequestValidator, $request->file('file'));
+            return response()->json(true);
+        } catch (ValidationException $e) {
+            // send row number and error message
+            $failures = $e->failures();
+            $error = [];
+            foreach ($failures as $failure) {
+                $error[] = [
+                    'row' => $failure->row(),
+                    'attribute' => $failure->attribute(),
+                    'errors' => $failure->errors(),
+                    'values' => $failure->values()
+                ];
+            }
+
+            return response()->json($error);
         }
     }
 }

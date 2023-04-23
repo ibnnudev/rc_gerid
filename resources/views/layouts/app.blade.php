@@ -97,6 +97,9 @@
     {{-- CK Editor --}}
     <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
 
+    {{-- Excel JS --}}
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+
     <script>
         // set datatable search to text-sm
         $('input').addClass('text-sm');

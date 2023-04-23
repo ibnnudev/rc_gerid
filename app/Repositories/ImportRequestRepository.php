@@ -6,6 +6,7 @@ use App\Interfaces\ImportRequestInterface;
 use App\Mail\NewImportRequest;
 use App\Mail\StatusActivationImportRequest;
 use App\Models\ImportRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
@@ -89,7 +90,10 @@ class ImportRequestRepository implements ImportRequestInterface
 
     public function changeStatus($id, $status, $reason)
     {
-        $importRequest = $this->importRequest->find($id);
+        DB::beginTransaction();
+
+        try {
+            $importRequest = $this->importRequest->find($id);
 
         if($status == 1) {
             $importRequest->accepted_by       = auth()->user()->id;
@@ -110,6 +114,13 @@ class ImportRequestRepository implements ImportRequestInterface
 
         $importRequest->status                = $status;
         $importRequest->save();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return false;
+        }
+
+        DB::commit();
 
         Mail::send(new StatusActivationImportRequest($status, $importRequest->file_code, $reason, auth()->user()));
 
