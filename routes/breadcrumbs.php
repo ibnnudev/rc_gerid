@@ -39,6 +39,17 @@ Breadcrumbs::for('bank.advanced-search', function (BreadcrumbTrail $trail) {
     $trail->push('Pencarian Data', route('admin.bank.advanced-search'));
 });
 
+// Bank Data > Daftar File Terimport
+Breadcrumbs::for('bank.imported', function (BreadcrumbTrail $trail) {
+    $trail->parent('bank');
+    $trail->push('Daftar File Terimpor', route('admin.bank.imported'));
+});
+// Bank Data > Daftar Sekuen
+Breadcrumbs::for('bank.imported.user', function (BreadcrumbTrail $trail) {
+    $trail->parent('bank');
+    $trail->push('Daftar Sekuen', route('admin.bank.imported'));
+});
+
 // Import Request
 Breadcrumbs::for('import-request', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');

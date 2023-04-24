@@ -3,9 +3,7 @@
     <h1 class="font-semibold text-lg my-8">
         Tambah Permintaan
     </h1>
-
-
-
+    
     <div class="xl:grid grid-cols-2 gap-x-3">
         <div id="alert-2"
             class="error hidden flex p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"

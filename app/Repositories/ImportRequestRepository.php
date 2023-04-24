@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Imports\SampleImport;
 use App\Interfaces\ImportRequestInterface;
 use App\Mail\NewImportRequest;
 use App\Mail\StatusActivationImportRequest;
@@ -9,6 +10,7 @@ use App\Models\ImportRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ImportRequestRepository implements ImportRequestInterface
 {
@@ -125,5 +127,47 @@ class ImportRequestRepository implements ImportRequestInterface
         Mail::send(new StatusActivationImportRequest($status, $importRequest->file_code, $reason, auth()->user()));
 
         return true;
+    }
+
+    public function import($id)
+    {
+        DB::beginTransaction();
+        try {
+            $importRequest = $this->importRequest->find($id);
+            $importRequest->status = 3;
+            $importRequest->save();
+
+            $file = 'public/import-request/' . $importRequest->filename;
+            Excel::import(new SampleImport($importRequest->file_code), $file);
+
+            $importRequest->status = 3; // 3 = imported
+            $importRequest->save();
+
+            // save file to new location
+            $newFile = 'public/imported/' . $importRequest->file_code . '-' . $importRequest->filename;
+            Storage::move($file, $newFile);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return false;
+        }
+    }
+
+    public function imported($userId = null)
+    {
+        $importRequest = $this->importRequest->where(
+            // status 1 or 3
+            function($query) {
+                $query->where('status', 1)
+                    ->orWhere('status', 3);
+            }
+        )->with(['importedBy', 'acceptedBy', 'rejectedBy']);
+
+        if($userId) {
+            $importRequest->where('imported_by', $userId);
+        }
+
+        return $importRequest->get();
     }
 }

@@ -10,4 +10,8 @@
     <span class="badge badge-error badge-sm">
         Ditolak
     </span>
+@elseif ($data->status == 3)
+    <span class="badge badge-sm">
+        Telah diimport
+    </span>
 @endif

@@ -42,7 +42,6 @@
     @push('js-internal')
         <script>
             function changeStatus(id, value) {
-
                 // unbind any existing click events
                 $('button[type="submit"]').unbind('click');
 

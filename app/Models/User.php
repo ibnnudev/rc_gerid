@@ -51,12 +51,12 @@ class User extends Authenticatable
         return $this->hasMany(ImportRequest::class, 'imported_by');
     }
 
-    public function acceptedImportRequests()
+    public function acceptedBy()
     {
         return $this->hasMany(ImportRequest::class, 'accepted_by');
     }
 
-    public function rejectedImportRequests()
+    public function rejectedBy()
     {
         return $this->hasMany(ImportRequest::class, 'rejected_by');
     }

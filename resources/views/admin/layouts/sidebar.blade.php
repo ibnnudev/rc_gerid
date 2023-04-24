@@ -97,6 +97,9 @@
                 <x-sidebar-menu name="Daftar Permintaan" icon="fas fa-code-pull-request"
                     route="{{ route('admin.import-request.index') }}"
                     active="{{ request()->routeIs('admin.import-request.*') }}" />
+                <x-sidebar-menu name="Daftar Sekuen" icon="fas fa-bank"
+                    route="{{ route('admin.bank.imported') }}"
+                    active="{{ request()->routeIs('admin.bank.imported') }}" />
             @endif
 
             {{-- logout --}}

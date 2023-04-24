@@ -40,7 +40,8 @@
             </div>
         @endisset
 
-        <div id="alert-1" class="flex p-4 mb-4 text-xs rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-400" role="alert">
+        <div id="alert-1" class="flex p-4 mb-4 text-xs rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-400"
+            role="alert">
             <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -127,6 +128,49 @@
                     }
                 });
             }
+
+            function btnImport(id, name) {
+                Swal.fire({
+                    title: 'Import Data',
+                    text: `Apakah anda yakin ingin mengimport data ${name}?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Import',
+                    cancelButtonText: 'Batal',
+                    confirmButtonColor: '#19743b',
+                    cancelButtonColor: '#dc3545',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '{{ route('admin.import-request.import') }}',
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                id: id
+                            },
+                            success: function(response) {
+                                Swal.fire({
+                                    title: 'Berhasil',
+                                    text: `Data ${name} berhasil diimport`,
+                                    icon: 'success'
+                                }).then(() => {
+                                    $('#importTable').DataTable().ajax.reload();
+                                });
+                            },
+                            error: function(response) {
+                                Swal.fire({
+                                    title: 'Gagal',
+                                    text: `Data ${name} gagal diimport`,
+                                    icon: 'error'
+                                }).then(() => {
+                                    $('#importTable').DataTable().ajax.reload();
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+
             $(function() {
                 $('#importTable').DataTable({
                     responsive: true,

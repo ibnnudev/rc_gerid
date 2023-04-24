@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Imports\SampleImport;
 use App\Interfaces\AuthorInterface;
+use App\Interfaces\ImportRequestInterface;
 use App\Interfaces\SampleInterface;
 use App\Interfaces\VirusInterface;
 use App\Models\Citation;
@@ -14,7 +15,6 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Properties\Months;
 use App\Properties\Years;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
@@ -24,12 +24,14 @@ class BankController extends Controller
     private $author;
     private $virus;
     private $sample;
+    private $importRequest;
 
-    public function __construct(AuthorInterface $author, VirusInterface $virus, SampleInterface $sample)
+    public function __construct(AuthorInterface $author, VirusInterface $virus, SampleInterface $sample, ImportRequestInterface $importRequest)
     {
-        $this->author = $author;
-        $this->virus  = $virus;
-        $this->sample = $sample;
+        $this->author           = $author;
+        $this->virus            = $virus;
+        $this->sample           = $sample;
+        $this->importRequest    = $importRequest;
     }
 
     public function index(Request $request)
@@ -202,7 +204,13 @@ class BankController extends Controller
         ]);
 
         try {
-            Excel::import(new SampleImport, $request->file('import_file'));
+            $file_code = uniqid();
+            Excel::import(new SampleImport($file_code), $request->file('import_file'));
+            $filename = $file_code . '.' . $request->file('import_file')->getClientOriginalExtension();
+            $request->file('import_file')->storeAs('public/imported', $filename);
+
+            // TODO: save file to table import request and set status as 4 (imported) and set imported_by as current user
+
             return redirect()->route('admin.bank.index')->with('success', 'Data berhasil diimport');
         } catch (ValidationException $e) {
             return view('admin.bank.index', [
@@ -226,5 +234,93 @@ class BankController extends Controller
         return view('admin.bank.tables.table-content', [
             'samples' => $samples,
         ])->render();
+    }
+
+    public function imported(Request $request)
+    {
+        if (auth()->user()->role == 'admin') {
+            if ($request->ajax()) {
+                return datatables()
+                    ->of($this->importRequest->imported())
+                    ->addColumn('file', function ($data) {
+                        return view('admin.bank.import-request.columns.file', ['data' => $data]);
+                    })
+                    ->addColumn('file_code', function ($data) {
+                        $file_code = $data->file_code;
+                        $file_code = substr($file_code, 0, -3);
+                        $file_code = $file_code . "***";
+                        return $file_code;
+                    })
+                    ->addColumn('created_at', function ($data) {
+                        return date('d-m-Y H:i', strtotime($data->created_at));
+                    })
+                    ->addColumn('approved', function ($data) {
+                        return view('admin.bank.imported.columns.approved', ['data' => $data]);
+                    })
+                    ->addColumn('rejected', function ($data) {
+                        return view('admin.bank.imported.columns.rejected', ['data' => $data]);
+                    })
+                    ->addColumn('imported', function ($data) {
+                        return view('admin.bank.imported.columns.imported', ['data' => $data]);
+                    })
+                    ->addColumn('status', function ($data) {
+                        return view('admin.bank.imported.columns.status', ['data' => $data]);
+                    })
+                    ->addColumn('action', function ($data) {
+                        return view('admin.bank.imported.columns.action', ['data' => $data]);
+                    })
+                    ->addIndexColumn()
+                    ->make(true);
+            }
+            return view('admin.bank.imported.index');
+        } else {
+            if ($request->ajax()) {
+                return datatables()
+                    ->of($this->sample->get())
+                    ->addColumn('sample_code', function ($sample) {
+                        return $sample->sample_code ?? null;
+                    })
+                    ->addColumn('file_code', function ($sample) {
+                        $file_code = $sample->file_code;
+                        $file_code = substr($file_code, 0, -3);
+                        $file_code = $file_code . "***";
+                        return $file_code ?? null;
+                    })
+                    ->addColumn('virus', function ($sample) {
+                        return $sample->virus->name ?? null;
+                    })
+                    ->addColumn('genotipe', function ($sample) {
+                        return $sample->genotipe->genotipe_code ?? null;
+                    })
+                    ->addColumn('pickup_date', function ($sample) {
+                        return date('Y', strtotime($sample->pickup_date));
+                    })
+                    ->addColumn('place', function ($sample) {
+                        return $sample->place ?? null;
+                    })
+                    ->addColumn('province', function ($sample) {
+                        return $sample->province->name ?? null;
+                    })
+                    ->addColumn('gene_name', function ($sample) {
+                        return $sample->gene_name ?? null;
+                    })
+                    ->addColumn('citation', function ($sample) {
+                        return $sample->citation->title ?? null;
+                    })
+                    ->addColumn('file_sequence', function ($sample) {
+                        return view('admin.bank.columns.file_sequence', ['sample' => $sample]);
+                    })
+                    // ->addColumn('action', function ($sample) {
+                    //     return view('admin.bank.columns.action', [
+                    //         'sample' => $sample,
+                    //     ]);
+                    // })
+                    ->addIndexColumn()
+                    ->make(true);
+            }
+            return view('admin.bank.imported.user.index', [
+                'totalSample' => $this->sample->get(),
+            ]);
+        }
     }
 }

@@ -25,6 +25,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('/', DashboardController::class)->name('admin.dashboard');
 
     // Bank Data
+    Route::get('bank/imported', [BankController::class, 'imported'])->name('admin.bank.imported');
     Route::get('bank/print', [BankController::class, 'print'])->name('admin.bank.print');
     Route::get('bank/get-data', [BankController::class, 'getData'])->name('admin.bank.get-data');
     Route::get('bank/advanced-search', [BankController::class, 'advancedSearch'])->name('admin.bank.advanced-search');
@@ -63,6 +64,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::resource('user-management', UserManagementController::class, ['as' => 'admin']);
 
     // Import Request
+    Route::post('import-request/import', [ImportRequestController::class, 'import'])->name('admin.import-request.import');
     Route::post('import-request/validation-file', [ImportRequestController::class, 'validationFile'])->name('admin.import-request.validation-file');
     Route::post('import-request/change-status', [ImportRequestController::class, 'changeStatus'])->name('admin.import-request.change-status');
     Route::get('import-request/admin', [ImportRequestController::class, 'admin'])->name('admin.import-request.admin');

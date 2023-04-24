@@ -172,4 +172,19 @@ class ImportRequestController extends Controller
             return response()->json($error);
         }
     }
+
+    public function import(Request $request) {
+        try {
+            $this->importRequest->import($request->id);
+            return response()->json([
+                'status' => true,
+                'message' => 'Import berhasil'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ]);
+        }
+    }
 }

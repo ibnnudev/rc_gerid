@@ -17,6 +17,12 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 
 class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValidation
 {
+
+    public $file_code;
+    public function __construct($file_code) {
+        $this->file_code = $file_code;
+    }
+
     public function startRow(): int
     {
         return 3;
@@ -95,6 +101,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
 
         $data = [
             'sample_code'   => $sampleCode,
+            'file_code'     => $this->file_code ?? null,
             'viruses_id'    => $virus,
             'gene_name'     => $gene,
             'sequence_data' => $sequence_data,
