@@ -28,7 +28,8 @@ class ImportRequest extends Model
         'rejected_reason',
         'accepted_reason',
         'description',
-        'is_active'
+        'is_active',
+        'removed_by'
     ];
 
     // RELATIONSHIP

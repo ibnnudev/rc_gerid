@@ -5,8 +5,10 @@ namespace App\Repositories;
 use App\Interfaces\SampleInterface;
 use App\Models\Author;
 use App\Models\Citation;
+use App\Models\ImportRequest;
 use App\Models\Sample;
 use App\Models\Virus;
+use App\Scopes\HasActiveScope;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,13 +18,15 @@ class SampleRepository implements SampleInterface
     private $citation;
     private $virus;
     private $author;
+    private $importRequest;
 
-    public function __construct(Sample $sample, Citation $citation, Virus $virus, Author $author)
+    public function __construct(Sample $sample, Citation $citation, Virus $virus, Author $author, ImportRequest $importRequest)
     {
         $this->sample   = $sample;
         $this->citation = $citation;
         $this->virus    = $virus;
         $this->author   = $author;
+        $this->importRequest = $importRequest;
     }
 
     public function get()
@@ -195,5 +199,51 @@ class SampleRepository implements SampleInterface
             return $query->whereYear('pickup_date', $data['pickup_date']);
         })
         ->get();
+    }
+
+    public function deleteByFileCode($fileCode)
+    {
+        DB::beginTransaction();
+
+        try {
+            $this->sample->where('file_code', $fileCode)->update([
+                'is_active' => 0,
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
+
+        try {
+            $this->importRequest->where('file_code', $fileCode)->update([
+                'removed_by' => auth()->user()->id,
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
+
+        DB::commit();
+    }
+
+    public function recoveryByFileCode($fileCode)
+    {
+        DB::beginTransaction();
+
+        try {
+            $this->sample->withoutGlobalScope(HasActiveScope::class)->where('file_code', $fileCode)->update([
+                'is_active' => 1,
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
+
+        try {
+            $this->importRequest->where('file_code', $fileCode)->update([
+                'removed_by' => null,
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
+
+        DB::commit();
     }
 }

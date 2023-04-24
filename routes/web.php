@@ -25,6 +25,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('/', DashboardController::class)->name('admin.dashboard');
 
     // Bank Data
+    Route::post('bank/recovery-by-file-code', [BankController::class, 'recoveryByFileCode'])->name('admin.bank.recovery-by-file-code');
+    Route::post('bank/delete-by-file-code', [BankController::class, 'deleteByFileCode'])->name('admin.bank.delete-by-file-code');
     Route::get('bank/imported', [BankController::class, 'imported'])->name('admin.bank.imported');
     Route::get('bank/print', [BankController::class, 'print'])->name('admin.bank.print');
     Route::get('bank/get-data', [BankController::class, 'getData'])->name('admin.bank.get-data');

@@ -44,6 +44,7 @@
                 </x-select>
                 <x-select id="regency_id" label="Kota/Kabupaten" name="regency_id" isFit="" required>
                 </x-select>
+                <x-input id="file_code" label="Kode File" name="file_code" type="text" class="mb-3" />
             </div>
             <div class="md:grid md:grid-cols-4 gap-x-4">
                 <x-input id="place" label="Tempat Pengambilan Sampel" name="place" type="text" required />

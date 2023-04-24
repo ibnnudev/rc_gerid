@@ -12,4 +12,8 @@ interface SampleInterface {
     // Advanced Search
     public function getAttributes();
     public function advancedSearch($data);
+
+    // Sequence
+    public function deleteByFileCode($fileCode);
+    public function recoveryByFileCode($fileCode);
 }
