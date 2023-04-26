@@ -1,7 +1,7 @@
 <div class="lg:flex gap-x-2">
     @if ($data->status == 1)
         <x-link-button color="gray" onclick="btnImport('{{ $data->id }}', '{{ $data->filename }}')">
-            <i class="fas fa-file-import fa-sm mr-2"></i> Import
+            Impor
         </x-link-button>
     @endif
     @if ($data->status !== 3)
@@ -15,5 +15,15 @@
                 <i class="fas fa-trash fa-sm"></i>
             </label>
         @endif
+    @endif
+
+    @if ($data->status == 3 && $data->removed_by == null)
+        <x-link-button route="{{ route('admin.import-request.create-single', $data->file_code) }}" color="gray">
+            Tambah Data
+        </x-link-button>
+        <a href="{{ route('admin.import-request.show', $data->id) }}"
+            class="text-white bg-gray-800 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
+            <i class="fas fa-eye fa-sm"></i>
+        </a>
     @endif
 </div>

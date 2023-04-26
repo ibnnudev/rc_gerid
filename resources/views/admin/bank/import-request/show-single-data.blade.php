@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-breadcrumbs name="bank.show" :data="$sample" />
+    <x-breadcrumbs name="import-request.show-single" :data="$sample" />
     <h1 class="font-semibold text-lg my-8">Detail</h1>
 
     <x-card-container>
@@ -57,7 +57,7 @@
 
             {{-- back --}}
             <div class="mt-4 text-end">
-                <x-link-button route="{{ route('admin.bank.index') }}" color="gray">
+                <x-link-button route="{{ route('admin.import-request.show', $importRequest->id) }}" color="gray">
                     Kembali
                 </x-link-button>
             </div>

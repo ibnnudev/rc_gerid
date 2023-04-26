@@ -1,9 +1,9 @@
 <x-app-layout>
-    <x-breadcrumbs name="bank.create" />
+    <x-breadcrumbs name="import-request.create-single" :data="$fileCode" />
     <h1 class="font-semibold text-lg my-8">Tambah Data</h1>
 
     <x-card-container>
-        <form action="{{ route('admin.bank.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.import-request.store-single') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="md:grid md:grid-cols-3 gap-x-4">
                 <div>
@@ -44,7 +44,7 @@
                 </x-select>
                 <x-select id="regency_id" label="Kota/Kabupaten" name="regency_id" isFit="" required>
                 </x-select>
-                <x-input id="file_code" label="Kode File" name="file_code" type="text" class="mb-3" />
+                <x-input id="file_code" label="Kode File" name="file_code" type="text" class="mb-3" :value="$fileCode" readonly />
             </div>
             <div class="md:grid md:grid-cols-4 gap-x-4">
                 <x-input id="place" label="Tempat Pengambilan Sampel" name="place" type="text" required />
@@ -133,6 +133,7 @@
                 let citation_id = $('#title').val();
                 $('input[name="citation_id"]').val(citation_id);
 
+
                 let pickupMonth, pickupYear;
                 // get current month and year
                 let date = new Date();
@@ -155,10 +156,11 @@
                 });
 
                 $('#pickup_month, #pickup_year').change(function() {
-                    if (pickupYear == undefined) {
+                    if(pickupYear == undefined) {
                         let date = new Date();
                         pickupYear = date.getFullYear();
                     }
+
                     let date = `${pickupMonth}/${pickupYear}`;
                     // add 00
                     if (pickupMonth < 10) {
@@ -198,7 +200,6 @@
 
                 $('#viruses_id').on('change', function() {
                     let virusId = $(this).val();
-                    console.log(virusId);
                     $.ajax({
                         url: "{{ route('admin.bank.get-genotipe') }}",
                         type: "POST",
@@ -207,7 +208,6 @@
                             virus_id: virusId
                         },
                         success: function(response) {
-                            console.log(response);
                             let data = response;
                             let html = '';
                             data.forEach(function(item) {

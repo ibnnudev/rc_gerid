@@ -12,4 +12,7 @@ interface ImportRequestInterface
     public function changeStatus($id, $status, $reason);
     public function import($id);
     public function imported($userId = null);
+    public function storeSingle($data);
+    public function updateSingle($data, $id);
+    public function findByFileCode($fileCode);
 }

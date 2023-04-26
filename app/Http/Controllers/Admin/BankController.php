@@ -15,6 +15,7 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Properties\Months;
 use App\Properties\Years;
+use App\Scopes\HasActiveScope;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
@@ -276,7 +277,7 @@ class BankController extends Controller
         } else {
             if ($request->ajax()) {
                 return datatables()
-                    ->of($this->sample->get())
+                    ->of($this->sample->get()->where('created_by', auth()->user()->id))
                     ->addColumn('sample_code', function ($sample) {
                         return $sample->sample_code ?? null;
                     })
@@ -310,16 +311,45 @@ class BankController extends Controller
                     ->addColumn('file_sequence', function ($sample) {
                         return view('admin.bank.columns.file_sequence', ['sample' => $sample]);
                     })
-                    // ->addColumn('action', function ($sample) {
-                    //     return view('admin.bank.columns.action', [
-                    //         'sample' => $sample,
-                    //     ]);
-                    // })
                     ->addIndexColumn()
                     ->make(true);
             }
             return view('admin.bank.imported.user.index', [
                 'totalSample' => $this->sample->get(),
+            ]);
+        }
+    }
+
+    public function deleteByFileCode(Request $request)
+    {
+        try {
+            $this->sample->deleteByFileCode($request->file_code);
+            return response()->json([
+                'status'    => 'success',
+                'message'   => 'Data sekuen pada file ' . $request->file_code . ' berhasil dihapus',
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Data sekuen pada file ' . $request->file_code . ' gagal dihapus',
+                'error'     => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function recoveryByFileCode(Request $request)
+    {
+        try {
+            $this->sample->recoveryByFileCode($request->file_code);
+            return response()->json([
+                'status'    => 'success',
+                'message'   => 'Data sekuen pada file ' . $request->file_code . ' berhasil direcovery',
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Data sekuen pada file ' . $request->file_code . ' gagal direcovery',
+                'error'     => $th->getMessage(),
             ]);
         }
     }
