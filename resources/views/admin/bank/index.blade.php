@@ -104,16 +104,21 @@
                 </x-link-button>
             </div>
             <div class="sm:flex">
-                {{-- download button --}}
-                <x-link-button id="btnDownload" class="mr-2" route="{{ asset('assets/file/format data sekuen.xlsx') }}"
-                    color="gray" target="_blank">
+                <x-link-button route="{{ route('admin.bank.imported') }}" class="mr-2" color="gray">
+                    <i class="fas fa-file-import mr-2"></i>
+                    Daftar File Terimpor
+                </x-link-button>
+                <x-link-button id="btnDownload" class="mr-2"
+                    route="{{ asset('assets/file/format data sekuen.xlsx') }}" color="gray" target="_blank">
                     <i class="fas fa-download mr-2"></i>
                     Unduh Template
                 </x-link-button>
                 <x-link-button route="{{ route('admin.bank.create') }}" class="mr-2" color="gray">
-                    Tambah Bank Data
+                    <i class="fas fa-plus mr-2"></i>
+                    Tambah Sampel
                 </x-link-button>
                 <x-link-button id="btnImport" class="bg-primary">
+                    <i class="fas fa-file-import mr-2"></i>
                     Import Sampel
                 </x-link-button>
                 <form id="formImport" action="{{ route('admin.bank.import') }}" method="POST"
@@ -129,6 +134,7 @@
             <table id="samplesTable" class="w-full">
                 <thead>
                     <tr>
+                        <th>#</th>
                         <th>Kd. Sampel</th>
                         <th>Virus</th>
                         <th>Genotipe & Subtipe</th>
@@ -188,7 +194,19 @@
                 $('input[name="import_file"]').click();
 
                 $('input[name="import_file"]').change(function() {
-                    $('#formImport').submit();
+                    // confirm
+                    Swal.fire({
+                        title: 'Konfirmasi',
+                        text: 'Apakah anda yakin ingin mengimpor data ini?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya',
+                        cancelButtonText: 'Tidak',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#formImport').submit();
+                        }
+                    });
                 });
             });
 
@@ -213,6 +231,10 @@
                     autoWidth: false,
                     ajax: '{{ route('admin.bank.index') }}',
                     columns: [{
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex'
+                        },
+                        {
                             data: 'sample_code',
                             name: 'sample_code'
                         },
@@ -256,7 +278,34 @@
                             data: 'action',
                             name: 'action'
                         },
-                    ]
+                    ],
+                    // hide citation
+                    columnDefs: [{
+                        targets: [8],
+                        visible: false,
+                        searchable: false
+                    }],
+                    /*
+                        dom: 'Bfrtip',
+                    buttons: [{
+                        extend: 'csv',
+                        filename: 'Data Sample',
+                        bom: true
+                    }, {
+                        extend: 'excel',
+                        filename: 'Data Sample',
+                        bom: true,
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            }
+                        }
+                    }, {
+                        extend: 'print',
+                        filename: 'Data Sample',
+                        bom: true
+                    }],
+                    */
                 });
             });
 

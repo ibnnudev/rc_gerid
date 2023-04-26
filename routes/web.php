@@ -5,11 +5,12 @@ use App\Http\Controllers\Admin\BankController;
 use App\Http\Controllers\Admin\CasesController;
 use App\Http\Controllers\Admin\CitationController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\TotalVisitorConttroller;
 use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\Admin\GenotipeController;
 use App\Http\Controllers\Admin\HivCaseController;
+use App\Http\Controllers\Admin\ImportRequestController;
 use App\Http\Controllers\Admin\TransmissionController;
+use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Frontend\FrontendController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,11 +27,13 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
+    // Dashboard
     Route::post('/filter-visitor', [DashboardController::class, 'filterVisitor'])->name('admin.dashboard.filter-visitor');
     Route::post('/filter-sample', [DashboardController::class, 'filterSample'])->name('admin.dashboard.filter-sample');
     Route::get('/', DashboardController::class)->name('admin.dashboard');
 
     // Bank Data
+    Route::get('bank/imported', [BankController::class, 'imported'])->name('admin.bank.imported');
     Route::get('bank/print', [BankController::class, 'print'])->name('admin.bank.print');
     Route::get('bank/get-data', [BankController::class, 'getData'])->name('admin.bank.get-data');
     Route::get('bank/advanced-search', [BankController::class, 'advancedSearch'])->name('admin.bank.advanced-search');
@@ -61,6 +64,19 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 
     // Citation
     Route::resource('citation', CitationController::class, ['as' => 'admin']);
+
+    // Management User
+    Route::post('user-management/role', [UserManagementController::class, 'role'])->name('admin.user-management.role');
+    Route::get('user-management/activate/{id}', [UserManagementController::class, 'activate'])->name('admin.user-management.activate');
+    Route::get('user-management/deactivate/{id}', [UserManagementController::class, 'deactivate'])->name('admin.user-management.deactivate');
+    Route::resource('user-management', UserManagementController::class, ['as' => 'admin']);
+
+    // Import Request
+    Route::post('import-request/import', [ImportRequestController::class, 'import'])->name('admin.import-request.import');
+    Route::post('import-request/validation-file', [ImportRequestController::class, 'validationFile'])->name('admin.import-request.validation-file');
+    Route::post('import-request/change-status', [ImportRequestController::class, 'changeStatus'])->name('admin.import-request.change-status');
+    Route::get('import-request/admin', [ImportRequestController::class, 'admin'])->name('admin.import-request.admin');
+    Route::resource('import-request', ImportRequestController::class, ['as' => 'admin']);
 });
 
 require __DIR__ . '/auth.php';

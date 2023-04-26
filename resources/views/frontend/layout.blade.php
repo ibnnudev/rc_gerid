@@ -61,7 +61,7 @@
                 <div class=" flex flex-wrap items-center justify-between mx-2 max-w-screen px-4 lg:px-2 lg:mx-auto">
                     <a href="{{ route('home') }}" class="flex items-center">
                         <img src="{{ asset('assets/application/gambar_logo.png') }}" class=" pr-3 h-12 lg:h-20" alt="RC-GERID LOGO" />
-                        <div class="columns-1 invisible lg:visible">
+                        <div class="xl:columns-1 hidden lg:block">
                             <h3 class="text-lg font-bold">Persebaran</h3>
                             <p class="text-lg md:text-sm">Virus {{ $virus->name }}</p>
                         </div>

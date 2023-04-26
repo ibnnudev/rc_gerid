@@ -19,6 +19,7 @@ class Sample extends Model
 
     public $fillable = [
         'sample_code',
+        'file_code',
         'viruses_id',
         'gene_name',
         'sequence_data',

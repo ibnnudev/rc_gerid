@@ -39,6 +39,41 @@ Breadcrumbs::for('bank.advanced-search', function (BreadcrumbTrail $trail) {
     $trail->push('Pencarian Data', route('admin.bank.advanced-search'));
 });
 
+// Bank Data > Daftar File Terimport
+Breadcrumbs::for('bank.imported', function (BreadcrumbTrail $trail) {
+    $trail->parent('bank');
+    $trail->push('Daftar File Terimpor', route('admin.bank.imported'));
+});
+// Bank Data > Daftar Sekuen
+Breadcrumbs::for('bank.imported.user', function (BreadcrumbTrail $trail) {
+    $trail->parent('bank');
+    $trail->push('Daftar Sekuen', route('admin.bank.imported'));
+});
+
+// Import Request
+Breadcrumbs::for('import-request', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Daftar Permintaan', route('admin.import-request.index'));
+});
+
+// Import Request > Create
+Breadcrumbs::for('import-request.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('import-request');
+    $trail->push('Tambah Permintaan', route('admin.import-request.create'));
+});
+
+// Import Request > Edit
+Breadcrumbs::for('import-request.edit', function (BreadcrumbTrail $trail, $importRequest) {
+    $trail->parent('import-request');
+    $trail->push('Edit Permintaan', route('admin.import-request.edit', $importRequest->id));
+});
+
+// Import Request (Admin)
+Breadcrumbs::for('import-request.admin', function(BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Daftar Permintaan', route('admin.import-request.admin'));
+});
+
 
 // Penulis
 Breadcrumbs::for('author', function (BreadcrumbTrail $trail) {
@@ -177,4 +212,10 @@ Breadcrumbs::for('citation.edit', function (BreadcrumbTrail $trail, $citation) {
 Breadcrumbs::for('citation.show', function (BreadcrumbTrail $trail, $citation) {
     $trail->parent('citation', $citation->title);
     $trail->push('Detail', route('admin.citation.show', $citation->id));
+});
+
+// User Management
+Breadcrumbs::for('user-management', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Manajemen Pengguna', route('admin.user-management.index'));
 });

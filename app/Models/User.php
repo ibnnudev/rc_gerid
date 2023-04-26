@@ -49,4 +49,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Citation::class, 'users_id');
     }
+
+    public function importedBy()
+    {
+        return $this->hasMany(ImportRequest::class, 'imported_by');
+    }
+
+    public function acceptedBy()
+    {
+        return $this->hasMany(ImportRequest::class, 'accepted_by');
+    }
+
+    public function rejectedBy()
+    {
+        return $this->hasMany(ImportRequest::class, 'rejected_by');
+    }
 }

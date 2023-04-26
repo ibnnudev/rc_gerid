@@ -1,14 +1,31 @@
 @extends('frontend.layout')
 @include('frontend.component-map.mapMarker')
 @section('content')
+<style>
+.description {
+    font-size: 1.125rem; /* 18px */
+    line-height: 1.75rem; 
+}
+.description li {
+    margin-left: 50px;
+}
+.description ul {
+    list-style: disc;
+    display: inline;
+ }
+</style>
 
 <section class="bg-white mt-2 mb-2 ">
     <div class="grid grid-cols-1 gap-4 place-items-center max-w-screen px-4 shadow  lg:pb-8 lg:px-25  ">
         <div class="py-2">
              <img class="h-16 w-16 md:w-40 md:h-40 mx-auto mb-4 pt-4"  src="{{ $virus->image ? asset('images/' . $virus->image)  : asset('images/noimage.jpg') }}"  alt="">
             <p class="text-center text-xl font-bold pb-2">{{ $virus->name }}</p>
-            {{-- text  Desciption--}}
-                {!! htmlspecialchars_decode(nl2br($virus->description )) !!}
+            <div class="description text-justify">
+                {{-- text  Desciption --}}
+                {{-- {{ $virus->description }} --}}
+                {{-- {{ !$virus->description }} --}}
+                {!! htmlspecialchars_decode($virus->description ) !!}
+            </div>
             {{-- grid gambar --}}
         </div>
     </div>

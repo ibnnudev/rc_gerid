@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Jobs\NotifyUserLoggedIn;
 use App\Models\Visitor;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
@@ -30,11 +31,12 @@ class AuthenticatedSessionController extends Controller
             $request->authenticate();
             $request->session()->regenerate();
 
-            Visitor::create([
-                'ip_address' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-                'date'       => date('Y-m-d')
-            ]);
+            if (Auth::user()->is_active == 0) {
+                Auth::guard('web')->logout();
+                return redirect()->back()->with('error', 'Akun kamu belum aktif, silahkan hubungi admin');
+            }
+
+            dispatch(new NotifyUserLoggedIn);
 
             return redirect()->intended(RouteServiceProvider::HOME);
         } catch (\Throwable $th) {
