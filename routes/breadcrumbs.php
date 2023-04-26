@@ -56,10 +56,36 @@ Breadcrumbs::for('import-request', function (BreadcrumbTrail $trail) {
     $trail->push('Daftar Permintaan', route('admin.import-request.index'));
 });
 
+// Import Request > Detail
+Breadcrumbs::for('import-request.show', function (BreadcrumbTrail $trail, $importRequest) {
+    $trail->parent('import-request');
+    $trail->push($importRequest->file_code, route('admin.import-request.show', $importRequest->id));
+});
+
 // Import Request > Create
 Breadcrumbs::for('import-request.create', function (BreadcrumbTrail $trail) {
     $trail->parent('import-request');
     $trail->push('Tambah Permintaan', route('admin.import-request.create'));
+});
+
+// Import Request > Create Single Data
+Breadcrumbs::for('import-request.create-single', function (BreadcrumbTrail $trail, $fileCode) {
+    $trail->parent('import-request');
+    $trail->push($fileCode);
+    $trail->push('Tambah Permintaan', route('admin.import-request.create-single', $fileCode));
+});
+
+// Import Request > Detail Single Data
+Breadcrumbs::for('import-request.show-single', function (BreadcrumbTrail $trail, $sample) {
+    $trail->parent('import-request');
+    $trail->push($sample->sample_code, route('admin.import-request.show-single', $sample->id));
+});
+
+// Import Request > Edit Single Data
+Breadcrumbs::for('import-request.edit-single', function (BreadcrumbTrail $trail, $sample) {
+    $trail->parent('import-request');
+    $trail->push($sample->file_code, route('admin.import-request.show-single', $sample->id));
+    $trail->push('Edit Permintaan', route('admin.import-request.edit-single', $sample->id));
 });
 
 // Import Request > Edit

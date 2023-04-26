@@ -277,9 +277,7 @@ class BankController extends Controller
         } else {
             if ($request->ajax()) {
                 return datatables()
-                    ->of(
-                        $this->sample->get()
-                    )
+                    ->of($this->sample->get()->where('created_by', auth()->user()->id))
                     ->addColumn('sample_code', function ($sample) {
                         return $sample->sample_code ?? null;
                     })

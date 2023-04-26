@@ -2,13 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\ImportRequest;
+use App\Observers\ImportRequestObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         $this->app->bind(\App\Interfaces\AuthorInterface::class, \App\Repositories\AuthorRepository::class);
@@ -26,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        ImportRequest::observe(ImportRequestObserver::class);
     }
 }

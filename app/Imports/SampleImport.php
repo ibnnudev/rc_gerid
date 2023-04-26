@@ -111,6 +111,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
             'genotipes_id'  => $genotipe,
             'province_id'   => $province,
             'regency_id'    => $regency,
+            'created_by'    => auth()->user()->id,
         ];
 
         return new Sample($data);

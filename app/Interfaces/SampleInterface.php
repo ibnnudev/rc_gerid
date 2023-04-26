@@ -16,4 +16,5 @@ interface SampleInterface {
     // Sequence
     public function deleteByFileCode($fileCode);
     public function recoveryByFileCode($fileCode);
+    public function getByFileCode($fileCode);
 }

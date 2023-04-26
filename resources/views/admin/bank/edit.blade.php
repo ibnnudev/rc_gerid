@@ -36,8 +36,7 @@
                             Sampel : <span class="font-semibold"
                                 id="pickup_date">{{ date('m/Y', strtotime($sample->pickup_date)) }}</span>
                         </small>
-                        <input hidden name="pickup_date"
-                            :value="{{ date('m/Y', strtotime($sample->pickup_date)) }}">
+                        <input hidden name="pickup_date" :value="{{ date('m/Y', strtotime($sample->pickup_date)) }}">
                     </div>
                 </div>
 
@@ -55,6 +54,7 @@
                         </option>
                     @endforeach
                 </x-select>
+                <x-input id="file_code" label="Kode File" name="file_code" type="text" class="mb-3" :value="$sample->file_code" />
             </div>
             <div class="md:grid md:grid-cols-4 gap-x-4">
                 <x-input id="place" label="Tempat Pengambilan Sampel" name="place" type="text"
@@ -116,7 +116,7 @@
                 <span>
                     <strong>Info!</strong> Jika judul artikel tidak ada, silahkan tambah terlebih dahulu.
                     {{-- klik link dibawah ini --}}
-                    <a href="{{route('admin.citation.create')}}" class="text-primary underline">Tambah Sitasi</a>
+                    <a href="{{ route('admin.citation.create') }}" class="text-primary underline">Tambah Sitasi</a>
                 </span>
             </div>
         </div>

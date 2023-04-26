@@ -70,6 +70,7 @@ class SampleRepository implements SampleInterface
             $sample = $this->sample->create([
                 'sample_code'        => $data['sample_code'],
                 'viruses_id'         => $data['viruses_id'],
+                'file_code'          => $data['file_code'] ?? null,
                 'gene_name'          => $data['gene_name'],
                 'sequence_data'      => $data['sequence_data'] ?? null,
                 'place'              => $data['place'],
@@ -78,8 +79,9 @@ class SampleRepository implements SampleInterface
                 'pickup_date'        => date('Y-m-d', strtotime($data['pickup_date'])),
                 'citation_id'        => isset($data['new_title']) ? $citation->id : $data['citation_id'],
                 'genotipes_id'       => $data['genotipes_id'],
-                'virus_code'         => $this->virus->generateVirusCode(),
+                'virus_code'         => $this->generateVirusCode($data['viruses_id']),
                 'sequence_data_file' => $data['sequence_data_file'] ?? null,
+                'created_by'         => auth()->user()->id,
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -87,6 +89,20 @@ class SampleRepository implements SampleInterface
         }
 
         DB::commit();
+    }
+
+    public function generateVirusCode($virus_id)
+    {
+        // make combination: virus_id + count of sample
+        $virus = $this->virus->find($virus_id);
+        $count = $this->sample->where('viruses_id', $virus_id)->count();
+        $count = str_pad($count, 3, '0', STR_PAD_LEFT);
+
+        $virusName = str_replace(' ', '-', $virus->name);
+        $virusName = strtoupper($virusName);
+
+        $code = $virusName . '-' . $count;
+        return $code;
     }
 
     public function update($data, $id)
@@ -114,6 +130,7 @@ class SampleRepository implements SampleInterface
             $sample->update([
                 'sample_code'        => $data['sample_code'],
                 'viruses_id'         => $data['viruses_id'],
+                'file_code'          => $data['file_code'] ?? null,
                 'gene_name'          => $data['gene_name'],
                 'sequence_data'      => $data['sequence_data'] ?? null,
                 'place'              => $data['place'],
@@ -134,7 +151,11 @@ class SampleRepository implements SampleInterface
 
     public function find($id)
     {
-        return $this->sample->with('virus', 'genotipe')->find($id);
+        if (auth()->user()->role != 'admin') {
+            return $this->sample->withoutGlobalScope(HasActiveScope::class)->with('virus', 'genotipe')->find($id);
+        } else {
+            $this->sample->with('virus', 'genotipe')->find($id);
+        }
     }
 
     public function destroy($id)
@@ -180,25 +201,25 @@ class SampleRepository implements SampleInterface
     public function advancedSearch($data)
     {
         return $this->sample->with('virus', 'genotipe', 'province')
-        ->when(isset($data['sample_code']), function ($query) use ($data) {
-            return $query->where('sample_code', 'like', '%' . $data['sample_code'] . '%');
-        })
-        ->when(isset($data['virus_id']), function ($query) use ($data) {
-            return $query->where('viruses_id', $data['virus_id']);
-        })
-        ->when(isset($data['gene_name']), function ($query) use ($data) {
-            return $query->where('gene_name', 'like', '%' . $data['gene_name'] . '%');
-        })
-        ->when(isset($data['genotipe_id']), function ($query) use ($data) {
-            return $query->where('genotipes_id', $data['genotipe_id']);
-        })
-        ->when(isset($data['province_id']), function ($query) use ($data) {
-            return $query->where('province_id', $data['province_id']);
-        })
-        ->when(isset($data['pickup_date']), function ($query) use ($data) {
-            return $query->whereYear('pickup_date', $data['pickup_date']);
-        })
-        ->get();
+            ->when(isset($data['sample_code']), function ($query) use ($data) {
+                return $query->where('sample_code', 'like', '%' . $data['sample_code'] . '%');
+            })
+            ->when(isset($data['virus_id']), function ($query) use ($data) {
+                return $query->where('viruses_id', $data['virus_id']);
+            })
+            ->when(isset($data['gene_name']), function ($query) use ($data) {
+                return $query->where('gene_name', 'like', '%' . $data['gene_name'] . '%');
+            })
+            ->when(isset($data['genotipe_id']), function ($query) use ($data) {
+                return $query->where('genotipes_id', $data['genotipe_id']);
+            })
+            ->when(isset($data['province_id']), function ($query) use ($data) {
+                return $query->where('province_id', $data['province_id']);
+            })
+            ->when(isset($data['pickup_date']), function ($query) use ($data) {
+                return $query->whereYear('pickup_date', $data['pickup_date']);
+            })
+            ->get();
     }
 
     public function deleteByFileCode($fileCode)
@@ -229,7 +250,10 @@ class SampleRepository implements SampleInterface
         DB::beginTransaction();
 
         try {
-            $this->sample->withoutGlobalScope(HasActiveScope::class)->where('file_code', $fileCode)->update([
+            $this->sample->withoutGlobalScope(HasActiveScope::class)->where([
+                ['file_code', $fileCode],
+                ['is_active', 0],
+            ])->update([
                 'is_active' => 1,
             ]);
         } catch (\Throwable $th) {
@@ -245,5 +269,17 @@ class SampleRepository implements SampleInterface
         }
 
         DB::commit();
+    }
+
+    public function getByFileCode($fileCode)
+    {
+        if (auth()->user()->role != 'admin') {
+            return $this->sample->withoutGlobalScope(HasActiveScope::class)
+                ->where('file_code', $fileCode)
+                ->with('virus', 'genotipe')->get();
+        } else {
+            return $this->sample->where('file_code', $fileCode)
+                ->with('virus', 'genotipe')->get();
+        }
     }
 }
