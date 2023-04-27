@@ -95,9 +95,10 @@ class ImportRequestController extends Controller
     public function show(string $id, Request $request)
     {
         $importRequest = $this->importRequest->find($id);
+        $sample = $this->sample->getByFileCode($importRequest->file_code)->where('is_queue', 1);
         if ($request->ajax()) {
             return datatables()
-                ->of($this->sample->getByFileCode($importRequest->file_code)->where('is_active', 2))
+                ->of($sample)
                 ->addColumn('sample_code', function ($sample) {
                     return $sample->sample_code ?? null;
                 })
@@ -132,7 +133,7 @@ class ImportRequestController extends Controller
                     return view('admin.bank.columns.file_sequence', ['sample' => $sample]);
                 })
                 ->addColumn('status', function ($sample) {
-                    return $sample->is_active == 2 ? 'Menunggu' : 'Diterima';
+                    return $sample->is_active == 1 ? 'Diterima' : ($sample->is_active == 2 ? 'Ditolak' : 'Belum Diverifikasi');
                 })
                 ->addColumn('action', function ($sample) {
                     return view('admin.bank.import-request.detail-columns.action', [
@@ -337,6 +338,23 @@ class ImportRequestController extends Controller
         } catch (\Throwable $th) {
             dd($th->getMessage());
             return back()->with('error', 'Data gagal disimpan');
+        }
+    }
+
+    public function changeStatusSingle(Request $request, $id)
+    {
+        try {
+            $this->importRequest->changeStatusSingle($id, $request->status);
+            Mail::send(new ActivationSingleRequest(auth()->user(), $request->status));
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Status berhasil diubah'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $th->getMessage()
+            ]);
         }
     }
 }

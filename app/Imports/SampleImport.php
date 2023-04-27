@@ -9,7 +9,6 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Sample;
 use App\Models\Virus;
-use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -108,6 +107,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
             'place'         => $place,
             'pickup_date'   => $pickup_date,
             'citation_id'   => $citation_id,
+            'virus_code'    => $this->generateVirusCode($virus),
             'genotipes_id'  => $genotipe,
             'province_id'   => $province,
             'regency_id'    => $regency,
@@ -115,6 +115,20 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
         ];
 
         return new Sample($data);
+    }
+
+    public function generateVirusCode($virus_id)
+    {
+        // make combination: virus_id + count of sample
+        $virus = Virus::find($virus_id);
+        $count = Sample::where('viruses_id', $virus_id)->count();
+        $count = str_pad($count, 3, '0', STR_PAD_LEFT);
+
+        $virusName = str_replace(' ', '-', $virus->name);
+        $virusName = strtoupper($virusName);
+
+        $code = $virusName . '-' . $count;
+        return $code;
     }
 
     public function citation($title, $authors)

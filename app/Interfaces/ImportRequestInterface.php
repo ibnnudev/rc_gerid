@@ -15,4 +15,5 @@ interface ImportRequestInterface
     public function storeSingle($data);
     public function updateSingle($data, $id);
     public function findByFileCode($fileCode);
+    public function changeStatusSingle($id, $status);
 }

@@ -15,16 +15,65 @@
                     <th>Tempat</th>
                     <th>Provinsi</th>
                     <th>Gen</th>
-                    <th>Sitasi</th>
+                    <th>Status</th>
+                    <th>
+                        @if (auth()->user()->role == 'admin')
+                            Status Aktifasi
+                        @else
+                            Menu
+                        @endif
+                    </th>
                     <th>File Sequence</th>
-                    <th></th>
-                    <th>Menu</th>
+                    <th>Sitasi</th>
                 </tr>
             </thead>
         </table>
     </x-card-container>
     @push('js-internal')
         <script>
+            function changeStatus(id, value) {
+                Swal.fire({
+                    title: 'Apakah anda yakin?',
+                    text: "Anda akan mengubah status permintaan ini!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#19743b',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Ubah!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let url = '{{route('admin.import-request.change-status-single', ':id')}}';
+                        url = url.replace(':id', id);
+                        $.ajax({
+                            url: url,
+                            type: "PUT",
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                id: id,
+                                status: value
+                            },
+                            success: function(response) {
+                                if (response.status == 'success') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil',
+                                        text: response.message
+                                    });
+                                    $('#singleRequests').DataTable().ajax.reload();
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Gagal',
+                                        text: response.message
+                                    });
+                                }
+                            }
+                        })
+                    }
+                })
+            }
+
             $(function() {
                 $('#singleRequests').DataTable({
                     responsive: true,
@@ -69,14 +118,6 @@
                             name: 'gene_name'
                         },
                         {
-                            data: 'citation',
-                            name: 'citation'
-                        },
-                        {
-                            data: 'file_sequence',
-                            name: 'file_sequence'
-                        },
-                        {
                             data: 'status',
                             name: 'status'
                         },
@@ -84,13 +125,15 @@
                             data: 'action',
                             name: 'action'
                         },
+                        {
+                            data: 'file_sequence',
+                            name: 'file_sequence'
+                        },
+                        {
+                            data: 'citation',
+                            name: 'citation'
+                        }
                     ],
-                    // hide citation
-                    columnDefs: [{
-                        targets: [9],
-                        visible: false,
-                        searchable: false
-                    }, ],
                 });
             });
         </script>
