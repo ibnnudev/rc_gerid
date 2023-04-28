@@ -106,7 +106,7 @@
             <div class="sm:flex">
                 <x-link-button route="{{ route('admin.bank.imported') }}" class="mr-2" color="gray">
                     <i class="fas fa-file-import mr-2"></i>
-                    Daftar File Terimpor
+                    Daftar Permintaan
                 </x-link-button>
                 <x-link-button id="btnDownload" class="mr-2"
                     route="{{ asset('assets/file/format data sekuen.xlsx') }}" color="gray" target="_blank">

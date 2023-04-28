@@ -7,4 +7,8 @@
             <option value="rejected" {{ $data->status == 2 ? 'selected' : '' }}>Tolak</option>
         </select>
     </div>
+@elseif($data->status == 3 && $data->removed_by == null)
+    <x-link-button route="{{route('admin.import-request.show', $data->id)}}" color="gray">
+        Lihat Permintaan Tunggal
+    </x-link-button>
 @endif

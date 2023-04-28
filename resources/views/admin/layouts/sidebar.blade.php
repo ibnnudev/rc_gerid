@@ -97,8 +97,7 @@
                 <x-sidebar-menu name="Daftar Permintaan" icon="fas fa-code-pull-request"
                     route="{{ route('admin.import-request.index') }}"
                     active="{{ request()->routeIs('admin.import-request.*') }}" />
-                <x-sidebar-menu name="Daftar Sekuen" icon="fas fa-bank"
-                    route="{{ route('admin.bank.imported') }}"
+                <x-sidebar-menu name="Daftar Sekuen" icon="fas fa-bank" route="{{ route('admin.bank.imported') }}"
                     active="{{ request()->routeIs('admin.bank.imported') }}" />
             @endif
 
@@ -116,8 +115,7 @@
             </li>
         </ul>
 
-        <!--
-            <div id="dropdown-cta" class="p-4 mt-12 rounded-2xl border-b border-gray-200 sm:rounded-2xl shadow-xl"
+        <div id="dropdown-cta" class="p-4 mt-12 rounded-2xl border-b border-gray-200 sm:rounded-2xl shadow-xl"
             role="alert">
             <div class="flex items-center text-center justify-center flex-col">
                 <div class="avatar">
@@ -134,12 +132,11 @@
                 </p>
 
                 {{-- open profile button light --}}
-                <a href=""
+                {{-- <a href=""
                     class="w-full px-4 py-2 mt-6 text-xs font-medium bg-gray-100 border border-transparent rounded-md shadow-sm">
                     <span>Buka Profil</span>
-                </a>
+                </a> --}}
             </div>
         </div>
-            !-->
     </div>
 </aside>

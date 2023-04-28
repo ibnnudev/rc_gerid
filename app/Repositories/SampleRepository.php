@@ -151,11 +151,7 @@ class SampleRepository implements SampleInterface
 
     public function find($id)
     {
-        if (auth()->user()->role != 'admin') {
-            return $this->sample->withoutGlobalScope(HasActiveScope::class)->with('virus', 'genotipe')->find($id);
-        } else {
-            $this->sample->with('virus', 'genotipe')->find($id);
-        }
+        return $this->sample->withoutGlobalScope(HasActiveScope::class)->with('virus', 'genotipe')->find($id);
     }
 
     public function destroy($id)
@@ -273,13 +269,8 @@ class SampleRepository implements SampleInterface
 
     public function getByFileCode($fileCode)
     {
-        if (auth()->user()->role != 'admin') {
-            return $this->sample->withoutGlobalScope(HasActiveScope::class)
-                ->where('file_code', $fileCode)
-                ->with('virus', 'genotipe')->get();
-        } else {
-            return $this->sample->where('file_code', $fileCode)
-                ->with('virus', 'genotipe')->get();
-        }
+        return $this->sample->withoutGlobalScope(HasActiveScope::class)
+            ->where('file_code', $fileCode)
+            ->with('virus', 'genotipe')->get();
     }
 }

@@ -74,6 +74,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::resource('user-management', UserManagementController::class, ['as' => 'admin']);
 
     // Import Request
+    Route::put('import-request/change-status-single/{id}', [ImportRequestController::class, 'changeStatusSingle'])->name('admin.import-request.change-status-single');
     Route::put('import-request/update-single/{id}', [ImportRequestController::class, 'updateSingle'])->name('admin.import-request.update-single');
     Route::get('import-request/show-single/{id}', [ImportRequestController::class, 'showSingle'])->name('admin.import-request.show-single');
     Route::get('import-request/edit-single/{id}', [ImportRequestController::class, 'editSingle'])->name('admin.import-request.edit-single');

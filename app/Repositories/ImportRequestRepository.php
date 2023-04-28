@@ -305,4 +305,22 @@ class ImportRequestRepository implements ImportRequestInterface
 
         DB::commit();
     }
+
+    public function changeStatusSingle($id, $status)
+    {
+        DB::beginTransaction();
+
+        try {
+            $this->sample
+            ->withoutGlobalScope(HasActiveScope::class)
+            ->find($id)->update([
+                'is_active' => $status
+            ]);
+        } catch (\Throwable $th) {
+            throw $th;
+            DB::rollBack();
+        }
+
+        DB::commit();
+    }
 }

@@ -32,7 +32,8 @@ class Sample extends Model
         'virus_code',
         'is_active',
         'sequence_data_file',
-        'created_by'
+        'created_by',
+        'is_queue'
     ];
 
     // Relationship

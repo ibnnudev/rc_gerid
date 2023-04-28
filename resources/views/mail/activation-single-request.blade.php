@@ -472,13 +472,13 @@
                                             <h1>Welcome, {{ $user['name'] }}!</h1>
                                             <p>Thanks for your contribution to our community. <br>
                                                 @if ($status == 1)
-                                                    Congratulation your request import file has been accepted <br>
-                                                    <b>You can import your file now!</b>
+                                                    Congratulation your request import file has been accepted
                                                 @elseif($status == 2)
                                                     Wait for our next <b>activation email</b>! <br>
                                                     Thanks,
                                                 @elseif($status == 3)
-                                                    Sorry your request import file has been rejected
+                                                    Sorry your request import file has been rejected, <br>
+                                                    <b>please contact our admin for more information!</b>
                                                 @endif
                                             </p>
                                             <p>
