@@ -11,6 +11,7 @@ use App\Models\Virus;
 use App\Properties\Years;
 use App\Repositories\HivCaseRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FrontendController extends Controller
 {
@@ -46,6 +47,7 @@ class FrontendController extends Controller
 
     public function listCitations(Request $request)
     {
+        // return $this->frontend->listCitations($request);
         return view('frontend.citation.listCitation', [
             'request' => $request,
             'virus' => $this->frontend->getVirus($request['virus_id']),
@@ -55,21 +57,32 @@ class FrontendController extends Controller
 
     public function detailCitation($id)
     {
-        $virus_id = $this->frontend->detailCitation($id)->sample[0]->viruses_id;
+        // version 1
+        // $virus_id = $this->frontend->detailCitation($id)->sample[0]->viruses_id;
+        // return view('frontend.citation.detail', [
+        //     'request' => NULL,
+        //     'virus' => $this->frontend->getVirus($virus_id),
+        //     'citation' => $this->frontend->detailCitation($id)
+        // ]);
+        $sample = DB::table('samples')->where('id', $id)->first();
+        $virus = DB::table('viruses')->where('id', $sample->viruses_id)->first();
+        // return $this->frontend->detailCitation($id);
         return view('frontend.citation.detail', [
             'request' => NULL,
-            'virus' => $this->frontend->getVirus($virus_id),
+            'virus' => $virus,
             'citation' => $this->frontend->detailCitation($id)
         ]);
     }
 
     public function detailFasta($id)
     {
-        // return $this->frontend->detailFasta($id);
-        $virus_id = $this->frontend->detailFasta($id)->sample[0]->viruses_id;
+        // $virus_id = $this->frontend->detailFasta($id)->sample[0]->viruses_id;
+        // return $id;
+        $sample = DB::table('samples')->where('id', $id)->first();
+        $virus = DB::table('viruses')->where('id', $sample->viruses_id)->first();
         return view('frontend.citation.fasta', [
             'request' => NULL,
-            'virus' => $this->frontend->detailFasta($virus_id),
+            'virus' => $virus,
             'citation' => $this->frontend->detailFasta($id)
         ]);
     }

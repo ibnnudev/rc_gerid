@@ -7,7 +7,7 @@
 
         <!-- Email Address -->
         <x-input id="email" label="Email" name="email" type="email" required autofocus />
-
+        <p id="result" class="text-xs lg:text-sm px-2"></p>
         <!-- Password -->
         <x-input id="password" label="Password" name="password" type="password" required />
 

@@ -1,13 +1,18 @@
 @extends('frontend.layout')
+<style>
+    table.dataTable td {
+        word-break: break-word;
+    }
+</style>
 @section('content')
-    <section class="px-5 align-top"> 
+    <section class="px-5 py-2 align-top "> 
         <p id="tableInfo" class="pt-2"></p>
         <div class="dt-responsive table-responsive">
             <table class="table nowrap" style="border:none" id="samplesTable">
                 <thead style="display: none">
                     <tr>
                         <th style="width: 1em">Column 1</th>
-                        <th style="width: 90%">Column 2</th>
+                        <th style="width: 90%; background-color: red">Column 2</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -17,12 +22,12 @@
                             <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something">
                             <p class="text-center">{{ $loop->iteration }}</p>
                         </td>
-                        <td style="width: 99%;border:none">
+                        <td style="width: 10px;  ">
                             <div class="text-start">
                                 <div class="mb-1 text-xs text-gray-400">{{ $item['user'] }}</div>
-                                <h5 class="d-inline-block pb-2 text-blue-500 text-lg">
-                                    <a href="{{ route('detailCitation', $item['id_citation']) }}" class="break_word">{{ $item['title'] }}</a>
-                                </h5>
+                                <div class="container-title" >
+                                    <a href="{{ route('detailCitation', $item['id_citation']) }}" class="text-blue-500" style="word-break: break-word;white-space:normal;">{{ $item['title'] }}</a>
+                                </div>
                                 <h6 class="pb-0">{{ $item['province'].",".$item['regency'] }}</h6>
                                 <p>{{ $item['author']->name.",".$item['author']->member }} | {{ $item['monthYear'] }}</p>
                                 <span class="text-gray-400">Accession NCBI : {{ $item['accession_ncbi'] }}</span><span class="text-gray-400"> | Accession INDAGI : {{ $item['accession_indagi'] }}</span>

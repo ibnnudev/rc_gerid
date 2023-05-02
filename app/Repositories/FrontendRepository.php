@@ -9,8 +9,10 @@ use App\Models\District;
 use App\Models\HivCases;
 use App\Models\Province;
 use App\Models\Regency;
+use App\Models\Sample;
 use App\Models\User;
 use App\Models\Virus;
+use Illuminate\Support\Facades\DB;
 
 class FrontendRepository implements FrontendInterface
 {
@@ -20,16 +22,17 @@ class FrontendRepository implements FrontendInterface
     private $citation;
     private $user;
     private $author;
+    private $sample;
 
 
-
-    public function __construct(Virus $virus, HivCases $hivCases, Citation $citation ,User $user, Author $author) 
+    public function __construct(Virus $virus, HivCases $hivCases, Citation $citation, User $user, Author $author, Sample $sample)
     {
         $this->virus = $virus;
         $this->hivCases = $hivCases;
         $this->citation = $citation;
         $this->user = $user;
         $this->author = $author;
+        $this->sample = $sample;
     }
 
     public function getVirus($id)
@@ -45,49 +48,149 @@ class FrontendRepository implements FrontendInterface
     public function listCitations($request)
     {
         // get data from filtering
-        $data =  $this->citation->with(['author', 'sampleCitation'])
-        ->whereHas('sample', function ($q) use ($request){
-            $q->where('viruses_id',$request['virus_id'])
-            ->Orwhere('sequence_data', 'like', '%' . $request['q'] . '%')
-            ->OrWhere('gene_name', 'like', '%' . $request['q'] . '%')
-            ->whereHas('virus', function ($r) use ($request){
-                $r->Orwhere('name', '=', $request['q']);
-            })
-            ->whereHas('genotipe', function ($r) use ($request){
-                $r->Orwhere('genotipe_code', '=', $request['q']);
-            });
-        })
-        ->wherehas('author', function ($q) use ($request){
-            $q->Orwhere('name', 'like', '%' . $request['q'] . '%'); 
-        })
-        ->get();
-        
-        // mapping data
+
+        // one citation has many samples
+        // $data =  $this->citation->with(['author', 'sampleCitation'])
+        //     ->whereHas('sample', function ($q) use ($request) {
+        //         $q->where('viruses_id', $request['virus_id'])
+        //             ->Orwhere('sequence_data', 'like', '%' . $request['q'] . '%')
+        //             ->OrWhere('gene_name', 'like', '%' . $request['q'] . '%')
+        //             ->whereHas('virus', function ($r) use ($request) {
+        //                 $r->Orwhere('name', '=', $request['q']);
+        //             })
+        //             ->whereHas('genotipe', function ($r) use ($request) {
+        //                 $r->Orwhere('genotipe_code', '=', $request['q']);
+        //             });
+        //     })
+        //     ->wherehas('author', function ($q) use ($request) {
+        //         $q->Orwhere('name', 'like', '%' . $request['q'] . '%');
+        //     })
+        //     ->get();
+
+        // return $data->map(function ($item, $key) {
+        //     return [
+        //         'id_citation' => $item['id'],
+        //         'user' => $this->user->getName($item['users_id']),
+        //         'title' => $item->title,
+        //         'province' => $this->getProvince($item->sample[0]->province_id),
+        //         'regency' => $this->getRegency($item->sample[0]->regency_id),
+        //         'author' => $this->getAuthor($item->author_id),
+        //         'monthYear' => $this->getMonthYear($item->sample[0]->pickup_date),
+        //         // accession ncbi from sample code
+        //         'accession_ncbi' => $item->sample[0]->sample_code,
+        //         // accession indagi from virus code
+        //         'accession_indagi' => $item->sample[0]->virus_code,
+        //     ];
+        // });
+        // return $request;
+        $data = DB::table('samples')
+            ->select('samples.id as id', 'samples.province_id', 'samples.regency_id', 'samples.pickup_date', 'samples.virus_code', 'samples.sample_code', 'users.name', 'citations.title', 'citations.author_id', 'samples.viruses_id')
+            ->join('citations', 'citations.id', '=', 'samples.citation_id')
+            ->join(
+                'users',
+                'users.id',
+                '=',
+                'samples.created_by'
+            )
+            ->join('viruses', 'viruses.id', '=', 'samples.viruses_id')
+            ->join('genotipes', 'genotipes.id', '=', 'samples.genotipes_id')
+            ->where('samples.viruses_id', $request['virus_id'])
+            ->Orwhere('genotipes.genotipe_code', $request['q'])
+            ->get();
+
+        // return $data;
         return $data->map(function ($item, $key) {
             return [
-                'id_citation' => $item['id'],
-                'user' => $this->user->getName($item['users_id']),    
+                'id_citation' => $item->id,
+                'user' => $item->name,
                 'title' => $item->title,
-                'province' => $this->getProvince($item->sample[0]->province_id),
-                'regency' => $this->getRegency($item->sample[0]->regency_id),
+                'province' => $this->getProvince($item->province_id),
+                'regency' => $this->getRegency($item->regency_id),
                 'author' => $this->getAuthor($item->author_id),
-                'monthYear' => $this->getMonthYear($item->sample[0]->pickup_date),
-                // accession ncbi from sample code
-                'accession_ncbi' => $item->sample[0]->sample_code,
-                // accession indagi from virus code
-                'accession_indagi' => $item->sample[0]->virus_code,
+                'monthYear' => $this->getMonthYear($item->pickup_date),
+                // // accession ncbi from sample code
+                'accession_ncbi' => $item->sample_code,
+                // // accession indagi from virus code
+                'accession_indagi' => $item->virus_code,
             ];
         });
     }
 
     public function detailCitation($id)
     {
-        return $this->citation->with('author','sample')->where('id', $id)->first();   
+        $data = DB::table('samples')
+            ->where('samples.id', '=', $id)
+            ->select('samples.id as id', 'samples.sequence_data', 'samples.gene_name', 'samples.province_id', 'samples.regency_id', 'samples.pickup_date', 'samples.virus_code', 'samples.sample_code', 'users.name', 'citations.title', 'citations.author_id', 'samples.viruses_id')
+            // ->select('samples.id', 'samples.province_id', 'samples.regency_id', 'samples.pickup_date', 'samples.virus_code', 'samples.sample_code', 'users.name', 'citations.title', 'citations.author_id', 'samples.viruses_id')
+            ->join('citations', 'citations.id', '=', 'samples.citation_id')
+            ->join(
+                'users',
+                'users.id',
+                '=',
+                'samples.created_by'
+            )
+            ->join('viruses', 'viruses.id', '=', 'samples.viruses_id')
+            ->join('genotipes', 'genotipes.id', '=', 'samples.genotipes_id')
+            // ->where('samples.viruses_id', $request['virus_id'])
+            // ->Orwhere('genotipes.genotipe_code', $request['q'])
+            ->get();
+
+        return $data->map(function ($item, $key) {
+            return [
+                'id' => $item->id,
+                'user' => $item->name,
+                'title' => $item->title,
+                'gene_name' => $item->gene_name,
+                'sequence_data' => $item->sequence_data,
+                'province' => $this->getProvince($item->province_id),
+                'regency' => $this->getRegency($item->regency_id),
+                'author' => $this->getAuthor($item->author_id),
+                'monthYear' => $this->getMonthYear($item->pickup_date),
+                // // accession ncbi from sample code
+                'accession_ncbi' => $item->sample_code,
+                // // accession indagi from virus code
+                'accession_indagi' => $item->virus_code,
+            ];
+        })[0];
+        // return $this->citation->with('author', 'sample')->where('id', $id)->first();
     }
 
     public function detailFasta($id)
     {
-        return $this->citation->with('sample')->where('id', $id)->first();   
+        $data = DB::table('samples')
+            ->where('samples.id', '=', $id)
+            ->select('samples.id as id', 'samples.sequence_data', 'samples.gene_name', 'samples.province_id', 'samples.regency_id', 'samples.pickup_date', 'samples.virus_code', 'samples.sample_code', 'users.name', 'citations.title', 'citations.author_id', 'samples.viruses_id')
+            ->join('citations', 'citations.id', '=', 'samples.citation_id')
+            ->join(
+                'users',
+                'users.id',
+                '=',
+                'samples.created_by'
+            )
+            ->join('viruses', 'viruses.id', '=', 'samples.viruses_id')
+            ->join('genotipes', 'genotipes.id', '=', 'samples.genotipes_id')
+            // ->where('samples.viruses_id', $request['virus_id'])
+            // ->Orwhere('genotipes.genotipe_code', $request['q'])
+            ->get();
+
+        return $data->map(function ($item, $key) {
+            return [
+                'id' => $item->id,
+                'user' => $item->name,
+                'title' => $item->title,
+                'gene_name' => $item->gene_name,
+                'sequence_data' => $item->sequence_data,
+                'province' => $this->getProvince($item->province_id),
+                'regency' => $this->getRegency($item->regency_id),
+                'author' => $this->getAuthor($item->author_id),
+                'monthYear' => $this->getMonthYear($item->pickup_date),
+                // // accession ncbi from sample code
+                'accession_ncbi' => $item->sample_code,
+                // // accession indagi from virus code
+                'accession_indagi' => $item->virus_code,
+            ];
+        });
+        // return $this->citation->with('sample')->where('id', $id)->first();
     }
 
     public function getProvince($districtId)
@@ -97,6 +200,7 @@ class FrontendRepository implements FrontendInterface
 
     public function getRegency($regencyId)
     {
+        return $regencyId;
         return Regency::where('id', $regencyId)->first()->name;
     }
 
@@ -107,8 +211,8 @@ class FrontendRepository implements FrontendInterface
 
     public function getMonthYear($date)
     {
-        $month = array (1 =>   'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni','Juli','Agustus','September','Oktober','November','Desember');
+        $month = array(1 =>   'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
         $split = explode('-', $date);
-        return $month[ (int)$split[1] ] . " " . $split[0];
+        return $month[(int)$split[1]] . " " . $split[0];
     }
 }
