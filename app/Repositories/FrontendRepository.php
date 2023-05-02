@@ -157,9 +157,10 @@ class FrontendRepository implements FrontendInterface
 
     public function detailFasta($id)
     {
+        // return $id;
         $data = DB::table('samples')
             ->where('samples.id', '=', $id)
-            ->select('samples.id as id', 'samples.sequence_data', 'samples.gene_name', 'samples.province_id', 'samples.regency_id', 'samples.pickup_date', 'samples.virus_code', 'samples.sample_code', 'users.name', 'citations.title', 'citations.author_id', 'samples.viruses_id')
+            // ->select('samples.id as id', 'samples.sequence_data', 'samples.gene_name', 'samples.province_id', 'samples.regency_id', 'samples.pickup_date', 'samples.virus_code', 'samples.sample_code', 'users.name', 'citations.title', 'citations.author_id', 'samples.viruses_id')
             ->join('citations', 'citations.id', '=', 'samples.citation_id')
             ->join(
                 'users',
@@ -172,7 +173,7 @@ class FrontendRepository implements FrontendInterface
             // ->where('samples.viruses_id', $request['virus_id'])
             // ->Orwhere('genotipes.genotipe_code', $request['q'])
             ->get();
-
+        // return $data;
         return $data->map(function ($item, $key) {
             return [
                 'id' => $item->id,
@@ -189,7 +190,7 @@ class FrontendRepository implements FrontendInterface
                 // // accession indagi from virus code
                 'accession_indagi' => $item->virus_code,
             ];
-        });
+        })[0];
         // return $this->citation->with('sample')->where('id', $id)->first();
     }
 
@@ -200,7 +201,10 @@ class FrontendRepository implements FrontendInterface
 
     public function getRegency($regencyId)
     {
-        return $regencyId;
+        if ($regencyId == 0) {
+            return null;
+        }
+
         return Regency::where('id', $regencyId)->first()->name;
     }
 

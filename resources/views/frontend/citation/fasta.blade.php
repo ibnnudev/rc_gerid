@@ -1,4 +1,13 @@
 @extends('frontend.layout')
+<style>
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  
+}
+</style>
 @section('content')
 <div class="xl:flex xl:px-10 xl:m-0  xl:py-5">
     <div class="xl:flex-1 xl:w-72">
@@ -8,7 +17,7 @@
             <p class="text-lg">Kode Sampel: {{ $citation['accession_ncbi'] }}</p>
             <hr>
             <p> >{{ $citation['gene_name'] }}</p>
-            <div class="xl:w-20">
+            <div class="w-10 xl:w-40">
                 <p>{{ $citation['sequence_data'] }}</p>
             </div>
         </div>

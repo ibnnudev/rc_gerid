@@ -31,7 +31,7 @@
                                 <h6 class="pb-0">{{ $item['province'].",".$item['regency'] }}</h6>
                                 <p>{{ $item['author']->name.",".$item['author']->member }} | {{ $item['monthYear'] }}</p>
                                 <span class="text-gray-400">Accession NCBI : {{ $item['accession_ncbi'] }}</span><span class="text-gray-400"> | Accession INDAGI : {{ $item['accession_indagi'] }}</span>
-                                <h6><a href="" class="text-blue-500">Fasta</a> </h6>
+                                <h6><a href="{{ route('detailFasta', $item['id_citation']) }}" class="text-blue-500">Fasta</a> </h6>
                             </div>
                         </td>
                     </tr>

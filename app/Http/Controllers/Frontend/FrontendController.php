@@ -80,6 +80,7 @@ class FrontendController extends Controller
         // return $id;
         $sample = DB::table('samples')->where('id', $id)->first();
         $virus = DB::table('viruses')->where('id', $sample->viruses_id)->first();
+        // return $this->frontend->detailFasta($id);
         return view('frontend.citation.fasta', [
             'request' => NULL,
             'virus' => $virus,
