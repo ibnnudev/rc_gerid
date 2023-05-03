@@ -37,7 +37,7 @@ class ImportRequestRepository implements ImportRequestInterface
 
     public function get()
     {
-        return $this->importRequest->with('importedBy')->get();
+        return $this->importRequest->with(['importedBy', 'viruses'])->get();
     }
 
     public function store($data)
@@ -49,6 +49,7 @@ class ImportRequestRepository implements ImportRequestInterface
         $user = auth()->user()->id;
 
         $importRequest = $this->importRequest->create([
+            'viruses_id' => $data['viruses_id'],
             'filename' => $data['file'],
             'file_code' => uniqid(),
             'imported_by' => $user,
@@ -83,6 +84,7 @@ class ImportRequestRepository implements ImportRequestInterface
             $importRequest->filename = $data['file'];
         }
 
+        $importRequest->viruses_id = $data['viruses_id'];
         $importRequest->description = $data['description'];
         $importRequest->status = 0;
         $importRequest->save();

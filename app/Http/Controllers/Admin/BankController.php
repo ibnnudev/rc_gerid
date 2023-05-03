@@ -294,7 +294,9 @@ class BankController extends Controller
                         return $sample->genotipe->genotipe_code ?? null;
                     })
                     ->addColumn('pickup_date', function ($sample) {
-                        return date('Y', strtotime($sample->pickup_date));
+                        // translate to indonesian date format
+                        $date = date('F Y', strtotime($sample->pickup_date));
+                        return $date ?? null;
                     })
                     ->addColumn('place', function ($sample) {
                         return $sample->place ?? null;

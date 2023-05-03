@@ -9,6 +9,7 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>Jenis Virus</th>
                     <th>File</th>
                     <th>Kode File</th>
                     <th>Waktu</th>
@@ -167,6 +168,10 @@
                             name: 'DT_RowIndex',
                             searchable: false,
                             orderable: false
+                        },
+                        {
+                            data: 'virus_type',
+                            name: 'virus_type'
                         },
                         {
                             data: 'file',

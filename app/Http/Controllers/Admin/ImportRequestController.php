@@ -73,12 +73,15 @@ class ImportRequestController extends Controller
 
     public function create()
     {
-        return view('admin.bank.import-request.create');
+        return view('admin.bank.import-request.create', [
+            'viruses' => $this->virus->get()
+        ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'viruses_id' => ['required'],
             'file' => ['required', 'file', 'mimes:xlsx'],
             'description' => ['required']
         ]);
@@ -151,7 +154,10 @@ class ImportRequestController extends Controller
 
     public function edit(string $id)
     {
-        return view('admin.bank.import-request.edit', ['data' => $this->importRequest->find($id)]);
+        return view('admin.bank.import-request.edit', [
+            'data' => $this->importRequest->find($id),
+            'viruses' => $this->virus->get()
+        ]);
     }
 
     public function update(Request $request, string $id)
@@ -185,6 +191,9 @@ class ImportRequestController extends Controller
         if ($request->ajax()) {
             return datatables()
                 ->of($this->importRequest->get())
+                ->addColumn('virus_type', function($data) {
+                    return $data->viruses->name ?? null;
+                })
                 ->addColumn('file', function ($data) {
                     return view('admin.bank.import-request.columns.file', ['data' => $data]);
                 })

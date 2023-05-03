@@ -19,6 +19,7 @@ class ImportRequest extends Model
     public $table = 'import_requests';
 
     protected $fillable = [
+        'viruses_id',
         'filename',
         'file_code',
         'status',
@@ -34,6 +35,11 @@ class ImportRequest extends Model
     ];
 
     // RELATIONSHIP
+
+    public function viruses()
+    {
+        return $this->belongsTo(Virus::class, 'viruses_id');
+    }
 
     public function importedBy()
     {
