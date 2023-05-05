@@ -3,18 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\VirusInterface;
 use App\Mail\ActivateUser;
 use App\Mail\DeactivateUser;
+use App\Mail\NewUserByAdmin;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class UserManagementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    private $virus;
+    public function __construct(VirusInterface $virus)
+    {
+        $this->virus = $virus;
+    }
+
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -53,7 +57,9 @@ class UserManagementController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.user-management.create', [
+            'viruses' => $this->virus->get()
+        ]);
     }
 
     /**
@@ -61,7 +67,32 @@ class UserManagementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required'],
+            'email' => ['required', 'unique:users,email'],
+            'role' => ['required'],
+            'virus_id' => ['required_if:role,validator']
+        ]);
+
+        try {
+            $password = uniqid();
+            $data = $request->all();
+
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'role' => $data['role'],
+                'password' => password_hash($password, PASSWORD_DEFAULT),
+                'is_active' => 1,
+                'virus_id' => $request->role == 'validator' ? $data['virus_id'] : null
+            ]);
+
+            Mail::send(new NewUserByAdmin($user, $password));
+
+            return redirect()->route('admin.user-management.index')->with('success', 'Berhasil menambahkan user');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 
     /**
@@ -118,7 +149,8 @@ class UserManagementController extends Controller
         return redirect()->back()->with('success', 'Berhasil menonaktifkan akun');
     }
 
-    function role(Request $request) {
+    function role(Request $request)
+    {
         $user = User::find($request->id);
         $user->role = $request->role;
         $user->save();

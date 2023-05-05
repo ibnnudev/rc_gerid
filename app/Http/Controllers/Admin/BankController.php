@@ -15,7 +15,6 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Properties\Months;
 use App\Properties\Years;
-use App\Scopes\HasActiveScope;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;

@@ -190,8 +190,12 @@ class ImportRequestController extends Controller
     {
         if ($request->ajax()) {
             return datatables()
-                ->of($this->importRequest->get())
-                ->addColumn('virus_type', function($data) {
+                ->of(
+                    auth()->user()->role == 'validator'
+                        ? $this->importRequest->getByValidator()
+                        : $this->importRequest->get()
+                )
+                ->addColumn('virus_type', function ($data) {
                     return $data->viruses->name ?? null;
                 })
                 ->addColumn('file', function ($data) {

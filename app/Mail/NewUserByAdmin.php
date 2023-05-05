@@ -5,17 +5,20 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ActivateUser extends Mailable implements ShouldQueue
+class NewUserByAdmin extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public $user;
-
-    public function __construct($user)
+    public $password;
+    public function __construct($user, $password)
     {
         $this->user = $user;
+        $this->password = $password;
     }
 
     public function build()
@@ -23,7 +26,7 @@ class ActivateUser extends Mailable implements ShouldQueue
         return $this
             ->from('rcgerid@mail.com')
             ->to($this->user->email)
-            ->subject('Pengguna Berhasil Diaktifkan')
-            ->view('mail.activate-user');
+            ->subject('Pengguna Berhasil Ditambahkan')
+            ->view('mail.new-user-by-admin');
     }
 }

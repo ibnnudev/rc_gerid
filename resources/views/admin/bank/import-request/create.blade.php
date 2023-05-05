@@ -46,7 +46,6 @@
                 <x-textarea id="description" name="description" label="Deskripsi"></x-textarea>
 
                 <div class="text-end">
-                    {{-- <x-link-button :route="route('admin.import-request.index')" color="gray" class="mr-full">Batal</x-link-button> --}}
                     <x-button class="hidden">Simpan</x-button>
                 </div>
             </form>

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-breadcrumbs name="import-request.admin" />
     <h1 class="font-semibold text-lg my-8">
-        Daftar Permintaan
+        Daftar Permintaan {{ auth()->user()->role == 'validator' ? 'Validasi' : 'Import' }}
     </h1>
     <x-card-container>
 
@@ -52,35 +52,46 @@
                     $('#my-modal-4').prop('checked', true);
                     $('input[name="status"]').val(value == 'accepted' ? 'Disetujui' : 'Ditolak');
                 } else {
-                    $.ajax({
-                        url: '{{ route('admin.import-request.change-status') }}',
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            id: id,
-                            status: value,
-                            reason: null
-                        },
-                        datatype: 'json',
-                        success: function(response) {
-                            if (response == true) {
-                                Swal.fire({
-                                    title: 'Berhasil',
-                                    text: response.message,
-                                    icon: 'success'
-                                }).then(() => {
-                                    $('#importTable').DataTable().ajax.reload();
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'Gagal',
-                                    text: response.message,
-                                    icon: 'error'
-                                }).then(() => {
-                                    $('#importTable').DataTable().ajax.reload();
-                                });
-                            }
-                        },
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Ubah Status',
+                        text: 'Apakah anda yakin ingin mengubah status permintaan ini?',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ubah',
+                        cancelButtonText: 'Batal',
+                        confirmButtonColor: '#19743b',
+                        cancelButtonColor: '#dc3545',
+                    }).then((result) => {
+                        $.ajax({
+                            url: '{{ route('admin.import-request.change-status') }}',
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                id: id,
+                                status: value,
+                                reason: null
+                            },
+                            datatype: 'json',
+                            success: function(response) {
+                                if (response == true) {
+                                    Swal.fire({
+                                        title: 'Berhasil',
+                                        text: response.message,
+                                        icon: 'success'
+                                    }).then(() => {
+                                        $('#importTable').DataTable().ajax.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Gagal',
+                                        text: response.message,
+                                        icon: 'error'
+                                    }).then(() => {
+                                        $('#importTable').DataTable().ajax.reload();
+                                    });
+                                }
+                            },
+                        });
                     });
                 }
 
