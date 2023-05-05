@@ -16,4 +16,5 @@ interface ImportRequestInterface
     public function updateSingle($data, $id);
     public function findByFileCode($fileCode);
     public function changeStatusSingle($id, $status);
+    public function getByValidator();
 }

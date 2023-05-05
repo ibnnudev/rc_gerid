@@ -44,7 +44,8 @@
                 </x-select>
                 <x-select id="regency_id" label="Kota/Kabupaten" name="regency_id" isFit="" required>
                 </x-select>
-                <x-input id="file_code" label="Kode File" name="file_code" type="text" class="mb-3" :value="$fileCode" readonly />
+                <x-input id="file_code" label="Kode File" name="file_code" type="text" class="mb-3"
+                    :value="$fileCode" readonly />
             </div>
             <div class="md:grid md:grid-cols-4 gap-x-4">
                 <x-input id="place" label="Tempat Pengambilan Sampel" name="place" type="text" required />
@@ -60,9 +61,12 @@
             <hr>
             <div class="md:grid md:grid-cols-3 gap-x-4">
                 <x-input id="gene_name" label="Nama Gen" name="gene_name" type="text" required />
-                <div class="col-span-2 ">
-                    <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data"></x-textarea>
+                <div>
+                    <x-input id="size_gene" label="Ukuran Gen" name="size_gene" type="text"
+                        placeholder="[ukuran] [satuan]" class="mb-2" required />
+                    <small class="text-xs text-gray-700 mt-3">Contoh : 1000 bp</small>
                 </div>
+                <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data"></x-textarea>
             </div>
             <div class="grid grid-cols-3 gap-x-3">
                 <x-input id="sequence_data_file" label="File Data Sekuen" name="sequence_data_file" type="file" />
@@ -156,7 +160,7 @@
                 });
 
                 $('#pickup_month, #pickup_year').change(function() {
-                    if(pickupYear == undefined) {
+                    if (pickupYear == undefined) {
                         let date = new Date();
                         pickupYear = date.getFullYear();
                     }

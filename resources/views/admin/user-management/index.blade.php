@@ -5,6 +5,11 @@
     </h1>
 
     <x-card-container>
+        <div class="text-end">
+            <x-link-button route="{{route('admin.user-management.create')}}" color="gray" class="mb-4">
+                Tambah Pengguna
+            </x-link-button>
+        </div>
         <table id="usersTable" class="w-full">
             <thead>
                 <tr>

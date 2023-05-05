@@ -8,7 +8,6 @@ use App\Mail\NewImportRequest;
 use App\Mail\StatusActivationImportRequest;
 use App\Models\Author;
 use App\Models\Citation;
-use App\Models\Genotipe;
 use App\Models\ImportRequest;
 use App\Models\Sample;
 use App\Models\Virus;
@@ -238,6 +237,7 @@ class ImportRequestRepository implements ImportRequestInterface
                 'viruses_id'         => $data['viruses_id'],
                 'file_code'          => $data['file_code'] ?? null,
                 'gene_name'          => $data['gene_name'],
+                'size_gene'          => $data['size_gene'],
                 'sequence_data'      => $data['sequence_data'] ?? null,
                 'place'              => $data['place'],
                 'regency_id'         => $data['regency_id'],
@@ -290,6 +290,7 @@ class ImportRequestRepository implements ImportRequestInterface
                 'viruses_id'         => $data['viruses_id'],
                 'file_code'          => $data['file_code'] ?? null,
                 'gene_name'          => $data['gene_name'],
+                'size_gene'          => $data['size_gene'],
                 'sequence_data'      => $data['sequence_data'] ?? null,
                 'place'              => $data['place'],
                 'regency_id'         => $data['regency_id'],
@@ -324,5 +325,11 @@ class ImportRequestRepository implements ImportRequestInterface
         }
 
         DB::commit();
+    }
+
+    public function getByValidator()
+    {
+        $virus_id = auth()->user()->virus_id;
+        return $this->importRequest->with(['importedBy', 'viruses'])->where('viruses_id', $virus_id)->get();
     }
 }

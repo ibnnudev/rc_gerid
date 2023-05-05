@@ -49,6 +49,10 @@
                 <x-select id="genotipes_id" label="Genotipe & Subtipe" name="genotipes_id" isFit="false" required>
                 </x-select>
                 <x-input id="gene_name" label="Nama Gen" :value="$sample->gene_name ?? null" name="gene_name" type="text" required />
+                <div>
+                    <x-input id="size_gene" label="Ukuran Gen" name="size_gene" type="text"
+                        placeholder="[ukuran] [satuan]" class="mb-2" :value="$sample->size_gene" required />
+                </div>
                 <div class="col-span-2 ">
                     <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data" required>
                         {{ $sample->sequence_data ?? null }}</x-textarea>

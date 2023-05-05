@@ -11,14 +11,22 @@ use App\Models\Sample;
 use App\Models\Virus;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValidation
+class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValidation, WithMultipleSheets
 {
+    public function sheets(): array
+    {
+        return [
+            0 => $this,
+        ];
+    }
 
     public $file_code;
-    public function __construct($file_code) {
+    public function __construct($file_code)
+    {
         $this->file_code = $file_code;
     }
 
@@ -85,9 +93,10 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
         $province      = $row[6]  == null ? null : $this->province($row[6]);
         $regency       = $row[7]  == null ? null : $this->regency($row[7], $province);
         $gene          = $row[8] ?? null;
-        $sequence_data = $row[9] ?? null;
-        $title         = $row[10] ?? null;
-        $authors       = $row[11] == null ? null : $this->authors($row[11]);
+        $size_gene = $row[9] ?? null;
+        $sequence_data = $row[10] ?? null;
+        $title         = $row[11] ?? null;
+        $authors       = $row[12] == null ? null : $this->authors($row[12]);
         $citation_id   = isset($title, $authors) ? $this->citation($title, $authors) : null;
 
         /* check if sample code is already exist */
@@ -103,6 +112,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
             'file_code'     => $this->file_code ?? null,
             'viruses_id'    => $virus,
             'gene_name'     => $gene,
+            'size_gene'     => $size_gene,
             'sequence_data' => $sequence_data,
             'place'         => $place,
             'pickup_date'   => $pickup_date,
@@ -252,7 +262,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
         $genotipe = Genotipe::pluck('genotipe_code', 'id')->toArray();
         $genotipe = array_search($param, $genotipe);
 
-        if(empty($genotipe)) {
+        if (empty($genotipe)) {
             $genotipe = Genotipe::create([
                 'id' => Genotipe::max('id') + 1,
                 'genotipe_code' => $param,

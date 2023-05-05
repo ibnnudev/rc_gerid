@@ -12,6 +12,6 @@
     </span>
 @elseif ($data->status == 3)
     <span class="badge badge-sm">
-        Telah diimport
+        Diimpor
     </span>
 @endif

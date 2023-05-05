@@ -100,7 +100,6 @@ Breadcrumbs::for('import-request.admin', function(BreadcrumbTrail $trail) {
     $trail->push('Daftar Permintaan', route('admin.import-request.admin'));
 });
 
-
 // Penulis
 Breadcrumbs::for('author', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
@@ -244,4 +243,10 @@ Breadcrumbs::for('citation.show', function (BreadcrumbTrail $trail, $citation) {
 Breadcrumbs::for('user-management', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Manajemen Pengguna', route('admin.user-management.index'));
+});
+
+// User management > Create
+Breadcrumbs::for('user-management.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('user-management');
+    $trail->push('Tambah Pengguna', route('admin.user-management.create'));
 });

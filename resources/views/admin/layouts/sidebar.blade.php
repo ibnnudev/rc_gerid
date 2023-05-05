@@ -19,7 +19,7 @@
         <ul class="space-y-3">
             <x-sidebar-menu name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
                 active="{{ request()->routeIs('admin.dashboard') }}" />
-            @if (auth()->user()->role == 'admin')
+            @if (auth()->user()->role == 'admin' || auth()->user()->role == 'validator')
                 <x-sidebar-menu name="Bank Data" icon="fas fa-bank" route="{{ route('admin.bank.index') }}"
                     active="{{ request()->routeIs('admin.bank.*') }}" />
                 <x-sidebar-menu name="Penulis" icon="fas fa-user" route="{{ route('admin.author.index') }}"
@@ -82,14 +82,16 @@
 
                 {{-- divider --}}
                 <li class="border-t border-gray-200"></li>
+            @endif
 
+            @if (auth()->user()->role == 'admin')
                 {{-- manajemen pengguna --}}
                 <x-sidebar-menu name="Manajemen Pengguna" icon="fas fa-user-group"
                     route="{{ route('admin.user-management.index') }}"
                     active="{{ request()->routeIs('admin.user-management.*') }}" />
             @endif
 
-            @if (auth()->user()->role == 'admin')
+            @if (auth()->user()->role == 'admin' || auth()->user()->role == 'validator')
                 <x-sidebar-menu name="Daftar Permintaan" icon="fas fa-code-pull-request"
                     route="{{ route('admin.import-request.admin') }}"
                     active="{{ request()->routeIs('admin.import-request.*') }}" />

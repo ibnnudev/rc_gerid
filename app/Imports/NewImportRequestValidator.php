@@ -2,14 +2,21 @@
 
 namespace App\Imports;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class NewImportRequestValidator implements WithValidation, WithStartRow, WithBatchInserts, ToModel
+class NewImportRequestValidator implements WithValidation, WithStartRow, WithBatchInserts, ToModel, WithMultipleSheets
 {
+
+    public function sheets(): array
+    {
+        return [
+            0 => $this,
+        ];
+    }
 
     public function startRow(): int
     {
@@ -37,6 +44,7 @@ class NewImportRequestValidator implements WithValidation, WithStartRow, WithBat
             '*.9' => 'required',
             '*.10' => 'required',
             '*.11' => 'required',
+            '*.12' => 'required',
         ];
     }
 
@@ -57,12 +65,13 @@ class NewImportRequestValidator implements WithValidation, WithStartRow, WithBat
             '*.9.required' => 'Kolom data sekuen harus diisi',
             '*.10.required' => 'Kolom judul harus diisi',
             '*.11.required' => 'Kolom penulis harus diisi',
+            '*.12.required' => 'Kolom email harus diisi',
         ];
     }
 
     public function model(array $row)
     {
-        // if empty row, return null
+        // if empty row, return null, only check first sheet
         if (empty($row[0])) {
             return null;
         }
