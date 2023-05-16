@@ -127,7 +127,7 @@
                     @foreach ($viruses as $virus)
                     <a href="{{ route('detail-virus', $virus->id) }}" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                         <div class="grid grid-cols-1 gap-4 ">
-                            <img class="h-36 w-32 lg:w-10 lg:h-36 mx-auto"  src="{{ $virus->image ? asset('images/' . $virus->image)  : asset('images/noimage.jpg') }}"  alt="">
+                            <img class="h-36 w-32 lg:w-10 lg:h-36 mx-auto" id="virus-img"  src="{{ $virus->image ? asset('images/' . $virus->image)  : asset('images/noimage.jpg') }}"  alt="">
                             <p class="font-bold text-gray-700 dark:text-gray-400 text-center">{{ $virus->name }}</p>
                         </div>
                     </a>

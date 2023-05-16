@@ -6,6 +6,7 @@ use App\Interfaces\VirusInterface;
 use App\Models\Virus;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Image;
 
 class VirusRepository implements VirusInterface
 {
@@ -25,7 +26,12 @@ class VirusRepository implements VirusInterface
     {
         if ($data['image']) {
             $filename = time() . '.' . $data['image']->getClientOriginalExtension();
-            $data['image']->move(public_path('images'), $filename);
+            $destinationPath = public_path('images');
+            $img = Image::make($data['image']->path());
+            $img->resize(100, 100, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($destinationPath . '/' . $filename);
+            $data['image']->move($destinationPath, $filename);
             // $data['image']->storeAs('public/virus', $filename);
 
             $data['image'] = $filename;
@@ -55,7 +61,13 @@ class VirusRepository implements VirusInterface
             }
 
             $filename = time() . '.' . $data['image']->getClientOriginalExtension();
-            $data['image']->move(public_path('images'), $filename);
+            $destinationPath = public_path('images');
+            $img = Image::make($data['image']->path());
+            $img->resize(200, 200, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($destinationPath . '/' . $filename);
+            $data['image']->move($destinationPath, $filename);
+
             $data['image'] = $filename;
             $virus->image = $data['image'];
         }

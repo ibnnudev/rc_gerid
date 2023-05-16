@@ -15,11 +15,15 @@ use App\Http\Controllers\Frontend\FrontendController;
 use Illuminate\Support\Facades\Route;
 
 // Frontend
+Route::get('/chartPieYear', [FrontendController::class, 'pieChart'])->name('chartPieYear');
+Route::get('/chartGroupYear', [FrontendController::class, 'groupChartYear'])->name('groupChartYear');
+Route::get('/chartGroupCity', [FrontendController::class, 'groupChartCity'])->name('groupChartCity');
 Route::get('/home', [FrontendController::class, 'home'])->name('home');
 Route::get('/detail-virus/{id}', [FrontendController::class, 'detail'])->name('detail-virus');
 Route::post('/list-citation', [FrontendController::class, 'listCitations'])->name('listCitation');
 Route::get('/detail-citation/{id}', [FrontendController::class, 'detailCitation'])->name('detailCitation');
 Route::get('/detail-fasta/{id}', [FrontendController::class, 'detailFasta'])->name('detailFasta');
+Route::get('/dowloadFasta', [FrontendController::class, 'downloadFasta'])->name('downloadFasta');
 
 Route::get('/', function () {
     return redirect()->route('home');

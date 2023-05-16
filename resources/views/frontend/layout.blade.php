@@ -16,14 +16,6 @@
         .dataTables_length label select option {
             font-size: 0.75rem;
         }
-
-        footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            
-        }
         
     </style>
     <!-- Fonts -->

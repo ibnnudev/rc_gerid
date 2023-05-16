@@ -40,6 +40,26 @@ class FrontendRepository implements FrontendInterface
         return $this->virus->where('id', $id)->first();
     }
 
+    public function getAllSampleByVirus($req)
+    {
+        // return $req;
+        $data = DB::table('samples')
+            ->selectRaw('count(genotipe_code) as jumlah, genotipe_code')
+            ->leftJoin('genotipes', 'genotipes.id', 'samples.genotipes_id')
+            ->leftJoin('viruses', 'viruses.id', 'samples.viruses_id')
+            ->where('viruses.id', $req->id)
+            ->whereYear('samples.pickup_date', $req->year)
+            ->groupBy('genotipes.id', 'genotipe_code')
+            ->get();
+
+        $arr = [];
+        foreach ($data as $item) {
+            $arr['label'][] = $item->genotipe_code;
+            $arr['data'][] = $item->jumlah;
+        }
+        return $arr;
+    }
+
     public function hivCases()
     {
         return $this->hivCases->with(['province', 'regency', 'district', 'transmission'])->get();
@@ -84,7 +104,7 @@ class FrontendRepository implements FrontendInterface
         // });
         // return $request;
         $data = DB::table('samples')
-            ->select('samples.id as id', 'samples.province_id', 'samples.regency_id', 'samples.pickup_date', 'samples.virus_code', 'samples.sample_code', 'users.name', 'citations.title', 'citations.author_id', 'samples.viruses_id')
+            ->select('samples.id as id', 'samples.province_id', 'samples.regency_id', 'samples.sequence_data', 'samples.pickup_date', 'samples.virus_code', 'samples.sample_code', 'users.name', 'citations.title', 'citations.author_id', 'samples.viruses_id')
             ->join('citations', 'citations.id', '=', 'samples.citation_id')
             ->join(
                 'users',
@@ -96,6 +116,7 @@ class FrontendRepository implements FrontendInterface
             ->join('genotipes', 'genotipes.id', '=', 'samples.genotipes_id')
             ->where('samples.viruses_id', $request['virus_id'])
             ->Orwhere('genotipes.genotipe_code', $request['q'])
+            ->orWhere('samples.sequence_data', 'LIKE', '%' . $request['q'] . '%')
             ->get();
 
         // return $data;

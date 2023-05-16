@@ -80,7 +80,7 @@
         };
 
         let individualCases = @json($individualCases);
-        console.log(individualCases[0]);
+        // console.log(individualCases[0]);
 
         // get current location
         let map = L.map('map').setView([individualCases[0]['latitude'], individualCases[0]['longitude']], 12);
@@ -191,12 +191,12 @@
             $('#endYear').val('{{ $years->last()->year }}').trigger('change');
 
             let value = $(this).val();
-            console.log(value);
+            // console.log(value);
             individualCases = individualCases.filter(function(item) {
                 return item.sex == value;
             });
 
-            console.log(individualCases);
+            // console.log(individualCases);
 
             // remove all marker
             map.removeLayer(markers);
@@ -318,7 +318,7 @@
                 return parseInt(item.year) >= parseInt(startYear) && parseInt(item.year) <=
                     parseInt(endYear);
             });
-            console.log(individualCases);
+            // console.log(individualCases);
 
             // remove all marker
             map.removeLayer(markers);
@@ -424,7 +424,7 @@
             // loop through all year every 1 second
             let i = 0;
             let interval = setInterval(function() {
-                console.log(i);
+                // console.log(i);
                 if (i > gap) {
                     clearInterval(interval);
                     return;
