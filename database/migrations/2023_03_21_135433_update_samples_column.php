@@ -17,8 +17,8 @@ return new class extends Migration
                 // add column citation_id
                 $table->bigInteger('citation_id')->unsigned()->nullable()->after('genotipes_id');
             }
-            // drop foreign key and column authors_id, check if column and foreign key exists
-            if(Schema::hasColumn('samples', 'authors_id') && Schema::hasForeign('samples', 'samples_authors_id_foreign')) {
+            // drop foreign key and column authors_id, check if column and foreign key exists, dont using hasForeign because it is not working
+            if(Schema::hasColumn('samples', 'authors_id') && Schema::hasColumn('samples', 'authors_id')) {
                 $table->dropForeign('samples_authors_id_foreign');
                 $table->dropColumn('authors_id');
             }

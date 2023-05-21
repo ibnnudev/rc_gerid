@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\Admin\GenotipeController;
 use App\Http\Controllers\Admin\HivCaseController;
 use App\Http\Controllers\Admin\ImportRequestController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\TransmissionController;
 use App\Http\Controllers\Admin\UserManagementController;
 use Illuminate\Support\Facades\Route;
@@ -77,6 +78,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::post('import-request/change-status', [ImportRequestController::class, 'changeStatus'])->name('admin.import-request.change-status');
     Route::get('import-request/admin', [ImportRequestController::class, 'admin'])->name('admin.import-request.admin');
     Route::resource('import-request', ImportRequestController::class, ['as' => 'admin']);
+
+    // Profile
+    Route::post('profile/change-password', [ProfileController::class, 'changePassword'])->name('admin.profile.change-password');
+    Route::resource('profile', ProfileController::class, ['as' => 'admin'])->only(['index', 'update']);
 });
 
 require __DIR__ . '/auth.php';
