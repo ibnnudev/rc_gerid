@@ -45,7 +45,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
         // set all field must be required
         return [
             '*.0' => 'required',
-            '*.1' => 'required',
+            '*.1' => ['required', 'regex:/^(Hepatitis B|Hepatitis C|HIV|Dengue|Norovirus|Rotavirus)$/'],
             '*.2' => 'required',
             '*.3' => ['required', 'regex:/^(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)$/'],
             '*.4' => 'required',
@@ -65,6 +65,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
         return [
             '*.0.required' => 'Kolom kode sampel harus diisi',
             '*.1.required' => 'Kolom virus harus diisi',
+            '*.1.regex'    => 'Kolom virus harus diisi dengan nama virus Hepatitis B, Hepatitis C, HIV, Dengue, Norovirus, atau Rotavirus',
             '*.2.required' => 'Kolom genotipe harus diisi',
             '*.3.required' => 'Kolom bulan pengambilan sampel harus diisi',
             '*.3.regex'    => 'Kolom bulan pengambilan sampel harus diisi dengan bulan menggunakan bahasa indonesia',
@@ -254,6 +255,10 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
     public function virus($param)
     {
         $virus = Virus::where('name', 'like', '%' . $param . '%')->first();
+        // if virus didn't exist, throw error
+        if ($virus == null) {
+            return null;
+        }
         return $virus->id;
     }
 

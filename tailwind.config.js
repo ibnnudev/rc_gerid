@@ -13,7 +13,7 @@ module.exports = {
         extend: {
             fontFamily: {
                 // sans: ["Figtree", ...defaultTheme.fontFamily.sans],
-                sans: ["Lexend Deca", ...defaultTheme.fontFamily.sans],
+                sans: ["Lexend Deca", "Plus Jakarta Sans", ...defaultTheme.fontFamily.sans],
             },
         },
     },

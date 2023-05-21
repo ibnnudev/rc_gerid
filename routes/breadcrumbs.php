@@ -250,3 +250,9 @@ Breadcrumbs::for('user-management.create', function (BreadcrumbTrail $trail) {
     $trail->parent('user-management');
     $trail->push('Tambah Pengguna', route('admin.user-management.create'));
 });
+
+// Profile
+Breadcrumbs::for('profile', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Pengaturan', route('admin.profile.index'));
+});

@@ -97,13 +97,15 @@
     </div>
 
     <x-card-container>
-        <div class="sm:flex justify-between items-center mb-4">
+        <div class="sm:flex justify-between items-center mb-4 space-y-2">
             <div>
                 <x-link-button route="{{ route('admin.bank.advanced-search') }}" color="gray">
                     Pencarian Advanced
                 </x-link-button>
             </div>
-            <div class="sm:flex">
+            <div class="sm:flex
+                sm:space-y-0 space-y-2
+            ">
                 <x-link-button route="{{ route('admin.bank.imported') }}" class="mr-2" color="gray">
                     <i class="fas fa-file-import mr-2"></i>
                     Daftar Permintaan
