@@ -15,7 +15,6 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Properties\Months;
 use App\Properties\Years;
-use App\Scopes\HasActiveScope;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
@@ -294,7 +293,9 @@ class BankController extends Controller
                         return $sample->genotipe->genotipe_code ?? null;
                     })
                     ->addColumn('pickup_date', function ($sample) {
-                        return date('Y', strtotime($sample->pickup_date));
+                        // translate to indonesian date format
+                        $date = date('F Y', strtotime($sample->pickup_date));
+                        return $date ?? null;
                     })
                     ->addColumn('place', function ($sample) {
                         return $sample->place ?? null;

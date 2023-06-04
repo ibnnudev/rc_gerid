@@ -11,14 +11,22 @@ use App\Models\Sample;
 use App\Models\Virus;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValidation
+class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValidation, WithMultipleSheets
 {
+    public function sheets(): array
+    {
+        return [
+            0 => $this,
+        ];
+    }
 
     public $file_code;
-    public function __construct($file_code) {
+    public function __construct($file_code)
+    {
         $this->file_code = $file_code;
     }
 
@@ -37,7 +45,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
         // set all field must be required
         return [
             '*.0' => 'required',
-            '*.1' => 'required',
+            '*.1' => ['required', 'regex:/^(Hepatitis B|Hepatitis C|HIV|Dengue|Norovirus|Rotavirus)$/'],
             '*.2' => 'required',
             '*.3' => ['required', 'regex:/^(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)$/'],
             '*.4' => 'required',
@@ -57,6 +65,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
         return [
             '*.0.required' => 'Kolom kode sampel harus diisi',
             '*.1.required' => 'Kolom virus harus diisi',
+            '*.1.regex'    => 'Kolom virus harus diisi dengan nama virus Hepatitis B, Hepatitis C, HIV, Dengue, Norovirus, atau Rotavirus',
             '*.2.required' => 'Kolom genotipe harus diisi',
             '*.3.required' => 'Kolom bulan pengambilan sampel harus diisi',
             '*.3.regex'    => 'Kolom bulan pengambilan sampel harus diisi dengan bulan menggunakan bahasa indonesia',
@@ -85,9 +94,10 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
         $province      = $row[6]  == null ? null : $this->province($row[6]);
         $regency       = $row[7]  == null ? null : $this->regency($row[7], $province);
         $gene          = $row[8] ?? null;
-        $sequence_data = $row[9] ?? null;
-        $title         = $row[10] ?? null;
-        $authors       = $row[11] == null ? null : $this->authors($row[11]);
+        $size_gene = $row[9] ?? null;
+        $sequence_data = $row[10] ?? null;
+        $title         = $row[11] ?? null;
+        $authors       = $row[12] == null ? null : $this->authors($row[12]);
         $citation_id   = isset($title, $authors) ? $this->citation($title, $authors) : null;
 
         /* check if sample code is already exist */
@@ -103,6 +113,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
             'file_code'     => $this->file_code ?? null,
             'viruses_id'    => $virus,
             'gene_name'     => $gene,
+            'size_gene'     => $size_gene,
             'sequence_data' => $sequence_data,
             'place'         => $place,
             'pickup_date'   => $pickup_date,
@@ -244,6 +255,10 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
     public function virus($param)
     {
         $virus = Virus::where('name', 'like', '%' . $param . '%')->first();
+        // if virus didn't exist, throw error
+        if ($virus == null) {
+            return null;
+        }
         return $virus->id;
     }
 
@@ -252,7 +267,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
         $genotipe = Genotipe::pluck('genotipe_code', 'id')->toArray();
         $genotipe = array_search($param, $genotipe);
 
-        if(empty($genotipe)) {
+        if (empty($genotipe)) {
             $genotipe = Genotipe::create([
                 'id' => Genotipe::max('id') + 1,
                 'genotipe_code' => $param,

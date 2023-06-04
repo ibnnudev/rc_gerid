@@ -12,6 +12,7 @@ class ActivateUser extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     public $user;
+
     public function __construct($user)
     {
         $this->user = $user;
@@ -20,9 +21,9 @@ class ActivateUser extends Mailable implements ShouldQueue
     public function build()
     {
         return $this
-        ->from('rcgerid@mail.com')
-        ->to($this->user->email)
-        ->subject('Pengguna Berhasil Diaktifkan')
-        ->view('mail.activate-user');
+            ->from('rcgerid@mail.com')
+            ->to($this->user->email)
+            ->subject('Pengguna Berhasil Diaktifkan')
+            ->view('mail.activate-user');
     }
 }

@@ -41,4 +41,14 @@ class Virus extends Model
         $this->is_active = false;
         $this->save();
     }
+
+    public function importRequests()
+    {
+        return $this->hasMany(ImportRequest::class, 'viruses_id');
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'virus_id');
+    }
 }

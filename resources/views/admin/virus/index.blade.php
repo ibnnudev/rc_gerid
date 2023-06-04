@@ -68,9 +68,9 @@
     <x-card-container>
 
         <div class="text-end">
-            <x-link-button route="{{ route('admin.virus.create') }}" color="gray">
+            {{-- <x-link-button route="{{ route('admin.virus.create') }}" color="gray">
                 Tambah Virus
-            </x-link-button>
+            </x-link-button> --}}
         </div>
 
         <div class="mt-4 overflow-x-auto">

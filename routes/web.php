@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\Admin\GenotipeController;
 use App\Http\Controllers\Admin\HivCaseController;
 use App\Http\Controllers\Admin\ImportRequestController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\TransmissionController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Frontend\FrontendController;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/chartPieYear', [FrontendController::class, 'pieChart'])->name('chartPieYear');
 Route::get('/chartGroupYear', [FrontendController::class, 'groupChartYear'])->name('groupChartYear');
 Route::get('/chartGroupCity', [FrontendController::class, 'groupChartCity'])->name('groupChartCity');
+Route::get('/setStateMaps', [FrontendController::class, 'getGrouping'])->name('getGrouping');
 Route::get('/home', [FrontendController::class, 'home'])->name('home');
 Route::get('/detail-virus/{id}', [FrontendController::class, 'detail'])->name('detail-virus');
 Route::post('/list-citation', [FrontendController::class, 'listCitations'])->name('listCitation');
@@ -89,6 +91,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::post('import-request/change-status', [ImportRequestController::class, 'changeStatus'])->name('admin.import-request.change-status');
     Route::get('import-request/admin', [ImportRequestController::class, 'admin'])->name('admin.import-request.admin');
     Route::resource('import-request', ImportRequestController::class, ['as' => 'admin']);
+
+    // Profile
+    Route::post('profile/change-password', [ProfileController::class, 'changePassword'])->name('admin.profile.change-password');
+    Route::resource('profile', ProfileController::class, ['as' => 'admin'])->only(['index', 'update']);
 });
 
 require __DIR__ . '/auth.php';

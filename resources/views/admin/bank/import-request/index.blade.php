@@ -52,6 +52,7 @@
             <div>
                 <span class="font-medium">Tata cara melakukan permintaan import data sequence:</span>
                 <ul class="mt-1.5 ml-4 list-decimal">
+                    <li>Unduh File Template</li>
                     <li>Pilih File</li>
                     <li>Klik tombol Import</li>
                     <li>Tunggu hingga proses selesai</li>
@@ -72,6 +73,8 @@
         </div>
 
         <div class="text-end mb-3">
+            <x-link-button id="btnDownload" class="bg-primary mr-2" route="{{ asset('assets/file/format data sekuen.xlsx') }}" target="_blank">Unduh Template
+            </x-link-button>
             <x-link-button id="btnImport" color="gray" route="{{ route('admin.import-request.create') }}">
                 Import Sampel
             </x-link-button>

@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\ImportRequest;
+use App\Models\Sample;
 use App\Observers\ImportRequestObserver;
+use App\Observers\SampleObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,5 +29,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         ImportRequest::observe(ImportRequestObserver::class);
+        Sample::observe(SampleObserver::class);
     }
 }

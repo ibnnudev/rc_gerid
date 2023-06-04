@@ -27,8 +27,8 @@
     let slStartYear, slEndYear, years;
     years = @json($years);
     // console.log(parseInt(years[0]['year']));
-    slStartYear = parseInt(years[0]['year']);
-    slEndYear = parseInt(years[years.length - 1]['year']);
+    slStartYear = parseInt(years[years.length - 1]);
+    slEndYear = parseInt(years[0]);
     var slider = document.getElementById('slider');
 
     noUiSlider.create(slider, {
@@ -187,8 +187,8 @@
             // remove all marker
             resetFilter();
             // reset year select box
-            $('#startYear').val('{{ $years->first()->year }}').trigger('change');
-            $('#endYear').val('{{ $years->last()->year }}').trigger('change');
+            $('#startYear').val('{{ $years[0] }}').trigger('change');
+            $('#endYear').val('{{ end($years) }}').trigger('change');
 
             let value = $(this).val();
             // console.log(value);

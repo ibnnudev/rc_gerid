@@ -40,7 +40,19 @@
                 @csrf
                 @method('PUT')
 
+                <x-select id="viruses_id" name="viruses_id" label="Jenis Virus" isFit="">
+                    @foreach ($viruses as $virus)
+                        <option value="{{ $virus->id }}" @if ($data->viruses_id == $virus->id) selected @endif>
+                            {{ $virus->name }}
+                        </option>
+                    @endforeach
+                </x-select>
                 <x-input id="file" type="file" name="file" label="File Sekuen" class="mb-3" required />
+                @isset($data->filename)
+                    <span class="badge badge-primary badge-sm mb-6">
+                        File sudah terupload
+                    </span>
+                @endisset
                 <x-textarea id="description" name="description" label="Deskripsi">{{ $data->description }}</x-textarea>
 
                 <div class="text-end">

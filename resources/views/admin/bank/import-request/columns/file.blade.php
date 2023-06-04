@@ -2,7 +2,7 @@
     <div>
         <a class="text-primary" href="{{ asset('storage/import-request/' . $data->filename) }}" target="_blank">
             {{-- <i class="fas fa-file-excel mr-2"></i> --}}
-            Cek File Sekuen
+            Unduh File Sekuen
         </a>
     </div>
     <div>

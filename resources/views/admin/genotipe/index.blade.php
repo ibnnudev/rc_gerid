@@ -98,7 +98,6 @@
             function btnDelete(dataId, dataName) {
                 let id = dataId;
                 let name = dataName;
-                // console.log(id, name);
                 let url = '{{ route('admin.genotipe.destroy', ':id') }}';
                 let urlDelete = url.replace(':id', id);
 
@@ -109,7 +108,7 @@
             $(function() {
                 $('#genotipeTable').DataTable({
                     responsive: true,
-                    autoWidth: false,
+                    autoWidth: false
                 });
             });
 

@@ -84,9 +84,9 @@
                     <x-select id="startYear" label="Tahun Mulai" name="startYear" isFit="false" required class="mt-0">
                         @foreach ($years as $year)
                             @if ($loop->first)
-                                <option value="{{ $year->year }}" selected>{{ $year->year }}</option>
+                                <option value="{{ $year }}" selected>{{ $year }}</option>
                             @else
-                                <option value="{{ $year->year }}">{{ $year->year }}</option>
+                                <option value="{{ $year }}">{{ $year }}</option>
                             @endif
                         @endforeach
                     </x-select>
@@ -95,9 +95,9 @@
                     <x-select id="endYear" label="Tahun Selesai" name="endYear" isFit="false" required class="mt-0">
                         @foreach ($years as $year)
                             @if ($loop->first)
-                                <option value="{{ $year->year }}" selected>{{ $year->year }}</option>
+                                <option value="{{ $year }}" selected>{{ $year }}</option>
                             @else
-                                <option value="{{ $year->year }}">{{ $year->year }}</option>
+                                <option value="{{ $year }}">{{ $year }}</option>
                             @endif
                         @endforeach
                     </x-select>
@@ -132,8 +132,8 @@
                     {{-- input year with select2 --}}
                     <x-select name="pieChartYear" id="pieChartYear" class="max-w-sm">
                         @foreach ($years as $year)
-                            <option value="{{ $year->year }}" {{ $year->year === date('Y') ? 'selected' : '' }}>
-                                {{ $year->year }}
+                            <option value="{{ $year }}" {{ $year == $lastYearSample ? 'selected' : '' }}>
+                                {{ $year }}
                             </option>
                         @endforeach
                     </x-select>
@@ -152,8 +152,8 @@
                     {{-- input year with select2 --}}
                     <x-select name="groupChartYear" id="groupChartYear" class="max-w-sm">
                         @foreach ($years as $year)
-                            <option value="{{ $year->year }}" {{ $year->year == date('Y') ? 'selected' : '' }}>
-                                {{ $year->year }}
+                            <option value="{{ $year }}" {{ $year == $lastYearSample ? 'selected' : '' }}>
+                                {{ $year }}
                             </option>
                         @endforeach
                     </x-select>
@@ -171,14 +171,14 @@
             <div class="flex items-center" >
                 <x-select name="provincy" id="provincy" class="max-w-xs">
                     @foreach ($provinces as $province)
-                        <option value="{{ $province->id }}" {{ $loop->first ? 'selected' : '' }}>{{ $province->name }}
+                        <option value="{{ $province->id }}" {{ $province->id == $lastCitySampleId ? 'selected' : '' }}>{{ $province->name }}
                         </option>
                     @endforeach
                 </x-select>
                 <x-select name="year" id="year" class="max-w-sm ">
                     @foreach ($years as $year)
-                        <option value="{{ $year->year }}" {{ $year->year == date('Y') ? 'selected' : '' }} >
-                            {{ $year->year }}
+                        <option value="{{ $year }}" {{ $year == $lastYearSample ? 'selected' : '' }} >
+                            {{ $year }}
                         </option>
                     @endforeach
                 </x-select>
@@ -339,7 +339,7 @@
                             GroupChartByYear = new Chart(document.getElementById("canvasGenChartByYear").getContext('2d'), {
                                 type: 'bar',
                                 data: {
-                                    labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'September', 'Oktober', 'November', 'Desember'], 
+                                    labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni','Juli','Agustus', 'September', 'Oktober', 'November', 'Desember'], 
                                     datasets: samples 
                                 },
                                 options: {
@@ -459,7 +459,7 @@
                             GroupChartByCity = new Chart(document.getElementById("canvasGroupChartByCity").getContext('2d'), {
                                 type: 'bar',
                                 data: {
-                                    labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'September', 'Oktober', 'November', 'Desember'], 
+                                    labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni','Juli','Agustus', 'September', 'Oktober', 'November', 'Desember'], 
                                     datasets: samplesGroup
                                 },
                                 options: {

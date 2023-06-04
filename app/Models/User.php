@@ -14,6 +14,7 @@ class User extends Authenticatable
 
     const USER_ROLE  = 'user';
     const ADMIN_ROLE = 'admin';
+    const VALIDATOR_ROLE = 'validator';
 
     protected $fillable = [
         'name',
@@ -24,6 +25,8 @@ class User extends Authenticatable
         'role',
         'avatar',
         'remember_token',
+        'virus_id',
+        'is_active'
     ];
 
     protected $hidden = [
@@ -44,6 +47,11 @@ class User extends Authenticatable
     }
 
     // Relationships
+
+    public function virus()
+    {
+        return $this->belongsTo(Virus::class, 'virus_id');
+    }
 
     public function citations()
     {

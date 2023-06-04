@@ -3,7 +3,7 @@
     <h1 class="font-semibold text-lg my-8">
         Tambah Permintaan
     </h1>
-    
+
     <div class="xl:grid grid-cols-2 gap-x-3">
         <div id="alert-2"
             class="error hidden flex p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
@@ -37,11 +37,15 @@
         <x-card-container>
             <form action="{{ route('admin.import-request.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <x-select id="viruses_id" name="viruses_id" label="Jenis Virus" isFit="">
+                    @foreach ($viruses as $virus)
+                        <option value="{{ $virus->id }}">{{ $virus->name }}</option>
+                    @endforeach
+                </x-select>
                 <x-input id="file" type="file" name="file" label="File Sekuen" class="mb-3" required />
                 <x-textarea id="description" name="description" label="Deskripsi"></x-textarea>
 
                 <div class="text-end">
-                    {{-- <x-link-button :route="route('admin.import-request.index')" color="gray" class="mr-full">Batal</x-link-button> --}}
                     <x-button class="hidden">Simpan</x-button>
                 </div>
             </form>

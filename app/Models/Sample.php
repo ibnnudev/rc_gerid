@@ -22,6 +22,7 @@ class Sample extends Model
         'file_code',
         'viruses_id',
         'gene_name',
+        'size_gene',
         'sequence_data',
         'place',
         'pickup_date',

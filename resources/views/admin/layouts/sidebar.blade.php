@@ -19,19 +19,19 @@
         <ul class="space-y-3">
             <x-sidebar-menu name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
                 active="{{ request()->routeIs('admin.dashboard') }}" />
-            @if (auth()->user()->role == 'admin')
+            @if (auth()->user()->role == 'admin' || auth()->user()->role == 'validator')
                 <x-sidebar-menu name="Bank Data" icon="fas fa-bank" route="{{ route('admin.bank.index') }}"
                     active="{{ request()->routeIs('admin.bank.*') }}" />
-                <x-sidebar-menu name="Penulis" icon="fas fa-user" route="{{ route('admin.author.index') }}"
-                    active="{{ request()->routeIs('admin.author.*') }}" />
                 <x-sidebar-menu name="Virus" icon="fas fa-virus" route="{{ route('admin.virus.index') }}"
                     active="{{ request()->routeIs('admin.virus.*') }}" />
                 <x-sidebar-menu name="Genotipe" icon="fas fa-dna" route="{{ route('admin.genotipe.index') }}"
                     active="{{ request()->routeIs('admin.genotipe.*') }}" />
-                <x-sidebar-menu name="Transmisi" icon="fas fa-route" route="{{ route('admin.transmission.index') }}"
-                    active="{{ request()->routeIs('admin.transmission.*') }}" />
+                <x-sidebar-menu name="Penulis" icon="fas fa-user" route="{{ route('admin.author.index') }}"
+                    active="{{ request()->routeIs('admin.author.*') }}" />
                 <x-sidebar-menu name="Sitasi" icon="fas fa-lines-leaning" route="{{ route('admin.citation.index') }}"
                     active="{{ request()->routeIs('admin.citation.*') }}" />
+                <x-sidebar-menu name="Transmisi" icon="fas fa-route" route="{{ route('admin.transmission.index') }}"
+                    active="{{ request()->routeIs('admin.transmission.*') }}" />
                 <li>
                     <button type="button"
                         class="flex w-full items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100
@@ -82,14 +82,16 @@
 
                 {{-- divider --}}
                 <li class="border-t border-gray-200"></li>
+            @endif
 
+            @if (auth()->user()->role == 'admin')
                 {{-- manajemen pengguna --}}
                 <x-sidebar-menu name="Manajemen Pengguna" icon="fas fa-user-group"
                     route="{{ route('admin.user-management.index') }}"
                     active="{{ request()->routeIs('admin.user-management.*') }}" />
             @endif
 
-            @if (auth()->user()->role == 'admin')
+            @if (auth()->user()->role == 'admin' || auth()->user()->role == 'validator')
                 <x-sidebar-menu name="Daftar Permintaan" icon="fas fa-code-pull-request"
                     route="{{ route('admin.import-request.admin') }}"
                     active="{{ request()->routeIs('admin.import-request.*') }}" />
@@ -100,6 +102,9 @@
                 <x-sidebar-menu name="Daftar Sekuen" icon="fas fa-bank" route="{{ route('admin.bank.imported') }}"
                     active="{{ request()->routeIs('admin.bank.imported') }}" />
             @endif
+
+            <x-sidebar-menu name="Pengaturan" icon="fas fa-cog" route="{{ route('admin.profile.index') }}"
+                active="{{ request()->routeIs('admin.profile.*') }}" />
 
             {{-- logout --}}
             <li>
@@ -115,13 +120,13 @@
             </li>
         </ul>
 
-        <div id="dropdown-cta" class="p-4 mt-12 rounded-2xl border-b border-gray-200 sm:rounded-2xl shadow-xl"
+        {{-- <div id="dropdown-cta" class="p-4 mt-12 rounded-2xl border-b border-gray-200 sm:rounded-2xl shadow-xl"
             role="alert">
             <div class="flex items-center text-center justify-center flex-col">
                 <div class="avatar">
                     <div class="w-12 rounded-full">
                         <img
-                            src="{{ auth()->user()->avatar != null ? asset(auth()->user()->avatar) : asset('images/noimage.jpg') }}" />
+                            src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('images/noimage.jpg') }}" />
                     </div>
                 </div>
                 <p class="font-bold mt-2">
@@ -137,6 +142,6 @@
                     <span>Buka Profil</span>
                 </a> --}}
             </div>
-        </div>
+        </div> --}}
     </div>
 </aside>

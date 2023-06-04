@@ -17,6 +17,9 @@ use App\Repositories\HivCaseRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use stdClass;
+
+use function PHPUnit\Framework\isEmpty;
 
 // use Spatie\FlareClient\Http\Response;
 
@@ -41,15 +44,64 @@ class FrontendController extends Controller
 
     public function detail($id)
     {
-        // return date('Y');
-        return view('frontend.marker', [
-            'virus' => $this->frontend->getVirus($id),
-            'provinces' => Province::all(),
-            'years'     => Years::getYears(),
-            'request' => NULL,
-            'years' => HivCases::select('year')->distinct()->groupBy('year')->orderBy('year')->get(),
-            'individualCases' => $this->frontend->hivCases(),
-        ]);
+        if ($id == 1) {
+            return view('frontend.marker', [
+                'virus' => $this->frontend->getVirus($id),
+                'provinces' => Province::all(),
+                'years'     => Years::getYears(),
+                'lastYearSample' => $this->getLastYearSample($id),
+                'lastCitySampleId' => $this->getLastCitySample($id),
+                'request' => NULL,
+                // 'years' => HivCases::select('year')->distinct()->groupBy('year')->orderBy('year')->get(),
+                'individualCases' => $this->frontend->hivCases(),
+            ]);
+        } else {
+            // return $this->getGrouping(1);
+            // return Years::getYears();
+            return view('frontend.area', [
+                'virus' => $this->frontend->getVirus($id),
+                'provinces' => Province::all(),
+                'years'     => Years::getYears(),
+                'lastYearSample' => $this->getLastYearSample($id),
+                'lastCitySampleId' => $this->getLastCitySample($id),
+                'request' => NULL,
+                // 'data' => $this->getGrouping(1)
+                // 'years' => HivCases::select('year')->distinct()->groupBy('year')->orderBy('year')->get(),
+                // 'individualCases' => $this->frontend->hivCases(),
+            ]);
+        }
+    }
+
+    public function getGrouping(Request $request)
+    {
+        $genotipes = Genotipe::where('viruses_id', $request->id)->get();
+
+        $samplesPerMonth = [];
+
+        $provinces = Sample::with('province')->select('province_id')->where('viruses_id', $request->id)->groupBy('province_id')->get();
+        foreach ($provinces as $indexProvince => $province) {
+            $stdOne = new stdClass();
+            $stdOne->province_id = $province->province_id;
+            $stdOne->province_name = $province->province->name;
+            $stdOne->potensi = Sample::where('viruses_id', $request->id)
+                ->whereBetween('pickup_date', [date('Y-m-d', strtotime($request->startYear . '-01-01')), date('Y-m-d', strtotime($request->endYear . '-01-01'))])
+                ->where('province_id', $province->province_id)
+                ->count() > 50 ? "Tinggi" : "Rendah";
+            $samplesPerMonth[] = $stdOne;
+            foreach ($genotipes as $indexGenotipe => $genotipe) {
+                $stdTwo = new stdClass();
+                $stdTwo->genotipe = $genotipe->genotipe_code;
+                $stdTwo->genotipe_id = $genotipe->id;
+                $stdTwo->jumlah = Sample::with('genotipe')->where('viruses_id', $request->id)
+                    ->whereBetween('pickup_date', [date('Y-m-d', strtotime($request->startYear . '-01-01')), date('Y-m-d', strtotime($request->endYear . '-01-01'))])
+                    ->where('genotipes_id', $genotipe->id)
+                    ->where('province_id', $province->province_id)
+                    ->count();
+                $stdOne->genotipes[] = $stdTwo;
+            }
+        }
+
+        return $samplesPerMonth;
     }
 
     public function listCitations(Request $request)
@@ -122,7 +174,7 @@ class FrontendController extends Controller
 
         $samplesPerMonth = [];
 
-        $samples = Sample::whereYear('pickup_date', $request->year ?? date('Y', strtotime(now())))->get();
+        $samples = Sample::whereYear('pickup_date', $request->year ?? date('Y', strtotime(now())))->where('viruses_id', $request->id)->get();
 
         if (count($samples) < 1) {
             return $samples;
@@ -133,8 +185,10 @@ class FrontendController extends Controller
 
             foreach ($months as $month) {
                 // get the number of samples for each genotipe in each month by year of pickup_date
-                $samplesPerMonth[$genotipe->genotipe_code][] = $samples->where('viruses_id', 1)
+                $samplesPerMonth[$genotipe->genotipe_code][] = Sample::with('genotipe')->where('viruses_id', $request->id)
                     ->where('pickup_date', '>=', date('Y-m-d', strtotime($request->year . '-' . array_search($month, $months) + 1 . '-01')))
+                    ->where('pickup_date', '<=', date('Y-m-d', strtotime('+30 days', strtotime($request->year . '-' . array_search($month, $months) + 1 . '-01'))))
+                    ->where('genotipes_id', $genotipe->id)
                     ->count();
             }
         }
@@ -149,7 +203,7 @@ class FrontendController extends Controller
 
         $samplesPerMonth = [];
 
-        $samples = Sample::whereYear('pickup_date', $request->year ?? date('Y', strtotime(now())))->where('province_id', $request->provincy)->get();
+        $samples = Sample::whereYear('pickup_date', $request->year ?? date('Y', strtotime(now())))->where('viruses_id', $request->id)->where('province_id', $request->provincy)->get();
 
         if (count($samples) < 1) {
             return $samples;
@@ -160,12 +214,35 @@ class FrontendController extends Controller
 
             foreach ($months as $month) {
                 // get the number of samples for each genotipe in each month by year of pickup_date
-                $samplesPerMonth[$genotipe->genotipe_code][] = $samples->where('viruses_id', 1)
+                $samplesPerMonth[$genotipe->genotipe_code][] = Sample::with('genotipe')->where('viruses_id', $request->id)
                     ->where('pickup_date', '>=', date('Y-m-d', strtotime($request->year . '-' . array_search($month, $months) + 1 . '-01')))
+                    ->where('pickup_date', '<=', date('Y-m-d', strtotime('+30 days', strtotime($request->year . '-' . array_search($month, $months) + 1 . '-01'))))
+                    ->where('genotipes_id', $genotipe->id)
+                    ->where('province_id', $request->provincy)
                     ->count();
             }
         }
 
         return $samplesPerMonth;
+    }
+
+    public function getLastYearSample($id)
+    {
+        $data =  DB::table('samples')->selectRaw('YEAR(pickup_date) as lastYearSample')->where('viruses_id', $id)->groupBy('pickup_date')->orderByDesc('pickup_date')->first();
+        if (!empty($data)) {
+            return $data->lastYearSample;
+        } else {
+            return null;
+        }
+    }
+
+    public function getLastCitySample($id)
+    {
+        $data = DB::table('samples')->select('province_id')->where('viruses_id', $id)->groupBy('province_id')->first();
+        if (!empty($data)) {
+            return $data->province_id;
+        } else {
+            return null;
+        }
     }
 }

@@ -43,14 +43,14 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
-<body class="font-sans antialiased text-xs 2xl:text-sm">
+<body class="font-sans antialiased">
 
     <div class="loading fixed top-0 left-0 w-full h-full bg-white z-50 flex items-center justify-center">
         <img src="{{ asset('assets/application/loadin_gif.gif') }}" alt="loading" class="h-60">
     </div>
 
-    <header class="fixed w-full ">
-        <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2 rounded dark:bg-gray-900 shadow ">
+    <header class="fixed w-full">
+        <nav class="bg-white border-gray-200 px-2   rounded dark:bg-gray-900 shadow ">
             <div class=" flex flex-wrap items-center justify-between mx-2 max-w-screen px-4 lg:px-2 lg:mx-auto">
                 <a href="{{ route('home') }}" class="flex items-center">
                     <img src="{{ asset('assets/application/gambar_logo.png') }}" class=" pr-3 h-12 lg:h-20" alt="RC-GERID LOGO" />
