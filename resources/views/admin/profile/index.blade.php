@@ -32,6 +32,7 @@
                     <input id="avatar" type="file" name="avatar" hidden />
                     <x-input id="name" type="text" name="name" label="Nama" value="{{ $user->name }}" />
                     <x-input id="email" type="email" name="email" label="Email" value="{{ $user->email }}" />
+                    <x-input id="role" label="Role" type="text" value="{{ $user->role }}" disabled />
                     <div class="mt-4 text-end">
                         <x-button color="green">
                             Simpan
@@ -45,7 +46,7 @@
                 <h3 class="font-semibold text-base mb-2">
                     Ubah Password
                 </h3>
-                <form action="{{route('admin.profile.change-password')}}" method="POST">
+                <form action="{{ route('admin.profile.change-password') }}" method="POST">
                     @csrf
                     <x-input id="old_password" type="password" name="old_password" label="Password Lama" />
                     <x-input id="new_password" type="password" name="new_password" label="Password Baru" />

@@ -8,6 +8,9 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- icon -->
+    <link rel="icon" href="{{ asset('assets/application/logo.png') }}">
+
     <style>
         input[type="search"] {
             font-size: 0.75rem;
