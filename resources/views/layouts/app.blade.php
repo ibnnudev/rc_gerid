@@ -9,11 +9,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- icon -->
-<<<<<<< HEAD
     <link rel="icon" href="{{ asset('assets/application/logo mini.jpeg') }}">
-=======
-    <link rel="icon" href="{{ asset('assets/application/logo.png') }}">
->>>>>>> cb8289b (update)
 
     <style>
         input[type="search"] {

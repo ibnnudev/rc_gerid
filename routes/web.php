@@ -12,7 +12,6 @@ use App\Http\Controllers\Admin\ImportRequestController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\TransmissionController;
 use App\Http\Controllers\Admin\UserManagementController;
-<<<<<<< HEAD
 use App\Http\Controllers\Frontend\FrontendController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,12 +29,6 @@ Route::get('/dowloadFasta', [FrontendController::class, 'downloadFasta'])->name(
 
 Route::get('/', function () {
     return redirect()->route('home');
-=======
-use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('auth.login');
->>>>>>> cb8289b (update)
 });
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {

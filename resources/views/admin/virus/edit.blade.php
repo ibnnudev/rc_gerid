@@ -7,11 +7,7 @@
             <x-card-container>
                 <div class="avatar">
                     <div class="w-full rounded rounded-xl">
-<<<<<<< HEAD
-                        <img src="{{ $virus->image ? asset('images/' . $virus->image) : asset('images/noimage.jpg') }}"
-=======
                         <img src="{{ $virus->image ? asset('storage/virus/' . $virus->image) : asset('images/noimage.jpg') }}"
->>>>>>> cb8289b (update)
                             id="imageThumbnail" />
                     </div>
                 </div>

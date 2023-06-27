@@ -114,20 +114,6 @@
 
                 $('#search').on('click', function(e) {
                     e.preventDefault();
-<<<<<<< HEAD
-                        $.ajax({
-                            method: 'GET',
-                            url: '{{ route('admin.bank.get-data') }}',
-                            data: {
-                                province_id: provinceId,
-                                virus_id: virusId,
-                                genotipe_id: genotipeId,
-                                gene_name: geneName,
-                                sample_code: sampleCode,
-                                pickup_date: pickupDate,
-                            },
-                            success: function(response) {
-=======
                     $.ajax({
                         method: 'GET',
                         url: '{{ route('admin.bank.get-data') }}',
@@ -140,7 +126,6 @@
                             pickup_date: pickupDate,
                         },
                         success: function(response) {
->>>>>>> cb8289b (update)
                             if (response != null) {
                                 $('#result').html(response);
                                 $('#tableContent').DataTable({
@@ -180,10 +165,6 @@
                     });
                 });
             });
-<<<<<<< HEAD
-            
-=======
->>>>>>> cb8289b (update)
         </script>
     @endpush
 </x-app-layout>

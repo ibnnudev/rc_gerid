@@ -56,7 +56,7 @@
                     <img src="{{ asset('assets/application/gambar_logo.png') }}" class=" pr-3 h-12 lg:h-20" alt="RC-GERID LOGO" />
                     <div class="xl:columns-1 hidden lg:block">
                         <h3 class="text-lg font-bold">INDAGI</h3>
-                        <p class="text-lg md:text-sm">INDONESIA DATABASE FOR GENOMIC INFORMATION SYSTEM</p>
+                        <p class="text-md md:text-sm">INDONESIA DATABASE FOR GENOMIC INFORMATION SYSTEM</p>
                     </div>
                 </a>
                 {{-- button login & language --}}
@@ -109,16 +109,16 @@
 
     <section class="bg-white pt-1 xl:pt-10  ">
         <div class="flex items-center max-w-screen sm:mx-0 sm:px-0 lg:px-4 pt-20 pb-8  ">
-            <div class="container mx-20">
+            <div class="container mx-20 text-xs 2xl:text-sm">
                 {{-- text --}}
                 <div class="text-justify">
-                    <p class="text-center font-extrabold text-2xl lg:text-4xl ">INDAGI</p>
-                    <p class="text-center font-semibold lg:text-xl text-sm">INDONESIA DATABASE FOR GENOMIC INFORMATION</p>
-                    <p class="text-center font-semibold lg:text-xl text-xs"> RESEARCH CENTER ON GLOBAL EMERGING AND RE-EMERGING INFECTIOUS DISEASE, INSTITUTE OF TROPICAL DISEASE, UNIVERSITAS AIRLANGGA</p>
-                    <p class="text-justify lg:text-lg lg:pt-10 text-xs">
+                    <p class="text-center font-extrabold text-2xl lg:text-4xl">INDAGI</p>
+                    <p class="text-center font-semibold lg:text-lg text-sm">INDONESIA DATABASE FOR GENOMIC INFORMATION</p>
+                    <p class="text-center font-semibold lg:text-lg text-xs"> RESEARCH CENTER ON GLOBAL EMERGING AND RE-EMERGING INFECTIOUS DISEASE, INSTITUTE OF TROPICAL DISEASE, UNIVERSITAS AIRLANGGA</p>
+                    <p class="text-justify lg:text-sm lg:pt-10 text-xs">
                         Indonesia Database For Genomic Information (INDAGI) adalah aplikasi website yang dikembangkan oleh Research Center on Global Emerging and Re-emerging Infectious Diseases (RC-GERID) Institute of Tropical Disease (ITD) Universitas Airlangga, Surabaya, Indonesia dengan tujuan untuk mengakomodasi informasi sekuen dari patogen penyebab penyakit infeksi emerging dan re-emerging khususnya isolat yang didapatkan di Indonesia, antara lain virus HIV, Hepatitis B dan C, Dengue, Influenza, Rotavirus dan Norovirus. Database ini menerima dan menyimpan data sekuen hasil pemeriksaan genom isolat patogen di Indonesia. Data sekuen yang dimasukkan dapat didaftarkan terlebih dahulu ke database internasional misalkan NCBI, GISAID dan lain-lain dengan mendapatkan informasi accession number ataupun sebelumnya. Informasi sekuen ini akan dilengkapi dengan data waktu (bulan/tahun), lokasi/wilayah, tipe virus, publikasi (jika ada) dan lain sebagainya.
                     </p>
-                    <p class="text-justify lg:text-lg lg:pt-10 text-xs pt-5 ">
+                    <p class="text-justify lg:text-sm lg:pt-10 text-xs pt-5 ">
                         INDAGI dapat digunakan untuk surveilans penyakit infeksi emerging dan re-emerging berdasarkan tipe virus (surveilans genomik) dan tahun penyebaran di berbagai wilayah di Indonesia. Data yang ditampilkan di INDAGI merupakan data spasial temporal dan dapat divisualisasikan dalam bentuk peta wilayah, grafik, diagram untuk menunjukkan persebaran kasus virus dan tipenya.
                     </p>
                 </div>
@@ -127,7 +127,7 @@
                     @foreach ($viruses as $virus)
                     <a href="{{ route('detail-virus', $virus->id) }}" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                         <div class="grid grid-cols-1 gap-4 ">
-                            <img class="h-36 w-32 lg:w-10 lg:h-36 mx-auto" id="virus-img"  src="{{ $virus->image ? asset('images/' . $virus->image)  : asset('images/noimage.jpg') }}"  alt="">
+                            <img class="h-36 lg:h-36 mx-auto object-cover" id="virus-img"  src="{{ $virus->image ? asset('storage/virus/' . $virus->image)  : asset('images/noimage.jpg') }}"  alt="">
                             <p class="font-bold text-gray-700 dark:text-gray-400 text-center">{{ $virus->name }}</p>
                         </div>
                     </a>

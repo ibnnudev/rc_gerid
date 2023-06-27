@@ -42,15 +42,12 @@ class Sample extends Model
     {
         return $this->belongsTo(Citation::class, 'citation_id');
     }
-
-<<<<<<< HEAD
+    
     public function hasCitation()
     {
         return $this->hasOne(Citation::class, 'citation_id');
     }
 
-=======
->>>>>>> cb8289b (update)
     public function genotipe()
     {
         return $this->belongsTo(Genotipe::class, 'genotipes_id');
