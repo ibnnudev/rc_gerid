@@ -19,6 +19,7 @@
                     <th>Role</th>
                     <th>Tgl. Bergabung</th>
                     <th>Status Aktivasi</th>
+                    <th>Ubah Status</th>
                     <th>Menu</th>
                 </tr>
             </thead>
@@ -111,6 +112,12 @@
                             orderable: false,
                             searchable: false
                         },
+                        {
+                            data: 'menu',
+                            name: 'menu',
+                            orderable: false,
+                            searchable: false
+                        }
                     ],
                 });
 

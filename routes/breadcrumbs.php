@@ -251,6 +251,12 @@ Breadcrumbs::for('user-management.create', function (BreadcrumbTrail $trail) {
     $trail->push('Tambah Pengguna', route('admin.user-management.create'));
 });
 
+// User Management > Edit
+Breadcrumbs::for('user-management.edit', function (BreadcrumbTrail $trail, $user) {
+    $trail->parent('user-management', $user->name);
+    $trail->push('Edit', route('admin.user-management.edit', $user->id));
+});
+
 // Profile
 Breadcrumbs::for('profile', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
