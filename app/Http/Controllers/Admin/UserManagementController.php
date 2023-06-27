@@ -31,7 +31,8 @@ class UserManagementController extends Controller
                     return $data->email;
                 })
                 ->addColumn('role', function ($data) {
-                    return view('admin.user-management.columns.role', ['data' => $data]);
+                    // return view('admin.user-management.columns.role', ['data' => $data]);
+                    return ucwords($data->role);
                 })
                 ->addColumn('created_at', function ($data) {
                     return date('d-m-Y', strtotime($data->created_at));
@@ -44,6 +45,11 @@ class UserManagementController extends Controller
                         'id' => $data->id,
                         'name' => $data->email,
                         'is_active' => $data->is_active,
+                    ]);
+                })
+                ->addColumn('menu', function ($data) {
+                    return view('admin.user-management.columns.menu', [
+                        'user' => $data
                     ]);
                 })
                 ->addIndexColumn()
@@ -62,9 +68,6 @@ class UserManagementController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -78,14 +81,24 @@ class UserManagementController extends Controller
             $password = uniqid();
             $data = $request->all();
 
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'role' => $data['role'],
-                'password' => password_hash($password, PASSWORD_DEFAULT),
-                'is_active' => 1,
-                'virus_id' => $request->role == 'validator' ? $data['virus_id'] : null
-            ]);
+            if ($request->has('virus_id')) {
+                $user = User::create([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'role' => $data['role'],
+                    'virus_id' => $data['virus_id'],
+                    'password' => password_hash($password, PASSWORD_DEFAULT),
+                    'is_active' => 1
+                ]);
+            } else {
+                $user = User::create([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'role' => $data['role'],
+                    'password' => password_hash($password, PASSWORD_DEFAULT),
+                    'is_active' => 1
+                ]);
+            }
 
             Mail::send(new NewUserByAdmin($user, $password));
 
@@ -108,7 +121,10 @@ class UserManagementController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('admin.user-management.edit', [
+            'user' => User::find($id),
+            'viruses' => $this->virus->get()
+        ]);
     }
 
     /**
@@ -116,7 +132,26 @@ class UserManagementController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => ['required'],
+            'role' => ['required'],
+            'virus_id' => ['required_if:role,validator']
+        ]);
+
+        try {
+            $data = $request->all();
+
+            User::where('id', $id)->update([
+                'name' => $data['name'],
+                'role' => $data['role'],
+                'virus_id' => $request->has('virus_id') ? $data['virus_id'] : null,
+                'is_active' => 1
+            ]);
+
+            return redirect()->route('admin.user-management.index')->with('success', 'Berhasil mengubah user');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 
     /**
