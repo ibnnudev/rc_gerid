@@ -15,10 +15,14 @@ return new class extends Migration
             // drop foreign key and column samples_id
             // check it
 <<<<<<< HEAD
+<<<<<<< HEAD
             if(Schema::hasColumn('citations', 'samples_id') ) {
 =======
             if(Schema::hasColumn('citations', 'samples_id') && Schema::hasColumn('citations', 'samples_id')) {
 >>>>>>> 48c9af499f3d981bf77566eee071402ea30161a0
+=======
+            if(Schema::hasColumn('citations', 'samples_id') && Schema::hasColumn('citations', 'samples_id')) {
+>>>>>>> cb8289b (update)
                 $table->dropForeign('citations_samples_id_foreign');
                 $table->dropColumn('samples_id');
             }

@@ -7,7 +7,11 @@
 
         <!-- Email Address -->
         <x-input id="email" label="Email" name="email" type="email" required autofocus />
+<<<<<<< HEAD
         <p id="result" class="text-xs lg:text-sm px-2"></p>
+=======
+
+>>>>>>> cb8289b (update)
         <!-- Password -->
         <x-input id="password" label="Password" name="password" type="password" required />
 

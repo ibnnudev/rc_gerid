@@ -251,8 +251,11 @@
             @endif
         </script>
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> cb8289b (update)
         {{-- Total Visitor Chart --}}
         <script src="{{ asset('js/total-visitors.js') }}"></script>
         <script src="{{ asset('js/total-virus-sample.js') }}"></script>

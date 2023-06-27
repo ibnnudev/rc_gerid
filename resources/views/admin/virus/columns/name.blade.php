@@ -1,7 +1,11 @@
 <div class="flex items-center space-x-4">
     <div class="flex-shrink-0">
         <img class="w-8 h-auto rounded-full"
+<<<<<<< HEAD
             src="{{ $virus->image ? asset('images/' . $virus->image) : asset('images/noimage.jpg') }}"
+=======
+            src="{{ $virus->image ? asset('storage/virus/' . $virus->image) : asset('images/noimage.jpg') }}"
+>>>>>>> cb8289b (update)
             alt="Neil image">
     </div>
     <div class="flex-1 min-w-0">

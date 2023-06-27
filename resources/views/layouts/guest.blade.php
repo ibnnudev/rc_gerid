@@ -8,7 +8,11 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+<<<<<<< HEAD
     <link rel="icon" href="{{ asset('assets/application/logo mini.jpeg') }}">
+=======
+    <link rel="icon" href="{{ asset('assets/application/logo.png') }}">
+>>>>>>> cb8289b (update)
 
     <!-- Fonts -->
     {{-- <link

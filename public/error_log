@@ -1,0 +1,39 @@
+[27-Jun-2023 01:56:24 UTC] PHP Fatal error:  Uncaught RuntimeException: A facade root has not been set. in /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php:350
+Stack trace:
+#0 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/RegisterErrorViewPaths.php(18): Illuminate\Support\Facades\Facade::__callStatic()
+#1 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(659): Illuminate\Foundation\Exceptions\RegisterErrorViewPaths->__invoke()
+#2 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(640): Illuminate\Foundation\Exceptions\Handler->registerErrorViewPaths()
+#3 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(571): Illuminate\Foundation\Exceptions\Handler->renderHttpException()
+#4 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(477): Illuminate\Foundation\Exceptions\Handler->prepareResponse()
+#5 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(394): Illuminate\Foundation\Exceptions\Handler->renderExceptionResponse()
+#6 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(503): Illuminate\Foundation\Exceptions\Handler->render()
+#7 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(148): Illuminate\Foundation\Http\Kernel->renderException()
+#8 /home/dbditsco/web-test.my.id/public/index.php(52): Illuminate\Foundation\Http\Kernel->handle()
+#9 {main}
+  thrown in /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php on line 350
+[27-Jun-2023 01:56:26 UTC] PHP Fatal error:  Uncaught RuntimeException: A facade root has not been set. in /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php:350
+Stack trace:
+#0 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/RegisterErrorViewPaths.php(18): Illuminate\Support\Facades\Facade::__callStatic()
+#1 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(659): Illuminate\Foundation\Exceptions\RegisterErrorViewPaths->__invoke()
+#2 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(640): Illuminate\Foundation\Exceptions\Handler->registerErrorViewPaths()
+#3 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(571): Illuminate\Foundation\Exceptions\Handler->renderHttpException()
+#4 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(477): Illuminate\Foundation\Exceptions\Handler->prepareResponse()
+#5 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(394): Illuminate\Foundation\Exceptions\Handler->renderExceptionResponse()
+#6 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(503): Illuminate\Foundation\Exceptions\Handler->render()
+#7 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(148): Illuminate\Foundation\Http\Kernel->renderException()
+#8 /home/dbditsco/web-test.my.id/public/index.php(52): Illuminate\Foundation\Http\Kernel->handle()
+#9 {main}
+  thrown in /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php on line 350
+[27-Jun-2023 01:57:26 UTC] PHP Fatal error:  Uncaught RuntimeException: A facade root has not been set. in /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php:350
+Stack trace:
+#0 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/RegisterErrorViewPaths.php(18): Illuminate\Support\Facades\Facade::__callStatic()
+#1 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(659): Illuminate\Foundation\Exceptions\RegisterErrorViewPaths->__invoke()
+#2 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(640): Illuminate\Foundation\Exceptions\Handler->registerErrorViewPaths()
+#3 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(571): Illuminate\Foundation\Exceptions\Handler->renderHttpException()
+#4 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(477): Illuminate\Foundation\Exceptions\Handler->prepareResponse()
+#5 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Exceptions/Handler.php(394): Illuminate\Foundation\Exceptions\Handler->renderExceptionResponse()
+#6 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(503): Illuminate\Foundation\Exceptions\Handler->render()
+#7 /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(148): Illuminate\Foundation\Http\Kernel->renderException()
+#8 /home/dbditsco/web-test.my.id/public/index.php(52): Illuminate\Foundation\Http\Kernel->handle()
+#9 {main}
+  thrown in /home/dbditsco/web-test.my.id/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php on line 350

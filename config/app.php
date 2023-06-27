@@ -195,7 +195,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+<<<<<<< HEAD
         'Intervention\Image\ImageServiceProvider',
+=======
+>>>>>>> cb8289b (update)
 
     ],
 
@@ -212,7 +215,10 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+<<<<<<< HEAD
         'Image' => 'Intervention\Image\Facades\Image'
+=======
+>>>>>>> cb8289b (update)
     ])->toArray(),
 
 ];

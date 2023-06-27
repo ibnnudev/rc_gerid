@@ -18,12 +18,17 @@ return new class extends Migration
                 $table->bigInteger('citation_id')->unsigned()->nullable()->after('genotipes_id');
             }
 <<<<<<< HEAD
+<<<<<<< HEAD
             // drop foreign key and column authors_id, check if column and foreign key exists
             if(Schema::hasColumn('samples', 'authors_id') ) {
 =======
             // drop foreign key and column authors_id, check if column and foreign key exists, dont using hasForeign because it is not working
             if(Schema::hasColumn('samples', 'authors_id') && Schema::hasColumn('samples', 'authors_id')) {
 >>>>>>> 48c9af499f3d981bf77566eee071402ea30161a0
+=======
+            // drop foreign key and column authors_id, check if column and foreign key exists, dont using hasForeign because it is not working
+            if(Schema::hasColumn('samples', 'authors_id') && Schema::hasColumn('samples', 'authors_id')) {
+>>>>>>> cb8289b (update)
                 $table->dropForeign('samples_authors_id_foreign');
                 $table->dropColumn('authors_id');
             }
