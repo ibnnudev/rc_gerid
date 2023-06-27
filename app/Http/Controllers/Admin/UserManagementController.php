@@ -21,9 +21,11 @@ class UserManagementController extends Controller
 
     public function index(Request $request)
     {
+        $user = User::all();
+        $user = $user->sortByDesc('created_at');
         if ($request->ajax()) {
             return datatables()
-                ->of(User::all())
+                ->of($user)
                 ->addColumn('name', function ($data) {
                     return $data->name;
                 })
