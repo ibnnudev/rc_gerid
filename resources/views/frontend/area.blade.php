@@ -4,7 +4,7 @@
 <style>
 .description {
     font-size: 1.125rem; /* 18px */
-    line-height: 1.75rem; 
+    line-height: 1.75rem;
 }
 .description li {
     margin-left: 50px;
@@ -89,12 +89,14 @@
 }
 </style>
 
-<section class="bg-white mt-2 mb-2   ">
+<section class="bg-white mt-2 mb-2">
     <div class="grid grid-cols-1 gap-4 place-items-center max-w-screen px-4 shadow lg:pb-8 lg:px-25  ">
         <div class="py-2">
             <img id="virus-img" class="h-64 object-cover mx-auto mb-4 pt-4 lg:w-10 lg:h-10"  src="{{ $virus->image ? asset('storage/virus/' . $virus->image)  : asset('images/noimage.jpg') }}"  alt="">
             <p class="text-center text-lg lg:text-md font-bold pb-2">{{ $virus->name }}</p>
-            <div class="text-xs lg:text-sm description text-justify mx-20">
+            <div class="text-xs lg:text-sm description text-justify mx-20" style="
+                font-size: 1rem !important; line-height: 1.5rem !important;
+            ">
                 {{-- text  Desciption --}}
                 {{-- {{ $virus->description }} --}}
                 {{-- {{ !$virus->description }} --}}
@@ -232,7 +234,7 @@
     });
 
     // leaflet Map
-    
+
     var map = L.map('map').setView([0.0005512, 123.3319888], 4.5);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -270,7 +272,7 @@
         };
     }
 
-        
+
         //legend
         var potensi = null;
         var html;
@@ -356,7 +358,7 @@
         }
 
 
-        
+
     function setHidden(){
         $("#spinner").attr("hidden", true);
     }
@@ -412,7 +414,7 @@
                         $("#spinner").attr("hidden", true);
                     }
                 });;
-                
+
             }else{
                 getPotensi(result);
             }
@@ -420,8 +422,8 @@
             e.preventDefault();
         });
      });
-    
-    
+
+
 
 
 </script>
@@ -567,8 +569,8 @@
                         GroupChartByYear = new Chart(document.getElementById("canvasGenChartByYear").getContext('2d'), {
                             type: 'bar',
                             data: {
-                                labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'September', 'Oktober', 'November', 'Desember'], 
-                                datasets: samples 
+                                labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'September', 'Oktober', 'November', 'Desember'],
+                                datasets: samples
                             },
                             options: {
                                 maintainAspectRatio: false,
@@ -612,9 +614,9 @@
                         });
                     }
 
-                    
 
-                
+
+
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     console.log(thrownError);
@@ -687,7 +689,7 @@
                         GroupChartByCity = new Chart(document.getElementById("canvasGroupChartByCity").getContext('2d'), {
                             type: 'bar',
                             data: {
-                                labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'September', 'Oktober', 'November', 'Desember'], 
+                                labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'September', 'Oktober', 'November', 'Desember'],
                                 datasets: samplesGroup
                             },
                             options: {
@@ -732,16 +734,16 @@
                         });
                     }
 
-                    
 
-                
+
+
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     console.log(thrownError);
                 }
         });
     }
-    
-    
+
+
 </script>
 @endpush
