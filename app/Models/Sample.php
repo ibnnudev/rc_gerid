@@ -42,7 +42,7 @@ class Sample extends Model
     {
         return $this->belongsTo(Citation::class, 'citation_id');
     }
-
+    
     public function hasCitation()
     {
         return $this->hasOne(Citation::class, 'citation_id');

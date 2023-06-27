@@ -5,8 +5,6 @@ namespace App\Repositories;
 use App\Interfaces\VirusInterface;
 use App\Models\Virus;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
-use Image;
 
 class VirusRepository implements VirusInterface
 {
@@ -26,13 +24,7 @@ class VirusRepository implements VirusInterface
     {
         if ($data['image']) {
             $filename = time() . '.' . $data['image']->getClientOriginalExtension();
-            $destinationPath = public_path('images');
-            $img = Image::make($data['image']->path());
-            $img->resize(100, 100, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destinationPath . '/' . $filename);
-            $data['image']->move($destinationPath, $filename);
-            // $data['image']->storeAs('public/virus', $filename);
+            $data['image']->storeAs('public/virus', $filename);
 
             $data['image'] = $filename;
         }
@@ -55,18 +47,14 @@ class VirusRepository implements VirusInterface
 
             // delete old files
             if ($virus->image) {
-                if (file_exists(public_path('images/') . $virus->image)) {
-                    File::delete(public_path('images/') . $virus->image);
+                $oldFile = 'public/virus/' . $virus->image;
+                if (Storage::exists($oldFile)) {
+                    Storage::delete($oldFile);
                 }
             }
 
             $filename = time() . '.' . $data['image']->getClientOriginalExtension();
-            $destinationPath = public_path('images');
-            $img = Image::make($data['image']->path());
-            $img->resize(200, 200, function ($constraint) {
-                $constraint->aspectRatio();
-            })->save($destinationPath . '/' . $filename);
-            $data['image']->move($destinationPath, $filename);
+            $data['image']->storeAs('public/virus', $filename);
 
             $data['image'] = $filename;
             $virus->image = $data['image'];

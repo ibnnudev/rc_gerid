@@ -201,7 +201,6 @@
 
                 $('#viruses_id').on('change', function() {
                     let virusId = $(this).val();
-                    console.log(virusId);
                     $.ajax({
                         url: "{{ route('admin.bank.get-genotipe') }}",
                         type: "POST",
@@ -210,7 +209,6 @@
                             virus_id: virusId
                         },
                         success: function(response) {
-                            console.log(response);
                             let data = response;
                             let html = '';
                             data.forEach(function(item) {

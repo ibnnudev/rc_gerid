@@ -114,18 +114,18 @@
 
                 $('#search').on('click', function(e) {
                     e.preventDefault();
-                        $.ajax({
-                            method: 'GET',
-                            url: '{{ route('admin.bank.get-data') }}',
-                            data: {
-                                province_id: provinceId,
-                                virus_id: virusId,
-                                genotipe_id: genotipeId,
-                                gene_name: geneName,
-                                sample_code: sampleCode,
-                                pickup_date: pickupDate,
-                            },
-                            success: function(response) {
+                    $.ajax({
+                        method: 'GET',
+                        url: '{{ route('admin.bank.get-data') }}',
+                        data: {
+                            province_id: provinceId,
+                            virus_id: virusId,
+                            genotipe_id: genotipeId,
+                            gene_name: geneName,
+                            sample_code: sampleCode,
+                            pickup_date: pickupDate,
+                        },
+                        success: function(response) {
                             if (response != null) {
                                 $('#result').html(response);
                                 $('#tableContent').DataTable({
@@ -165,7 +165,6 @@
                     });
                 });
             });
-            
         </script>
     @endpush
 </x-app-layout>
