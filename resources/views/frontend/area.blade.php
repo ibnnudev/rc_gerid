@@ -92,7 +92,7 @@
 <section class="bg-white mt-2 mb-2   ">
     <div class="grid grid-cols-1 gap-4 place-items-center max-w-screen px-4 shadow lg:pb-8 lg:px-25  ">
         <div class="py-2">
-            <img id="virus-img" class="h-64 w-48 mx-auto mb-4 pt-4 lg:w-10 lg:h-10"  src="{{ $virus->image ? asset('storage/virus/' . $virus->image)  : asset('images/noimage.jpg') }}"  alt="">
+            <img id="virus-img" class="h-64 object-cover mx-auto mb-4 pt-4 lg:w-10 lg:h-10"  src="{{ $virus->image ? asset('storage/virus/' . $virus->image)  : asset('images/noimage.jpg') }}"  alt="">
             <p class="text-center text-lg lg:text-md font-bold pb-2">{{ $virus->name }}</p>
             <div class="text-xs lg:text-sm description text-justify mx-20">
                 {{-- text  Desciption --}}
