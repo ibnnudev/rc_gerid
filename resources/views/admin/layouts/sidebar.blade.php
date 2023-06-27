@@ -19,7 +19,7 @@
         <ul class="space-y-3">
             <x-sidebar-menu name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
                 active="{{ request()->routeIs('admin.dashboard') }}" />
-            @if (auth()->user()->role == 'admin' || auth()->user()->role == 'validator')
+            @if (auth()->user()->role == 'admin')
                 <x-sidebar-menu name="Bank Data" icon="fas fa-bank" route="{{ route('admin.bank.index') }}"
                     active="{{ request()->routeIs('admin.bank.*') }}" />
                 <x-sidebar-menu name="Virus" icon="fas fa-virus" route="{{ route('admin.virus.index') }}"
