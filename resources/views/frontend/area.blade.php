@@ -177,7 +177,7 @@
                 </x-select>
                 <x-select name="year" id="year" class="max-w-sm ">
                     @foreach ($years as $year)
-                        <option value="{{ $year }}"  >
+                        <option value="{{ $year }}" {{ $year == $lastYearSample ? 'selected' : '' }}>
                             {{ $year }}
                         </option>
                     @endforeach
@@ -273,9 +273,8 @@
         
         //legend
         var potensi = null;
-
+        var html;
         function getPotensi(result) {
-            console.log(result);
             if (potensi != null) {
                 reset();
             }
@@ -300,21 +299,20 @@
                 dataType: "json",
                 url: geoJsonUrl,
             }).done(function(data) {
-                // console.log(data);
                 potensi = L.geoJson(data).addTo(map);
                 controlLayers.addOverlay(potensi, 'Potensi');
 
                 var layerGrou = L.geoJSON(data, {
                     onEachFeature: function(feature, layer,i) {
                         result.forEach(res => {
-                            if (res.province_name == feature.properties.Propinsi) {
-                                // console.log('b');
-                                var html = "";
+                            if (res.province_name === feature.properties.Propinsi) {
+                                html = "";
                                 layer.bindPopup(display(res)).addTo(potensi);
                                 layer.setStyle(getColorPotensi(res.potensi));
-                            }else{
-                                layer.bindPopup(`<p style=font-weight:bold;> ` + feature.properties.Propinsi + `</p><small class="text-red-400">Data Masih Belum Tersedia</small>`).addTo(potensi);
                             }
+                            // if (res.province_name != feature.properties.Propinsi) {
+                            //         layer.bindPopup(`<p style=font-weight:bold;> ` + feature.properties.Propinsi + `</p><small class="text-red-400">Data Masih Belum Tersedia</small>`).addTo(potensi);
+                            // }
                         });
                     },
                     weight: 1,
@@ -325,9 +323,10 @@
             });
 
         }
-
+        var genotipe;
         function display(param) {
-            var genotipe = "";
+            genotipe = "";
+            // console.log(param.genotipes);
             param.genotipes.forEach(e => {
                 genotipe += `<tr  class="bg-gray-100 border">
                                 <td>${e.genotipe}</td>
@@ -367,15 +366,15 @@
             type: "get",
             url: "{{ route('getGrouping') }}",
             data: {
-                id : 2,
+                id : virus.id,
                 startYear:slStartYear,
                 endYear:slEndYear,
             }
         }).done(function(result) {
             if(result.length < 1){
-                
                 $("#spinner").attr("hidden", true);
             }else{
+                // $("#spinner").attr("hidden", true);
                 getPotensi(result);
             }
         });
@@ -384,6 +383,9 @@
     function reset(){
         map.removeLayer(potensi);
         legend.remove(potensi);
+        $(".leaflet-control-layers-overlays label").remove();
+        $(".info svg").remove();
+
         controlLayers.removeLayer(potensi);
     }
 
@@ -400,15 +402,14 @@
             },
         }).done(function(result) {
             if(result.length < 1){
-
                 Swal.fire({
                     icon: 'info',
                     title: 'Mohon Maaf',
                     text: 'Data Yang Dicari Masih Belum tersedia',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $("#spinner").attr("hidden", true);
                         reset();
+                        $("#spinner").attr("hidden", true);
                     }
                 });;
                 
@@ -540,7 +541,6 @@
                     },
                 async: true,
                 success: function(result) {
-                    // console.log(result);
                     if(GroupChartByYear !== null) {
                         GroupChartByYear.destroy();
                     }

@@ -44,32 +44,33 @@ class FrontendController extends Controller
 
     public function detail($id)
     {
-        if ($id == 1) {
-            return view('frontend.marker', [
-                'virus' => $this->frontend->getVirus($id),
-                'provinces' => Province::all(),
-                'years'     => Years::getYears(),
-                'lastYearSample' => $this->getLastYearSample($id),
-                'lastCitySampleId' => $this->getLastCitySample($id),
-                'request' => NULL,
-                // 'years' => HivCases::select('year')->distinct()->groupBy('year')->orderBy('year')->get(),
-                'individualCases' => $this->frontend->hivCases(),
-            ]);
-        } else {
-            // return $this->getGrouping(1);
-            // return Years::getYears();
-            return view('frontend.area', [
-                'virus' => $this->frontend->getVirus($id),
-                'provinces' => Province::all(),
-                'years'     => Years::getYears(),
-                'lastYearSample' => $this->getLastYearSample($id),
-                'lastCitySampleId' => $this->getLastCitySample($id),
-                'request' => NULL,
-                // 'data' => $this->getGrouping(1)
-                // 'years' => HivCases::select('year')->distinct()->groupBy('year')->orderBy('year')->get(),
-                // 'individualCases' => $this->frontend->hivCases(),
-            ]);
-        }
+        // if ($id == 1) {
+        //     return view('frontend.marker', [
+        //         'virus' => $this->frontend->getVirus($id),
+        //         'provinces' => Province::all(),
+        //         'years'     => Years::getYears(),
+        //         'lastYearSample' => $this->getLastYearSample($id),
+        //         'lastCitySampleId' => $this->getLastCitySample($id),
+        //         'request' => NULL,
+        //         // 'years' => HivCases::select('year')->distinct()->groupBy('year')->orderBy('year')->get(),
+        //         'individualCases' => $this->frontend->hivCases(),
+        //     ]);
+        // } else {
+        // return $this->getGrouping(1);
+        // return Years::getYears();
+
+        return view('frontend.area', [
+            'virus' => $this->frontend->getVirus($id),
+            'provinces' => Province::all(),
+            'years'     => Years::getYears(),
+            'lastYearSample' => $this->getLastYearSample($id),
+            'lastCitySampleId' => $this->getLastCitySample($id),
+            'request' => NULL,
+            // 'data' => $this->getGrouping(1)
+            // 'years' => HivCases::select('year')->distinct()->groupBy('year')->orderBy('year')->get(),
+            // 'individualCases' => $this->frontend->hivCases(),
+        ]);
+        // }
     }
 
     public function getGrouping(Request $request)
