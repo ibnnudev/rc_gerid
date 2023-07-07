@@ -74,7 +74,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
             '*.6.required' => 'Kolom provinsi harus diisi',
             '*.7.required' => 'Kolom kabupaten/kota harus diisi',
             '*.8.required' => 'Kolom nama gen harus diisi',
-            '*.9.required' => 'Kolom data sekuen harus diisi',
+            '*.9.required' => 'Kolom ukuran data sekuen harus diisi',
             '*.10.required' => 'Kolom judul harus diisi',
             '*.11.required' => 'Kolom penulis harus diisi',
         ];
@@ -94,7 +94,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
         $province      = $row[6]  == null ? null : $this->province($row[6]);
         $regency       = $row[7]  == null ? null : $this->regency($row[7], $province);
         $gene          = $row[8] ?? null;
-        $size_gene = $row[9] ?? null;
+        $size_gene     = $row[9] ?? null;
         $sequence_data = $row[10] ?? null;
         $title         = $row[11] ?? null;
         $authors       = $row[12] == null ? null : $this->authors($row[12]);
