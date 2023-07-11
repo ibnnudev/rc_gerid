@@ -107,6 +107,20 @@
                             reason: $('#reason').val()
                         },
                         datatype: 'json',
+                        beforeSend: function() {
+                            Swal.fire({
+                                title: 'Mohon Tunggu',
+                                text: 'Sedang mengubah status permintaan',
+                                icon: 'info',
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                                allowEnterKey: false,
+                                showConfirmButton: false,
+                                willOpen: () => {
+                                    Swal.showLoading();
+                                },
+                            });
+                        },
                         success: function(response) {
                             if (response == true) {
                                 Swal.fire({

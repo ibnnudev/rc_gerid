@@ -151,6 +151,20 @@
                                 _token: '{{ csrf_token() }}',
                                 id: id
                             },
+                            beforeSend: function() {
+                                Swal.fire({
+                                    title: 'Mohon Tunggu',
+                                    text: `Sedang mengimport data ${name}`,
+                                    icon: 'info',
+                                    showConfirmButton: false,
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                    allowEnterKey: false,
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                    }
+                                });
+                            },
                             success: function(response) {
                                 Swal.fire({
                                     title: 'Berhasil',
