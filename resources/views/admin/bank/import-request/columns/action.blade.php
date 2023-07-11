@@ -21,9 +21,9 @@
         <x-link-button route="{{ route('admin.import-request.create-single', $data->file_code) }}" color="gray">
             Tambah Data
         </x-link-button>
-        <a href="{{ route('admin.import-request.show', $data->id) }}"
+        {{-- <a href="{{ route('admin.import-request.show', $data->id) }}"
             class="text-white bg-gray-800 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm p-2 text-center inline-flex items-center">
             <i class="fas fa-eye fa-sm"></i>
-        </a>
+        </a> --}}
     @endif
 </div>

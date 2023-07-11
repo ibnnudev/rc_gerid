@@ -8,7 +8,7 @@
         </select>
     </div>
 @elseif($data->status == 3 && $data->removed_by == null)
-    <x-link-button route="{{route('admin.import-request.show', $data->id)}}" color="gray">
+    {{-- <x-link-button route="{{route('admin.import-request.show', $data->id)}}" color="gray">
         Lihat Data
-    </x-link-button>
+    </x-link-button> --}}
 @endif
