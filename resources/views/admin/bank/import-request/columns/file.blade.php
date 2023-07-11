@@ -7,7 +7,7 @@
     </div>
     <div>
         <p class="text-gray-900 dark:text-white">
-           Di impor oleh: {{ $data->importedBy->name }}
+            Di impor oleh: {{ $data->importedBy->name }}
         </p>
     </div>
 </div>

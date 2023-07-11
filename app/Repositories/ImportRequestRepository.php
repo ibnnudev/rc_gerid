@@ -160,7 +160,9 @@ class ImportRequestRepository implements ImportRequestInterface
 
             // save file to new location
             $newFile = 'public/imported/' . $importRequest->file_code . '-' . $importRequest->filename;
-            Storage::move($file, $newFile);
+
+            // copy file
+            Storage::copy($file, $newFile);
 
             DB::commit();
         } catch (\Exception $e) {
