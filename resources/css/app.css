@@ -365,3 +365,11 @@
     height: 30px;
     background-color: #19743b;
 }
+
+.swal2-title {
+    @apply text-xl;
+}
+
+.swal2-html-container {
+    @apply text-xs 2xl:text-sm;
+}

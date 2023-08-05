@@ -196,6 +196,17 @@
                 $('input[name="import_file"]').click();
 
                 $('input[name="import_file"]').change(function() {
+                    // check file extension is .xlsx
+                    const file = $('input[name="import_file"]').val();
+                    const extension = file.substr((file.lastIndexOf('.') + 1));
+                    if (extension != 'xlsx') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Format file harus .xlsx',
+                        });
+                        return;
+                    }
                     // confirm
                     Swal.fire({
                         title: 'Konfirmasi',
