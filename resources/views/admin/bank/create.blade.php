@@ -122,19 +122,36 @@
                 // filter title by author
                 $('#author_id').on('change', function() {
                     let authorId = $(this).val();
-                    // clear all option and replace with matched author
-                    $('#title').empty();
-                    @foreach ($citations as $citation)
-                        @if ($citation->author_id == $author->id)
-                            $('#title').append(
-                                `<option value="{{ $citation->id }}">{{ $citation->title }}</option>`);
-                        @endif
-                    @endforeach
+                    $.ajax({
+                        type: "post",
+                        url: "{{ route('admin.citation.get-citation-by-author') }}",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            author_id: authorId
+                        },
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.length > 0) {
+                                $('#title').empty();
+                                $('#title').append(`<option value="">Pilih Judul Artikel</option>`);
+                                response.forEach(citation => {
+                                    $('#title').append(
+                                        `<option value="${citation.id}">${citation.title}</option>`
+                                    );
+                                });
+                            } else {
+                                $('#title').empty();
+                            }
+                        }
+                    });
                 });
 
-                // set citation_id value by first option in title select
-                let citation_id = $('#title').val();
-                $('input[name="citation_id"]').val(citation_id);
+                let citation_id;
+                // set citation by title change
+                $('#title').on('change', function() {
+                    citation_id = $(this).val();
+                    $('input[name="citation_id"]').val(citation_id);
+                });
 
                 let pickupMonth, pickupYear;
                 // get current month and year

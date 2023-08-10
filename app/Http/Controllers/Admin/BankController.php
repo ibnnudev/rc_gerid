@@ -104,6 +104,8 @@ class BankController extends Controller
         $pickup_date = date('Y-m-d', strtotime($year . '-' . $month . '-01'));
         $request->merge(['pickup_date' => $pickup_date]);
 
+        // dd($request->all());
+
         try {
             $this->sample->store($request->all());
             return redirect()->route('admin.bank.index')->with('success', 'Data berhasil disimpan');

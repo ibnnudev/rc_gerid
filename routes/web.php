@@ -71,6 +71,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('cases/hiv', [CasesController::class, 'hiv'])->name('admin.cases.hiv');
 
     // Citation
+    Route::post('citation/get-citation-by-author', [CitationController::class, 'getCitationByAuthor'])->name('admin.citation.get-citation-by-author');
     Route::resource('citation', CitationController::class, ['as' => 'admin']);
 
     // Management User

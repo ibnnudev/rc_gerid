@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Interfaces\AuthorInterface;
 use App\Interfaces\CitationInterface;
+use App\Models\Citation;
 use Illuminate\Http\Request;
 
 class CitationController extends Controller
@@ -12,30 +13,31 @@ class CitationController extends Controller
     private $citation;
     private $author;
 
-    public function __construct(CitationInterface $citation, AuthorInterface $author) {
+    public function __construct(CitationInterface $citation, AuthorInterface $author)
+    {
         $this->citation = $citation;
         $this->author = $author;
     }
 
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->citation->get())
-            ->addColumn('title', function($data) {
-                return $data->title;
-            })
-            ->addColumn('author', function($data) {
-                return $data->author->name ?? '';
-            })
-            // ->addColumn('year', function($data) {
-            //     return date('Y', strtotime($data->created_at));
-            // })
-            ->addColumn('action', function($data) {
-                return view('admin.citation.columns.action', compact('data'));
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->citation->get())
+                ->addColumn('title', function ($data) {
+                    return $data->title;
+                })
+                ->addColumn('author', function ($data) {
+                    return $data->author->name ?? '';
+                })
+                // ->addColumn('year', function($data) {
+                //     return date('Y', strtotime($data->created_at));
+                // })
+                ->addColumn('action', function ($data) {
+                    return view('admin.citation.columns.action', compact('data'));
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
         return view('admin.citation.index');
     }
@@ -97,7 +99,7 @@ class CitationController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => 'required|unique:citations,title,'.$id,
+            'title' => 'required|unique:citations,title,' . $id,
             'author' => 'required',
         ]);
 
@@ -122,5 +124,11 @@ class CitationController extends Controller
             dd($th->getMessage());
             return redirect()->route('admin.citation.index')->with('error', 'Terjadi kesalahan');
         }
+    }
+
+    public function getCitationByAuthor(Request $request)
+    {
+        $citations = Citation::where('author_id', $request->author_id)->get();
+        return response()->json($citations);
     }
 }
