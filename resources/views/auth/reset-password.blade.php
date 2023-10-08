@@ -12,7 +12,7 @@
         <x-input id="password_confirmation" label="Password Confirmation" type="password" name="password_confirmation"
             required autocomplete="new-password" />
 
-        <div class="flex items-center justify-end mt-4">\
+        <div class="flex items-center justify-end mt-4">
             <x-button>
                 {{ __('Reset Password') }}
             </x-button>
