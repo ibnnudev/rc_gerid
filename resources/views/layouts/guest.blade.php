@@ -40,7 +40,8 @@
         <div>
             <a href="/">
                 {{-- <x-application-logo class="w-20 h-20 fill-current text-gray-500" /> --}}
-                <img src="{{ asset('assets/application/logo.png') }}" width="400" alt="">
+                <img src="{{ asset('assets/application/logo.jpeg') }}" width="400" alt=""
+                    class="mix-blend-multiply">
             </a>
         </div>
 

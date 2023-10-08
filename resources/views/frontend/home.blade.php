@@ -16,7 +16,6 @@
         .dataTables_length label select option {
             font-size: 0.75rem;
         }
-
     </style>
 
     <!-- Fonts -->
@@ -53,18 +52,20 @@
     </div>
 
     <header class="fixed w-full">
-        <nav class="bg-white border-gray-200 px-2   rounded dark:bg-gray-900 shadow ">
+        <nav class="bg-white border-gray-200 px-2 py-2 rounded dark:bg-gray-900 shadow ">
             <div class=" flex flex-wrap items-center justify-between mx-2 max-w-screen px-4 lg:px-2 lg:mx-auto">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('assets/application/gambar_logo.png') }}" class=" pr-3 h-12 lg:h-20" alt="RC-GERID LOGO" />
-                    <div class="xl:columns-1 hidden lg:block">
+                    <img src="{{ asset('assets/application/logo.jpeg') }}" class="pr-3 h-12 lg:h-20 mix-blend-multiply"
+                        alt="RC-GERID LOGO" />
+                    {{-- <div class="xl:columns-1 hidden lg:block">
                         <h3 class="text-lg font-bold">INDAGI</h3>
                         <p class="text-md md:text-sm">INDONESIA DATABASE FOR GENOMIC INFORMATION SYSTEM</p>
-                    </div>
+                    </div> --}}
                 </a>
                 {{-- button login & language --}}
                 <div class="flex items-center md:order-2">
-                    <button type="button" onclick="window.location='{{ url("login") }}'" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-sm px-5 sm:px=2 py-2.5     text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login</button>
+                    <button type="button" onclick="window.location='{{ url('login') }}'"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-sm px-5 sm:px=2 py-2.5     text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login</button>
                     {{-- <button type="button" data-dropdown-toggle="language-dropdown-menu" class="inline-flex items-center justify-center  px-0 lg:px-2 py-2 text-sm text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/1200px-Flag_of_Indonesia.svg.png?20200822164827" alt="" class="w-5 h-5 mr-2 rounded-full">
                     </button>
@@ -116,24 +117,42 @@
                 {{-- text --}}
                 <div class="text-justify">
                     <p class="text-center font-extrabold text-2xl lg:text-4xl">INDAGI</p>
-                    <p class="text-center font-semibold lg:text-lg text-sm">INDONESIA DATABASE FOR GENOMIC INFORMATION</p>
-                    <p class="text-center font-semibold lg:text-lg text-xs"> RESEARCH CENTER ON GLOBAL EMERGING AND RE-EMERGING INFECTIOUS DISEASE, INSTITUTE OF TROPICAL DISEASE, UNIVERSITAS AIRLANGGA</p>
+                    <p class="text-center font-semibold lg:text-lg text-sm">INDONESIA DATABASE FOR GENOMIC INFORMATION
+                    </p>
+                    <p class="text-center font-semibold lg:text-lg text-xs"> RESEARCH CENTER ON GLOBAL EMERGING AND
+                        RE-EMERGING INFECTIOUS DISEASE, INSTITUTE OF TROPICAL DISEASE, UNIVERSITAS AIRLANGGA</p>
                     <p class="text-justify lg:text-sm lg:pt-10 text-xs">
-                        Indonesia Database For Genomic Information (INDAGI) adalah aplikasi website yang dikembangkan oleh Research Center on Global Emerging and Re-emerging Infectious Diseases (RC-GERID) Institute of Tropical Disease (ITD) Universitas Airlangga, Surabaya, Indonesia dengan tujuan untuk mengakomodasi informasi sekuen dari patogen penyebab penyakit infeksi emerging dan re-emerging khususnya isolat yang didapatkan di Indonesia, antara lain virus HIV, Hepatitis B dan C, Dengue, Influenza, Rotavirus dan Norovirus. Database ini menerima dan menyimpan data sekuen hasil pemeriksaan genom isolat patogen di Indonesia. Data sekuen yang dimasukkan dapat didaftarkan terlebih dahulu ke database internasional misalkan NCBI, GISAID dan lain-lain dengan mendapatkan informasi accession number ataupun sebelumnya. Informasi sekuen ini akan dilengkapi dengan data waktu (bulan/tahun), lokasi/wilayah, tipe virus, publikasi (jika ada) dan lain sebagainya.
+                        Indonesia Database For Genomic Information (INDAGI) adalah aplikasi website yang dikembangkan
+                        oleh Research Center on Global Emerging and Re-emerging Infectious Diseases (RC-GERID) Institute
+                        of Tropical Disease (ITD) Universitas Airlangga, Surabaya, Indonesia dengan tujuan untuk
+                        mengakomodasi informasi sekuen dari patogen penyebab penyakit infeksi emerging dan re-emerging
+                        khususnya isolat yang didapatkan di Indonesia, antara lain virus HIV, Hepatitis B dan C, Dengue,
+                        Influenza, Rotavirus dan Norovirus. Database ini menerima dan menyimpan data sekuen hasil
+                        pemeriksaan genom isolat patogen di Indonesia. Data sekuen yang dimasukkan dapat didaftarkan
+                        terlebih dahulu ke database internasional misalkan NCBI, GISAID dan lain-lain dengan mendapatkan
+                        informasi accession number ataupun sebelumnya. Informasi sekuen ini akan dilengkapi dengan data
+                        waktu (bulan/tahun), lokasi/wilayah, tipe virus, publikasi (jika ada) dan lain sebagainya.
                     </p>
                     <p class="text-justify lg:text-sm lg:pt-10 text-xs pt-5 ">
-                        INDAGI dapat digunakan untuk surveilans penyakit infeksi emerging dan re-emerging berdasarkan tipe virus (surveilans genomik) dan tahun penyebaran di berbagai wilayah di Indonesia. Data yang ditampilkan di INDAGI merupakan data spasial temporal dan dapat divisualisasikan dalam bentuk peta wilayah, grafik, diagram untuk menunjukkan persebaran kasus virus dan tipenya.
+                        INDAGI dapat digunakan untuk surveilans penyakit infeksi emerging dan re-emerging berdasarkan
+                        tipe virus (surveilans genomik) dan tahun penyebaran di berbagai wilayah di Indonesia. Data yang
+                        ditampilkan di INDAGI merupakan data spasial temporal dan dapat divisualisasikan dalam bentuk
+                        peta wilayah, grafik, diagram untuk menunjukkan persebaran kasus virus dan tipenya.
                     </p>
                 </div>
                 {{-- grid gambar --}}
                 <div class="grid  grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4 mt-10">
                     @foreach ($viruses as $virus)
-                    <a href="{{ route('detail-virus', $virus->id) }}" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                        <div class="grid grid-cols-1 gap-4 ">
-                            <img class="h-36 lg:h-36 mx-auto object-cover" id="virus-img"  src="{{ $virus->image ? asset('storage/virus/' . $virus->image)  : asset('images/noimage.jpg') }}"  alt="">
-                            <p class="font-bold text-gray-700 dark:text-gray-400 text-center">{{ $virus->name }}</p>
-                        </div>
-                    </a>
+                        <a href="{{ route('detail-virus', $virus->id) }}"
+                            class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                            <div class="grid grid-cols-1 gap-4 ">
+                                <img class="h-36 lg:h-36 mx-auto object-cover" id="virus-img"
+                                    src="{{ $virus->image ? asset('storage/virus/' . $virus->image) : asset('images/noimage.jpg') }}"
+                                    alt="">
+                                <p class="font-bold text-gray-700 dark:text-gray-400 text-center">{{ $virus->name }}
+                                </p>
+                            </div>
+                        </a>
                     @endforeach
                 </div>
             </div>
@@ -179,7 +198,7 @@
 
     <script>
         // show loading when website loaded and all assets loaded and ajax request and stop loading when all assets loaded
-        $(window).on('load', function () {
+        $(window).on('load', function() {
             $('.loading').fadeOut(500);
         });
 

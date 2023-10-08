@@ -16,7 +16,6 @@
         .dataTables_length label select option {
             font-size: 0.75rem;
         }
-
     </style>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +25,8 @@
         rel="stylesheet">
 
     <!-- Leaflet JS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
 
     <!-- Datatable -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
@@ -57,19 +57,21 @@
     {{-- <div class="flex flex-col h-screen justify-between"> --}}
 
     <header class=" w-full ">
-        <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2 rounded dark:bg-gray-900 shadow ">
+        <nav class="bg-white border-gray-200 px-2 py-2 rounded dark:bg-gray-900 shadow ">
             <div class=" flex flex-wrap items-center justify-between mx-2 max-w-screen px-4 lg:px-2 lg:mx-auto">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('assets/application/gambar_logo.png') }}" class=" pr-3 h-12 lg:h-20" alt="RC-GERID LOGO" />
-                    <div class="xl:columns-1 hidden lg:block">
+                    <img src="{{ asset('assets/application/logo.jpeg') }}" class="pr-3 h-12 lg:h-20 mix-blend-multiply"
+                        alt="RC-GERID LOGO" />
+                    {{-- <div class="xl:columns-1 hidden lg:block">
                         <h3 class="text-lg font-bold">Persebaran</h3>
                         <p class="text-lg md:text-sm">Virus {{ $virus->name }}</p>
-                    </div>
+                    </div> --}}
                 </a>
                 {{-- button login & language --}}
                 <div class="flex items-center md:order-2">
-                    <button type="button" onclick="window.location='{{ url("login") }}'" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-sm px-5 sm:px=2 py-2.5     text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login</button>
-                        {{-- <button type="button" data-dropdown-toggle="language-dropdown-menu" class="inline-flex items-center justify-center  px-0 lg:px-2 py-2 text-sm text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white shadow-sm text-center bg-slate-50">
+                    <button type="button" onclick="window.location='{{ url('login') }}'"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg sm:text-sm px-5 sm:px=2 py-2.5     text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login</button>
+                    {{-- <button type="button" data-dropdown-toggle="language-dropdown-menu" class="inline-flex items-center justify-center  px-0 lg:px-2 py-2 text-sm text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white shadow-sm text-center bg-slate-50">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/800px-Flag_of_Indonesia.svg.png?20200822164827" alt="" class="h-3.5 w-3.5 rounded-full mr-2">
                     </button>
                     <!-- Dropdown -->
@@ -115,13 +117,22 @@
             <form action="{{ route('listCitation') }}" method="POST">
                 @csrf
                 <div class="flex px-2 py-2">
-                    <select name="virus_id" id="" class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600">
+                    <select name="virus_id" id=""
+                        class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600">
                         <option value="{{ $virus->id }}">All databases {{ $virus->name }}</option>
                     </select>
                     <div class="relative w-full">
-                        <input name="q" type="search" id="search-dropdown" value="{{ $request != null ? $request['q'] : null }}"  class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Cari Data Mengenai HIV" >
-                        <button type="submit" class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        <input name="q" type="search" id="search-dropdown"
+                            value="{{ $request != null ? $request['q'] : null }}"
+                            class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+                            placeholder="Cari Data Mengenai HIV">
+                        <button type="submit"
+                            class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
                             <span class="sr-only">Search</span>
                         </button>
                     </div>
@@ -134,55 +145,59 @@
     {{-- </div> --}}
     <footer class="bg-white shadow-inner">
         <div class="flex items-center max-w-screen p-4 mx-auto my-auto mb-0 lg:py-6 md:p-8 lg:p-10 justify-center">
-            <img src="{{ asset('assets/application/gambar_logo.png') }}" class="h-8 mr-3 lg:h-20 " alt="">
-            <div class="columns-1">
+            <img src="{{ asset('assets/application/logo.jpeg') }}" class="h-8 mr-3 lg:h-20 mix-blend-multiply"
+                alt="">
+            {{-- <div class="columns-1">
                 <h3 class="text-lg font-bold">INDAGI</h3>
                 <p>INDONESIA DATABASE FOR GENOMIC INFORMATION</p>
-            </div>
+            </div> --}}
         </div>
     </footer>
-<body>
 
-    <!-- Jquery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
-        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <body>
 
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
+        <!-- Jquery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+            integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Datatable -->
-    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js" defer></script>
-    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.1/js/dataTables.jqueryui.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
 
-    <!-- Icons -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"
-        integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- Datatable -->
+        <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js" defer></script>
+        <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.1/js/dataTables.jqueryui.min.js"></script>
 
-    <!-- Alert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+        <!-- Icons -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js"
+            integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Chart Js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
+        <!-- Alert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
-    {{-- CK Editor --}}
-    <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
+        <!-- Chart Js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 
-    <!-- Jquery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        // show loading when website loaded and all assets loaded and ajax request and stop loading when all assets loaded
-        $(window).on('load', function () {
-            $('.loading').fadeOut(500);
-        });
+        {{-- CK Editor --}}
+        <script src="https://cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
 
-        // set all tag <a> with cursor-pointer
-        $('a').addClass('cursor-pointer');
-        // $('select').select2();
-    </script>
+        <!-- Jquery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+            integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            // show loading when website loaded and all assets loaded and ajax request and stop loading when all assets loaded
+            $(window).on('load', function() {
+                $('.loading').fadeOut(500);
+            });
 
-    @stack('js-internal')
-</body>
+            // set all tag <a> with cursor-pointer
+            $('a').addClass('cursor-pointer');
+            // $('select').select2();
+        </script>
+
+        @stack('js-internal')
+    </body>
 
 </html>

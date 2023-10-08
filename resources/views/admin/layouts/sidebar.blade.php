@@ -13,8 +13,9 @@
     aria-label="Sidebar">
     <div class="h-full px-4 py-8 overflow-y-auto bg-white">
         {{-- Logo --}}
-        <a href="#" class="flex items-center pl-2.5 mb-8">
-            <img src="{{ asset('assets/application/indagi.png') }}" class="mr-3" alt="logo" />
+        <a href="#" class="flex items-center mb-4">
+            <img src="{{ asset('assets/application/logo.jpeg') }}" class="mr-3 h-24 w-auto object-contain"
+                alt="logo" class="mix-blend-multiply" />
         </a>
         <ul class="space-y-3">
             <x-sidebar-menu name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
@@ -119,29 +120,5 @@
                 </form>
             </li>
         </ul>
-
-        {{-- <div id="dropdown-cta" class="p-4 mt-12 rounded-2xl border-b border-gray-200 sm:rounded-2xl shadow-xl"
-            role="alert">
-            <div class="flex items-center text-center justify-center flex-col">
-                <div class="avatar">
-                    <div class="w-12 rounded-full">
-                        <img
-                            src="{{ auth()->user()->avatar ? asset('storage/avatar/' . auth()->user()->avatar) : asset('images/noimage.jpg') }}" />
-                    </div>
-                </div>
-                <p class="font-bold mt-2">
-                    {{ auth()->user()->name }}
-                </p>
-                <p class="text-xs text-gray-400">
-                    {{ auth()->user()->getRole() }}
-                </p>
-
-                {{-- open profile button light --}}
-                {{-- <a href=""
-                    class="w-full px-4 py-2 mt-6 text-xs font-medium bg-gray-100 border border-transparent rounded-md shadow-sm">
-                    <span>Buka Profil</span>
-                </a> --}}
-            </div>
-        </div> --}}
     </div>
 </aside>
