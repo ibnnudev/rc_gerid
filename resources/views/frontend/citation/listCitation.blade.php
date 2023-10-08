@@ -33,8 +33,14 @@
                                                 style="word-break: break-word;white-space:normal;">{{ $item['title'] }}</a>
                                         </div>
                                         <h6 class="pb-0">{{ $item['province'] . ',' . $item['regency'] }}</h6>
-                                        <p>{{ $item['author']['name'] . ',' . $item['author']['member'] }} |
-                                            {{ $item['monthYear'] }}</p>
+                                        <p>
+                                            @if (isset($item['author']))
+                                                {{ $item['author']['name'] . ',' . $item['author']['member'] }} |
+                                                {{ $item['monthYear'] }}
+                                            @else
+                                                {{ $item['monthYear'] }}
+                                            @endif
+                                        </p>
                                         <span class="text-gray-400">Accession NCBI :
                                             {{ $item['accession_ncbi'] }}</span><span class="text-gray-400"> | Accession
                                             INDAGI : {{ $item['accession_indagi'] }}</span>

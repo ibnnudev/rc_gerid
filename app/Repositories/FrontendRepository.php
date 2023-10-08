@@ -27,12 +27,12 @@ class FrontendRepository implements FrontendInterface
 
     public function __construct(Virus $virus, HivCases $hivCases, Citation $citation, User $user, Author $author, Sample $sample)
     {
-        $this->virus = $virus;
+        $this->virus    = $virus;
         $this->hivCases = $hivCases;
         $this->citation = $citation;
-        $this->user = $user;
-        $this->author = $author;
-        $this->sample = $sample;
+        $this->user     = $user;
+        $this->author   = $author;
+        $this->sample   = $sample;
     }
 
     public function getVirus($id)
@@ -55,7 +55,7 @@ class FrontendRepository implements FrontendInterface
         $arr = [];
         foreach ($data as $item) {
             $arr['label'][] = $item->genotipe_code;
-            $arr['data'][] = $item->jumlah;
+            $arr['data'][]  = $item->jumlah;
         }
         return $arr;
     }
@@ -123,12 +123,12 @@ class FrontendRepository implements FrontendInterface
         return $data->map(function ($item, $key) {
             return [
                 'id_citation' => $item->id,
-                'user' => $item->name,
-                'title' => $item->title,
-                'province' => $this->getProvince($item->province_id),
-                'regency' => $this->getRegency($item->regency_id),
-                'author' => $this->getAuthor($item->author_id),
-                'monthYear' => $this->getMonthYear($item->pickup_date),
+                'user'        => $item->name,
+                'title'       => $item->title,
+                'province'    => $this->getProvince($item->province_id),
+                'regency'     => $this->getRegency($item->regency_id),
+                'author'      => $this->getAuthor($item->author_id),
+                'monthYear'   => $this->getMonthYear($item->pickup_date),
                 // // accession ncbi from sample code
                 'accession_ncbi' => $item->sample_code,
                 // // accession indagi from virus code
@@ -158,15 +158,15 @@ class FrontendRepository implements FrontendInterface
 
         return $data->map(function ($item, $key) {
             return [
-                'id' => $item->id,
-                'user' => $item->name,
-                'title' => $item->title,
-                'gene_name' => $item->gene_name,
+                'id'            => $item->id,
+                'user'          => $item->name,
+                'title'         => $item->title,
+                'gene_name'     => $item->gene_name,
                 'sequence_data' => $item->sequence_data,
-                'province' => $this->getProvince($item->province_id),
-                'regency' => $this->getRegency($item->regency_id),
-                'author' => $this->getAuthor($item->author_id),
-                'monthYear' => $this->getMonthYear($item->pickup_date),
+                'province'      => $this->getProvince($item->province_id),
+                'regency'       => $this->getRegency($item->regency_id),
+                'author'        => $this->getAuthor($item->author_id),
+                'monthYear'     => $this->getMonthYear($item->pickup_date),
                 // // accession ncbi from sample code
                 'accession_ncbi' => $item->sample_code,
                 // // accession indagi from virus code
@@ -197,15 +197,15 @@ class FrontendRepository implements FrontendInterface
         // return $data;
         return $data->map(function ($item, $key) {
             return [
-                'id' => $item->id,
-                'user' => $item->name,
-                'title' => $item->title,
-                'gene_name' => $item->gene_name,
+                'id'            => $item->id,
+                'user'          => $item->name,
+                'title'         => $item->title,
+                'gene_name'     => $item->gene_name,
                 'sequence_data' => $item->sequence_data,
-                'province' => $this->getProvince($item->province_id),
-                'regency' => $this->getRegency($item->regency_id),
-                'author' => $this->getAuthor($item->author_id),
-                'monthYear' => $this->getMonthYear($item->pickup_date),
+                'province'      => $this->getProvince($item->province_id),
+                'regency'       => $this->getRegency($item->regency_id),
+                'author'        => $this->getAuthor($item->author_id),
+                'monthYear'     => $this->getMonthYear($item->pickup_date),
                 // // accession ncbi from sample code
                 'accession_ncbi' => $item->sample_code,
                 // // accession indagi from virus code
