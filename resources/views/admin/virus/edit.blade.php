@@ -6,7 +6,7 @@
         <div class="lg:w-1/5">
             <x-card-container>
                 <div class="avatar">
-                    <div class="w-full rounded rounded-xl">
+                    <div class="w-full rounded-xl">
                         <img src="{{ $virus->image ? asset('storage/virus/' . $virus->image) : asset('images/noimage.jpg') }}"
                             id="imageThumbnail" />
                     </div>
