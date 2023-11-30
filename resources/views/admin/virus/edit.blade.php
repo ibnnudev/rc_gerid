@@ -27,11 +27,14 @@
                     <input type="file" id="image" name="image" class="hidden" />
 
                     <div class="grid grid-cols-2 gap-x-3">
-                        <x-input id="name" label="Nama" name="name" type="text" required :value="$virus->name" />
-                        <x-input id="latin_name" label="Nama Latin" name="latin_name" type="text" required :value="$virus->latin_name" />
+                        <x-input id="name" label="Nama" name="name" type="text" required
+                            :value="$virus->name" />
+                        <x-input id="latin_name" label="Nama Latin" name="latin_name" type="text" required
+                            :value="$virus->latin_name" />
                     </div>
 
-                    <x-textarea id="description" label="Deskripsi" name="description" class="ckeditor" required>{{$virus->description}}</x-textarea>
+                    <x-textarea id="description" label="Deskripsi" name="description" class="ckeditor"
+                        required>{{ $virus->description }}</x-textarea>
 
                     <div class="text-end mt-4">
                         <x-button class="px-6">
@@ -55,11 +58,23 @@
                     if (this.files && this.files[0]) {
                         var reader = new FileReader();
 
+                        // check if file is image
+                        const fileName = this.files[0].name.toLowerCase();
+                        const fileExtension = fileName.split('.').pop();
+                        const isImage = ['jpg', 'jpeg', 'png'].includes(fileExtension);
+
+                        if (!isImage) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: 'File yang diunggah harus berupa gambar dengan format JPG, JPEG, atau PNG.',
+                            });
+                            return;
+                        }
+
                         reader.onload = function(e) {
                             $('#imageThumbnail').attr('src', e.target.result);
                         }
-
-                        reader.readAsDataURL(this.files[0]);
                     }
                 });
             });
