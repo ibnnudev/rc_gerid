@@ -11,7 +11,7 @@
                     <option value="">Tidak ada data</option>
                 @endforelse
             </x-select>
-            <x-select id="virus_id" name="virus_id" label="Kode Sample">
+            <x-select id="virus_id" name="virus_id" label="Virus">
                 @forelse ($attributes['viruses'] as $item => $key)
                     <option value="{{ $key['id'] }}">{{ $key['name'] }}</option>
                 @empty

@@ -11,7 +11,7 @@
                     <th>Kd. File</th>
                     <th>Virus</th>
                     <th>Genotipe & Subtipe</th>
-                    <th>Tanggal</th>
+                    <th>Tahun</th>
                     <th>Tempat</th>
                     <th>Provinsi</th>
                     <th>Gen</th>
