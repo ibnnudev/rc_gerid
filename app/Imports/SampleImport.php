@@ -176,6 +176,8 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
         $author = Author::pluck('name', 'id')->toArray();
         $author = array_search($name, $author);
 
+        dd($author, $name, $param, $author == null, $author == '');
+
         if (empty($author)) {
             $firstAuthor = $name;
             $author = Author::create([
@@ -211,25 +213,19 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
     {
         $param = strtoupper($param);
         $regency = Regency::where('name', 'like', '%' . $param . '%')->first();
+
         if ($regency == null || $regency->name != $param) {
             if ($province == null) {
                 $province = $regency->province_id;
             } else {
-                // $regency = Regency::create([
-                //     'id'          => Regency::max('id') + 1,
-                //     'name'        => $param,
-                //     'province_id' => $province
-                // ]);
-                // check if regency is already exist
-                $regency = Regency::firstOrCreate([
-                    'name'        => $param,
-                    'province_id' => $province
-                ]);
+                $regency = Regency::updateOrCreate(
+                    ['name' => $param],
+                    ['province_id' => $province]
+                );
             }
-            return $regency->id;
-        } else {
-            return $regency->id;
         }
+
+        return $regency->id;
     }
 
     public function pickupDate($pickup_month, $pickup_year)
