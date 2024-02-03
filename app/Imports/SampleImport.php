@@ -173,13 +173,14 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
     public function authors($param)
     {
         $name = explode(',', $param)[0];
-        $author = Author::where('name', $name)->first();
 
-        if (!$author) {
-            $author = Author::create([
-                'name'   => $name,
-                'member' => $param
-            ]);
+        // Use firstOrNew to find the existing author or create a new instance
+        $author = Author::firstOrNew(['name' => $name]);
+
+        // If the author is new, set additional attributes and save
+        if (!$author->exists) {
+            $author->member = $param;
+            $author->save();
         }
 
         return $author->id;
