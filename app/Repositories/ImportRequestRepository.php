@@ -48,9 +48,9 @@ class ImportRequestRepository implements ImportRequestInterface
         $user = auth()->user()->id;
 
         $importRequest = $this->importRequest->create([
-            'viruses_id' => $data['viruses_id'],
-            'filename' => $data['file'],
-            'file_code' => uniqid(),
+            'viruses_id'  => $data['viruses_id'],
+            'filename'    => $data['file'],
+            'file_code'   => uniqid(),
             'imported_by' => $user,
             'description' => $data['description']
         ]);

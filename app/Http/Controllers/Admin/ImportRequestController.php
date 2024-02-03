@@ -82,9 +82,9 @@ class ImportRequestController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'viruses_id' => ['required'],
-            'file' => ['required', 'file', 'mimes:xlsx'],
-            'description' => ['required']
+            'viruses_id'  => ['required'],
+            'file'        => ['required', 'file', 'mimes:xlsx'],
+            'description' => ['required'],
         ]);
 
         try {
