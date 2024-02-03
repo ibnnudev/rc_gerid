@@ -9,7 +9,6 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Sample;
 use App\Models\Virus;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -174,8 +173,6 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
     public function authors($param)
     {
         $name = explode(',', $param)[0];
-        $name = trim($name);
-        $author = DB::raw('LOWER(name) = ?', strtolower($name));
         $author = Author::whereRaw('LOWER(name) = ?', strtolower($name))->first();
 
         dd($author, $name, $param);
