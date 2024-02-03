@@ -174,6 +174,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
     {
         $name = explode(',', $param)[0];
         $author = Author::where('name', $name)->first();
+        dd($author, $name, $param);
 
         if ($author == null) {
             $author = Author::create([
