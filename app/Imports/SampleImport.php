@@ -82,7 +82,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
 
     public function model(array $row)
     {
-        $sampleCode = $row[0] ?? uniqid();
+        $sampleCode = $row[0] == null || $row[0] == '-' ? uniqid() : $this->sampleCode($row[0]);
         $virus      = $row[1] == null ? null : $this->virus($row[1]);
         $genotipe   = $row[2] == null ? null : $this->genotipe($row[2], $virus);
 
@@ -128,6 +128,16 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
         return new Sample($data);
     }
 
+    public function sampleCode($code)
+    {
+        $sample = Sample::where('sample_code', $code)->first();
+        if ($sample == null) {
+            return $code;
+        } else {
+            return uniqid();
+        }
+    }
+
     public function generateVirusCode($virus_id)
     {
         // make combination: virus_id + count of sample
@@ -149,10 +159,10 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
 
         if (empty($citation) && $title != null && $authors != null) {
             $citation = Citation::create([
-                'id'       => Citation::max('id') + 1,
-                'title'    => $title,
-                'author_id'  => $authors,
-                'users_id' => auth()->user()->id
+                'id'        => Citation::max('id') + 1,
+                'title'     => $title,
+                'author_id' => $authors,
+                'users_id'  => auth()->user()->id
             ]);
             return $citation->id;
         } else {
@@ -269,7 +279,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
 
         if (empty($genotipe)) {
             $genotipe = Genotipe::create([
-                'id' => Genotipe::max('id') + 1,
+                'id'            => Genotipe::max('id') + 1,
                 'genotipe_code' => $param,
                 'viruses_id'    => $virus
             ]);
