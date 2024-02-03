@@ -9,6 +9,7 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Models\Sample;
 use App\Models\Virus;
+use App\Scopes\HasActiveScope;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
@@ -172,24 +173,22 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
 
     public function authors($param)
     {
-        $name = trim(explode(',', $param)[0]);
+        $name = explode(',', $param)[0];
+        $author = Author::withoutGlobalScope(HasActiveScope::class)->pluck('name', 'id')->toArray();
+        $author = array_search($name, $author);
 
-        // Gunakan LOWER untuk pencarian case-insensitive di MySQL
-        $author = Author::whereRaw('LOWER(`name`) LIKE ?', [strtolower($name)])
-            ->where('is_active', 1)
-            ->first();
-
-        // Gunakan firstOrNew untuk menemukan atau membuat instance baru
-        if (!$author) {
-            $author = Author::firstOrNew(['name' => $name]);
-            $author->member = $param;
-            $author->save();
+        if (empty($author)) {
+            $firstAuthor = $name;
+            $author = Author::create([
+                'id'     => Author::max('id') + 1,
+                'name'   => $firstAuthor,
+                'member' => $param
+            ]);
+            return $author->id;
+        } else {
+            return $author;
         }
-
-        return $author->id;
     }
-
-
 
     public function province($param)
     {
@@ -213,19 +212,25 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
     {
         $param = strtoupper($param);
         $regency = Regency::where('name', 'like', '%' . $param . '%')->first();
-
         if ($regency == null || $regency->name != $param) {
             if ($province == null) {
                 $province = $regency->province_id;
             } else {
-                $regency = Regency::updateOrCreate(
-                    ['name' => $param],
-                    ['province_id' => $province]
-                );
+                // $regency = Regency::create([
+                //     'id'          => Regency::max('id') + 1,
+                //     'name'        => $param,
+                //     'province_id' => $province
+                // ]);
+                // check if regency is already exist
+                $regency = Regency::firstOrCreate([
+                    'name'        => $param,
+                    'province_id' => $province
+                ]);
             }
+            return $regency->id;
+        } else {
+            return $regency->id;
         }
-
-        return $regency->id;
     }
 
     public function pickupDate($pickup_month, $pickup_year)
