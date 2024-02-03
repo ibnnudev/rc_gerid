@@ -122,17 +122,15 @@ class FrontendRepository implements FrontendInterface
         // return $data;
         return $data->map(function ($item, $key) {
             return [
-                'id_citation' => $item->id,
-                'user'        => $item->name,
-                'title'       => $item->title,
-                'province'    => $this->getProvince($item->province_id),
-                'regency'     => $this->getRegency($item->regency_id),
-                'author'      => $this->getAuthor($item->author_id),
-                'monthYear'   => $this->getMonthYear($item->pickup_date),
-                // // accession ncbi from sample code
-                'accession_ncbi' => $item->sample_code,
-                // // accession indagi from virus code
-                'accession_indagi' => $item->virus_code,
+                'id_citation'      => $item->id,
+                'user'             => $item->name,
+                'title'            => $item->title,
+                'province'         => $this->getProvince($item->province_id),
+                'regency'          => $this->getRegency($item->regency_id),
+                'author'           => $this->getAuthor($item->author_id),
+                'monthYear'        => $this->getMonthYear($item->pickup_date),
+                'accession_ncbi'   => $item->sample_code,
+                'accession_indagi' => substr($item->virus_code, 0, 3) . date('Ym', strtotime($item->pickup_date)) . $item->id,
             ];
         });
     }
@@ -217,7 +215,7 @@ class FrontendRepository implements FrontendInterface
 
     public function getProvince($districtId)
     {
-        return Province::where('id', $districtId)->first()->name;
+        return Province::where('id', $districtId)->first()->name ?? '';
     }
 
     public function getRegency($regencyId)

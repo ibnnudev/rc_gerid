@@ -44,16 +44,16 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
     {
         // set all field must be required
         return [
-            '*.0' => 'required',
-            '*.1' => ['required', 'regex:/^(Hepatitis B|Hepatitis C|HIV|Dengue|Norovirus|Rotavirus)$/'],
-            '*.2' => 'required',
-            '*.3' => ['required', 'regex:/^(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)$/'],
-            '*.4' => 'required',
-            '*.5' => 'required',
-            '*.6' => 'required',
-            '*.7' => 'required',
-            '*.8' => 'required',
-            '*.9' => 'required',
+            '*.0'  => 'nullable',
+            '*.1'  => ['required', 'regex:/^(Hepatitis B|Hepatitis C|HIV|Dengue|Norovirus|Rotavirus)$/'],
+            '*.2'  => 'required',
+            '*.3'  => ['required', 'regex:/^(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)$/'],
+            '*.4'  => 'required',
+            '*.5'  => 'required',
+            '*.6'  => 'required',
+            '*.7'  => 'required',
+            '*.8'  => 'required',
+            '*.9'  => 'required',
             '*.10' => 'required',
             '*.11' => 'required',
         ];
@@ -63,18 +63,18 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
     {
         // indonesia validation message
         return [
-            '*.0.required' => 'Kolom kode sampel harus diisi',
-            '*.1.required' => 'Kolom virus harus diisi',
-            '*.1.regex'    => 'Kolom virus harus diisi dengan nama virus Hepatitis B, Hepatitis C, HIV, Dengue, Norovirus, atau Rotavirus',
-            '*.2.required' => 'Kolom genotipe harus diisi',
-            '*.3.required' => 'Kolom bulan pengambilan sampel harus diisi',
-            '*.3.regex'    => 'Kolom bulan pengambilan sampel harus diisi dengan bulan menggunakan bahasa indonesia',
-            '*.4.required' => 'Kolom tahun pengambilan sampel harus diisi',
-            '*.5.required' => 'Kolom tempat pengambilan sampel harus diisi',
-            '*.6.required' => 'Kolom provinsi harus diisi',
-            '*.7.required' => 'Kolom kabupaten/kota harus diisi',
-            '*.8.required' => 'Kolom nama gen harus diisi',
-            '*.9.required' => 'Kolom ukuran data sekuen harus diisi',
+            '*.0.nullable'  => 'Kolom kode sampel harus diisi',
+            '*.1.required'  => 'Kolom virus harus diisi',
+            '*.1.regex'     => 'Kolom virus harus diisi dengan nama virus Hepatitis B, Hepatitis C, HIV, Dengue, Norovirus, atau Rotavirus',
+            '*.2.required'  => 'Kolom genotipe harus diisi',
+            '*.3.required'  => 'Kolom bulan pengambilan sampel harus diisi',
+            '*.3.regex'     => 'Kolom bulan pengambilan sampel harus diisi dengan bulan menggunakan bahasa indonesia',
+            '*.4.required'  => 'Kolom tahun pengambilan sampel harus diisi',
+            '*.5.required'  => 'Kolom tempat pengambilan sampel harus diisi',
+            '*.6.required'  => 'Kolom provinsi harus diisi',
+            '*.7.required'  => 'Kolom kabupaten/kota harus diisi',
+            '*.8.required'  => 'Kolom nama gen harus diisi',
+            '*.9.required'  => 'Kolom ukuran data sekuen harus diisi',
             '*.10.required' => 'Kolom judul harus diisi',
             '*.11.required' => 'Kolom penulis harus diisi',
         ];
@@ -82,7 +82,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
 
     public function model(array $row)
     {
-        $sampleCode = $row[0] ?? null;
+        $sampleCode = $row[0] == null || $row[0] == '-' ? uniqid() : $row[0];
         $virus      = $row[1] == null ? null : $this->virus($row[1]);
         $genotipe   = $row[2] == null ? null : $this->genotipe($row[2], $virus);
 
