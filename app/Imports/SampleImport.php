@@ -215,8 +215,13 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
             if ($province == null) {
                 $province = $regency->province_id;
             } else {
-                $regency = Regency::create([
-                    'id'          => Regency::max('id') + 1,
+                // $regency = Regency::create([
+                //     'id'          => Regency::max('id') + 1,
+                //     'name'        => $param,
+                //     'province_id' => $province
+                // ]);
+                // check if regency is already exist
+                $regency = Regency::firstOrCreate([
                     'name'        => $param,
                     'province_id' => $province
                 ]);
