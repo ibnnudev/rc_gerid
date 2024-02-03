@@ -15,6 +15,7 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Properties\Months;
 use App\Properties\Years;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
@@ -54,7 +55,7 @@ class ImportRequestController extends Controller
                     return $file_code;
                 })
                 ->addColumn('created_at', function ($data) {
-                    return date('d-m-Y H:i', strtotime($data->created_at));
+                    return Carbon::parse($data->created_at)->locale('id')->isoFormat('dddd, D MMMM Y HH:mm');
                 })
                 ->addColumn('description', function ($data) {
                     return $data->description;
