@@ -248,10 +248,10 @@ class ImportRequestController extends Controller
             $error = [];
             foreach ($failures as $failure) {
                 $error[] = [
-                    'row' => $failure->row(),
+                    'row'       => $failure->row(),
                     'attribute' => $failure->attribute(),
-                    'errors' => $failure->errors(),
-                    'values' => $failure->values()
+                    'errors'    => $failure->errors(),
+                    'values'    => $failure->values()
                 ];
             }
 
