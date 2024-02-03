@@ -82,7 +82,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
 
     public function model(array $row)
     {
-        $sampleCode = $row[0] == null || $row[0] == '-' ? uniqid() : $row[0];
+        $sampleCode = $row[0] == null || $row[0] == '-' ? uniqid() : $this->sampleCode($row[0]);
         $virus      = $row[1] == null ? null : $this->virus($row[1]);
         $genotipe   = $row[2] == null ? null : $this->genotipe($row[2], $virus);
 
@@ -126,6 +126,16 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
         ];
 
         return new Sample($data);
+    }
+
+    public function sampleCode($code)
+    {
+        $sample = Sample::where('sample_code', $code)->first();
+        if ($sample == null) {
+            return $code;
+        } else {
+            return uniqid();
+        }
     }
 
     public function generateVirusCode($virus_id)
