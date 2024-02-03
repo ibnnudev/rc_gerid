@@ -211,25 +211,16 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
     public function regency($param, $province)
     {
         $param = strtoupper($param);
-        $regency = Regency::where('name', 'like', '%' . $param . '%')->first();
-        if ($regency == null || $regency->name != $param) {
+        $regency = Regency::pluck('name', 'id')->toArray();
+        $regency = array_search($param, $regency);
+
+        if (empty($regency)) {
+            // return error if  regency not found
             if ($province == null) {
-                $province = $regency->province_id;
-            } else {
-                // $regency = Regency::create([
-                //     'id'          => Regency::max('id') + 1,
-                //     'name'        => $param,
-                //     'province_id' => $province
-                // ]);
-                // check if regency is already exist
-                $regency = Regency::firstOrCreate([
-                    'name'        => $param,
-                    'province_id' => $province
-                ]);
+                return null;
             }
-            return $regency->id;
         } else {
-            return $regency->id;
+            return $regency;
         }
     }
 
