@@ -76,4 +76,10 @@ class VirusRepository implements VirusInterface
 
         return true;
     }
+
+    public function getTotalGenotipeForEachVirus()
+    {
+        return $this->virus->withCount('genotipes')->get();
+    }
 }
+

@@ -36,8 +36,9 @@ class VirusController extends Controller
             ->addIndexColumn()
             ->make(true);
         }
+        
         return view('admin.virus.index', [
-            'totalHIVCases' => $this->hivCase->get()->count(),
+            'viruses' => $this->virus->getTotalGenotipeForEachVirus(),
         ]);
     }
 

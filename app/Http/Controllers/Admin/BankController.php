@@ -28,10 +28,10 @@ class BankController extends Controller
 
     public function __construct(AuthorInterface $author, VirusInterface $virus, SampleInterface $sample, ImportRequestInterface $importRequest)
     {
-        $this->author           = $author;
-        $this->virus            = $virus;
-        $this->sample           = $sample;
-        $this->importRequest    = $importRequest;
+        $this->author        = $author;
+        $this->virus         = $virus;
+        $this->sample        = $sample;
+        $this->importRequest = $importRequest;
     }
 
     public function index(Request $request)
@@ -91,20 +91,20 @@ class BankController extends Controller
         ]);
     }
 
-    /**
+      /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
         $pickup_date = $request->pickup_date;
-        $month = explode('/', $pickup_date)[0];
-        $year = explode('/', $pickup_date)[1];
+        $month       = explode('/', $pickup_date)[0];
+        $year        = explode('/', $pickup_date)[1];
 
-        // conver to date
+          // conver to date
         $pickup_date = date('Y-m-d', strtotime($year . '-' . $month . '-01'));
         $request->merge(['pickup_date' => $pickup_date]);
 
-        // dd($request->all());
+          // dd($request->all());
 
         try {
             $this->sample->store($request->all());
@@ -115,12 +115,30 @@ class BankController extends Controller
         }
     }
 
-    /**
+      /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
+        $fasta = $this->sample->find($id)->sequence_data;
+        $fasta = wordwrap($fasta, 10, ' ', true);
+        $fasta = wordwrap($fasta, 70, '<br>', true);
+        $fasta = '<pre>' . $fasta . '</pre>';
+
+        $fasta    = explode('<br>', $fasta);
+        $fasta[0] = '[<span>1</span>]' . "\t\t\t" . $fasta[0];
+        $fasta[0] = str_replace('<pre>', '', $fasta[0]);
+        for ($i = 1; $i < count($fasta); $i++) {
+            $fasta[$i] = '[<span>' . (60 * $i + 1) . '</span>] ' . "\t\t" . $fasta[$i];
+        }
+        for ($i = 0; $i < count($fasta); $i++) {
+            $fasta[$i] = '<pre>' . $fasta[$i] . '</pre>';
+        }
+        $fasta[0] = str_replace('<br>', '', $fasta[0]);
+        $fasta    = implode('<br>', $fasta);
+
         return view('admin.bank.show', [
+            'fasta'     => $fasta,
             'sample'    => $this->sample->find($id),
             'provinces' => Province::all(),
             'authors'   => $this->author->get(),
@@ -128,7 +146,7 @@ class BankController extends Controller
         ]);
     }
 
-    /**
+      /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
@@ -146,13 +164,13 @@ class BankController extends Controller
         ]);
     }
 
-    /**
+      /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
     {
-        $months = Months::getMonths();
-        $month = array_search($request->pickup_month, $months) + 1;
+        $months      = Months::getMonths();
+        $month       = array_search($request->pickup_month, $months) + 1;
         $pickup_date = date('Y-m-d', strtotime($request->pickup_year . '-' . $month . '-01'));
 
         $request->merge(['pickup_date' => $pickup_date]);
@@ -166,7 +184,7 @@ class BankController extends Controller
         }
     }
 
-    /**
+      /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
@@ -179,7 +197,7 @@ class BankController extends Controller
         }
     }
 
-    // Custom Function
+      // Custom Function
 
     public function getRegency(Request $request)
     {
@@ -211,12 +229,12 @@ class BankController extends Controller
             $filename = $file_code . '.' . $request->file('import_file')->getClientOriginalExtension();
             $request->file('import_file')->storeAs('public/imported', $filename);
 
-            // TODO: save file to table import request and set status as 4 (imported) and set imported_by as current user
+              // TODO: save file to table import request and set status as 4 (imported) and set imported_by as current user
 
             return redirect()->route('admin.bank.index')->with('success', 'Data berhasil diimport');
         } catch (ValidationException $e) {
             return view('admin.bank.index', [
-                'failures' => $e->failures(),
+                'failures'    => $e->failures(),
                 'totalSample' => $this->sample->get(),
             ]);
         }
@@ -295,7 +313,7 @@ class BankController extends Controller
                         return $sample->genotipe->genotipe_code ?? null;
                     })
                     ->addColumn('pickup_date', function ($sample) {
-                        // translate to indonesian date format
+                          // translate to indonesian date format
                         $date = date('F Y', strtotime($sample->pickup_date));
                         return $date ?? null;
                     })
@@ -328,14 +346,14 @@ class BankController extends Controller
         try {
             $this->sample->deleteByFileCode($request->file_code);
             return response()->json([
-                'status'    => 'success',
-                'message'   => 'Data sekuen pada file ' . $request->file_code . ' berhasil dihapus',
+                'status'  => 'success',
+                'message' => 'Data sekuen pada file ' . $request->file_code . ' berhasil dihapus',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'status'    => 'error',
-                'message'   => 'Data sekuen pada file ' . $request->file_code . ' gagal dihapus',
-                'error'     => $th->getMessage(),
+                'status'  => 'error',
+                'message' => 'Data sekuen pada file ' . $request->file_code . ' gagal dihapus',
+                'error'   => $th->getMessage(),
             ]);
         }
     }
@@ -345,14 +363,14 @@ class BankController extends Controller
         try {
             $this->sample->recoveryByFileCode($request->file_code);
             return response()->json([
-                'status'    => 'success',
-                'message'   => 'Data sekuen pada file ' . $request->file_code . ' berhasil direcovery',
+                'status'  => 'success',
+                'message' => 'Data sekuen pada file ' . $request->file_code . ' berhasil direcovery',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'status'    => 'error',
-                'message'   => 'Data sekuen pada file ' . $request->file_code . ' gagal direcovery',
-                'error'     => $th->getMessage(),
+                'status'  => 'error',
+                'message' => 'Data sekuen pada file ' . $request->file_code . ' gagal direcovery',
+                'error'   => $th->getMessage(),
             ]);
         }
     }

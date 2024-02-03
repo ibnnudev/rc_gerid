@@ -4,65 +4,16 @@
 
     {{-- Statistic --}}
     <div class="xl:grid xl:grid-cols-6 gap-x-3 mb-4 sm:block">
-        {{-- Total HIV --}}
+        @foreach ($viruses as $data)
         <div class="stats shadow mb-4 w-full overflow-hidden">
             <div class="stat w-full">
-                <div class="stat-title">Hepatitis B</div>
+                <div class="stat-title">{{$data->name}}</div>
                 <div class="stat-value text-sm mt-2">
-                    {{-- TODO: tampilin datanya --}}
-                    0
+                    {{$data->genotipes_count}} <small class="font-normal text-gray-400">genotipe</small>
                 </div>
             </div>
         </div>
-        {{-- Total HIV --}}
-        <div class="stats shadow mb-4 w-full overflow-hidden">
-            <div class="stat w-full">
-                <div class="stat-title">Kasus Hepatitis C</div>
-                <div class="stat-value text-sm mt-2">
-                    {{-- TODO: tampilin datanya --}}
-                    0
-                </div>
-            </div>
-        </div>
-        {{-- Total HIV --}}
-        <div class="stats shadow mb-4 w-full overflow-hidden">
-            <div class="stat w-full">
-                <div class="stat-title">Kasus Dengue</div>
-                <div class="stat-value text-sm mt-2">
-                    {{-- TODO: tampilin datanya --}}
-                    0
-                </div>
-            </div>
-        </div>
-        {{-- Total HIV --}}
-        <div class="stats shadow mb-4 w-full overflow-hidden">
-            <div class="stat w-full">
-                <div class="stat-title">Kasus Norovirus</div>
-                <div class="stat-value text-sm mt-2">
-                    {{-- TODO: tampilin datanya --}}
-                    0
-                </div>
-            </div>
-        </div>
-        {{-- Total HIV --}}
-        <div class="stats shadow mb-4 w-full overflow-hidden">
-            <div class="stat w-full">
-                <div class="stat-title">Kasus Rotavirus</div>
-                <div class="stat-value text-sm mt-2">
-                    {{-- TODO: tampilin datanya --}}
-                    0
-                </div>
-            </div>
-        </div>
-        {{-- Total HIV --}}
-        <div class="stats shadow mb-4 w-full overflow-hidden">
-            <div class="stat w-full">
-                <div class="stat-title">Kasus HIV</div>
-                <div class="stat-value text-sm mt-2">
-                    {{ number_format($totalHIVCases, 0, ',', '.') }}
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
 
     <x-card-container>

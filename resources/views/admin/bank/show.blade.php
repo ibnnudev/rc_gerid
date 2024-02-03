@@ -54,8 +54,14 @@
                         placeholder="[ukuran] [satuan]" class="mb-2" required :value="$sample->size_gene" />
                 </div>
                 <div class="col-span-2 ">
-                    <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data" required>
-                        {{ $sample->sequence_data ?? null }}</x-textarea>
+                    {{-- <x-textarea id="sequence_data" label="Data Sekuen" name="sequence_data" required>
+                        {{ $sample->sequence_data ?? null }}</x-textarea> --}}
+
+                    <br>
+                    <label class="label" for="Fasta">
+                        <span class="font-semibol lg:text-xs text-gray-700">Fasta</span>
+                    </label>
+                    {!!$fasta !!}
                 </div>
             </div>
 

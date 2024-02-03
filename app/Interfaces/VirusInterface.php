@@ -8,4 +8,5 @@ interface VirusInterface {
     public function find($id);
     public function update($data, $id): bool;
     public function destroy($id): bool;
+    public function getTotalGenotipeForEachVirus();
 }
