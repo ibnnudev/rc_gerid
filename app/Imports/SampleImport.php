@@ -174,8 +174,10 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
     {
         $name = trim(explode(',', $param)[0]);
 
-        // Gunakan ILIKE untuk pencarian case-insensitive
-        $author = Author::where('name', 'ILIKE', $name)->first();
+        // Gunakan LOWER untuk pencarian case-insensitive di MySQL
+        $author = Author::whereRaw('LOWER(`name`) LIKE ?', [strtolower($name)])
+            ->where('is_active', 1)
+            ->first();
 
         // Gunakan firstOrNew untuk menemukan atau membuat instance baru
         if (!$author) {
@@ -186,6 +188,7 @@ class SampleImport implements ToModel, WithBatchInserts, WithStartRow, WithValid
 
         return $author->id;
     }
+
 
 
     public function province($param)
