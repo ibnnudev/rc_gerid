@@ -11,7 +11,7 @@
                     disabled />
                 <x-select disabled id="author" name="author" label="Penulis" isFit="" required>
                     <option>
-                        {{ $citation->author->name }}
+                        {{ $citation->author != null ? $citation->author->name : 'Tidak ada penulis' }}
                     </option>
                 </x-select>
 
