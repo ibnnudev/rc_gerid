@@ -31,9 +31,9 @@
                     active="{{ request()->routeIs('admin.author.*') }}" />
                 <x-sidebar-menu name="Sitasi" icon="fas fa-lines-leaning" route="{{ route('admin.citation.index') }}"
                     active="{{ request()->routeIs('admin.citation.*') }}" />
-                <x-sidebar-menu name="Transmisi" icon="fas fa-route" route="{{ route('admin.transmission.index') }}"
-                    active="{{ request()->routeIs('admin.transmission.*') }}" />
-                <li>
+                {{-- <x-sidebar-menu name="Transmisi" icon="fas fa-route" route="{{ route('admin.transmission.index') }}"
+                    active="{{ request()->routeIs('admin.transmission.*') }}" /> --}}
+                {{-- <li>
                     <button type="button"
                         class="flex w-full items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100
                             @if (request()->routeIs('admin.cases.*')) bg-primary text-white shadow-sm hover:bg-secondary @endif
@@ -79,7 +79,7 @@
                                 class="flex items-center p-3 font-normal text-gray-900 rounded-md dark:text-white hover:bg-gray-100 pl-11">Dengue</a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
 
                 {{-- divider --}}
                 <li class="border-t border-gray-200"></li>

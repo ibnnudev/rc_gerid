@@ -55,7 +55,7 @@
                 <div class="stat-figure text-secondary">
                     <i class="fas fa-user fa-2xl text-primary"></i>
                 </div>
-                <div class="stat-title">Total Pengarang</div>
+                <div class="stat-title">Total Artikel</div>
                 <div class="stat-value">
                     {{ $totalAuthors }}
                 </div>
