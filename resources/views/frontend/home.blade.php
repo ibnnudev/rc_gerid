@@ -143,7 +143,7 @@
                 {{-- grid gambar --}}
                 <div class="grid  grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4 mt-10">
                     @foreach ($viruses as $virus)
-                        <a href="{{ route('detail-virus', $virus->id) }}"
+                        <a href="{{ route('detail-virus', $virus->name) }}"
                             class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                             <div class="grid grid-cols-1 gap-4 ">
                                 <img class="h-36 lg:h-36 mx-auto object-cover" id="virus-img"

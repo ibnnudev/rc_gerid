@@ -15,6 +15,7 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Properties\Months;
 use App\Properties\Years;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
@@ -91,7 +92,7 @@ class BankController extends Controller
         ]);
     }
 
-      /**
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -100,11 +101,11 @@ class BankController extends Controller
         $month       = explode('/', $pickup_date)[0];
         $year        = explode('/', $pickup_date)[1];
 
-          // conver to date
+        // conver to date
         $pickup_date = date('Y-m-d', strtotime($year . '-' . $month . '-01'));
         $request->merge(['pickup_date' => $pickup_date]);
 
-          // dd($request->all());
+        // dd($request->all());
 
         try {
             $this->sample->store($request->all());
@@ -115,7 +116,7 @@ class BankController extends Controller
         }
     }
 
-      /**
+    /**
      * Display the specified resource.
      */
     public function show(string $id)
@@ -146,7 +147,7 @@ class BankController extends Controller
         ]);
     }
 
-      /**
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
@@ -164,7 +165,7 @@ class BankController extends Controller
         ]);
     }
 
-      /**
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
@@ -184,7 +185,7 @@ class BankController extends Controller
         }
     }
 
-      /**
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
@@ -197,7 +198,7 @@ class BankController extends Controller
         }
     }
 
-      // Custom Function
+    // Custom Function
 
     public function getRegency(Request $request)
     {
@@ -229,7 +230,7 @@ class BankController extends Controller
             $filename = $file_code . '.' . $request->file('import_file')->getClientOriginalExtension();
             $request->file('import_file')->storeAs('public/imported', $filename);
 
-              // TODO: save file to table import request and set status as 4 (imported) and set imported_by as current user
+            // TODO: save file to table import request and set status as 4 (imported) and set imported_by as current user
 
             return redirect()->route('admin.bank.index')->with('success', 'Data berhasil diimport');
         } catch (ValidationException $e) {
@@ -272,7 +273,7 @@ class BankController extends Controller
                         return $file_code;
                     })
                     ->addColumn('created_at', function ($data) {
-                        return date('d-m-Y H:i', strtotime($data->created_at));
+                        return Carbon::parse($data->created_at)->locale('id')->isoFormat('D/MM/YYYY HH:mm');
                     })
                     ->addColumn('approved', function ($data) {
                         return view('admin.bank.imported.columns.approved', ['data' => $data]);
@@ -313,7 +314,7 @@ class BankController extends Controller
                         return $sample->genotipe->genotipe_code ?? null;
                     })
                     ->addColumn('pickup_date', function ($sample) {
-                          // translate to indonesian date format
+                        // translate to indonesian date format
                         $date = date('F Y', strtotime($sample->pickup_date));
                         return $date ?? null;
                     })

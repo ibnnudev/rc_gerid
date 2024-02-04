@@ -209,7 +209,7 @@ class ImportRequestController extends Controller
                     return $file_code;
                 })
                 ->addColumn('created_at', function ($data) {
-                    return date('d-m-Y H:i', strtotime($data->created_at));
+                    return Carbon::parse($data->created_at)->locale('id')->isoFormat('D/MM/Y HH:mm');
                 })
                 ->addColumn('description', function ($data) {
                     return $data->description;

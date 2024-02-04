@@ -42,7 +42,7 @@ class FrontendController extends Controller
         ]);
     }
 
-    public function detail($id)
+    public function detail($name)
     {
         // if ($id == 1) {
         //     return view('frontend.marker', [
@@ -59,12 +59,17 @@ class FrontendController extends Controller
         // return $this->getGrouping(1);
         // return Years::getYears();
 
+        // sum jumlah sample per genotipe
+        // $genotipes = Genotipe::where('viruses_id', $id)->get();
+
+        $virus = $this->frontend->getVirusByName($name);
         return view('frontend.area', [
-            'virus'            => $this->frontend->getVirus($id),
+            'totalGenotipe'    => $this->frontend->getVirusByName($name)->genotipes->count(),
+            'virus'            => $this->frontend->getVirusByName($name),
             'provinces'        => Province::all(),
             'years'            => Years::getYears(),
-            'lastYearSample'   => $this->getLastYearSample($id),
-            'lastCitySampleId' => $this->getLastCitySample($id),
+            'lastYearSample'   => $this->getLastYearSample($virus->id),
+            'lastCitySampleId' => $this->getLastCitySample($virus->id),
             'request'          => NULL,
             // 'data' => $this->getGrouping(1)
             // 'years' => HivCases::select('year')->distinct()->groupBy('year')->orderBy('year')->get(),

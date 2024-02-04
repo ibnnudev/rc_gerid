@@ -238,4 +238,9 @@ class FrontendRepository implements FrontendInterface
         $split = explode('-', $date);
         return $month[(int)$split[1]] . " " . $split[0];
     }
+
+    public function getVirusByName($name)
+    {
+        return $this->virus->where('name', $name)->first();
+    }
 }

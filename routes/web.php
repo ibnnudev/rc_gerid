@@ -21,7 +21,7 @@ Route::get('/chartGroupYear', [FrontendController::class, 'groupChartYear'])->na
 Route::get('/chartGroupCity', [FrontendController::class, 'groupChartCity'])->name('groupChartCity');
 Route::get('/setStateMaps', [FrontendController::class, 'getGrouping'])->name('getGrouping');
 Route::get('/home', [FrontendController::class, 'home'])->name('home');
-Route::get('/detail-virus/{id}', [FrontendController::class, 'detail'])->name('detail-virus');
+Route::get('/detail-virus/{name}', [FrontendController::class, 'detail'])->name('detail-virus');
 Route::post('/list-citation', [FrontendController::class, 'listCitations'])->name('listCitation');
 Route::get('/detail-citation/{id}', [FrontendController::class, 'detailCitation'])->name('detailCitation');
 Route::get('/detail-fasta/{id}', [FrontendController::class, 'detailFasta'])->name('detailFasta');
