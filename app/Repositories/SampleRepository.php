@@ -275,4 +275,15 @@ class SampleRepository implements SampleInterface
             ->where('file_code', $fileCode)
             ->with('virus', 'genotipe')->get();
     }
+
+    public function getAllGroupByVirus()
+    {
+        $viruses = $this->virus->all();
+        foreach ($viruses as $virus) {
+            $virus->samples = $this->sample->where('viruses_id', $virus->id)->count();
+        }
+
+        $viruses = $viruses->sortByDesc('samples');
+        return $viruses;
+    }
 }

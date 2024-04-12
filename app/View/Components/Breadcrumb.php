@@ -5,7 +5,7 @@ namespace App\View\Components;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\Component;
 
-class BreadcrumbsComponent extends Component
+class Breadcrumb extends Component
 {
     public $data;
     public $name;

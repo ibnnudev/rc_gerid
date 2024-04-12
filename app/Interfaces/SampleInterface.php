@@ -2,7 +2,8 @@
 
 namespace App\Interfaces;
 
-interface SampleInterface {
+interface SampleInterface
+{
     public function get();
     public function find($id);
     public function store($data);
@@ -17,4 +18,6 @@ interface SampleInterface {
     public function deleteByFileCode($fileCode);
     public function recoveryByFileCode($fileCode);
     public function getByFileCode($fileCode);
+
+    public function getAllGroupByVirus();
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\FrontendInterface;
+use App\Interfaces\SampleInterface;
 use App\Interfaces\VirusInterface;
 use App\Models\Genotipe;
 use App\Models\HivCases;
@@ -27,18 +28,22 @@ class FrontendController extends Controller
 {
     private $frontend;
     private $hivCases;
+    private $virus;
+    private $sample;
 
-
-    public function __construct(FrontendInterface $frontend, HivCaseRepository $hivCases)
+    public function __construct(FrontendInterface $frontend, HivCaseRepository $hivCases, VirusInterface $virus, SampleInterface $sample)
     {
         $this->frontend = $frontend;
         $this->hivCases = $hivCases;
+        $this->virus = $virus;
+        $this->sample = $sample;
     }
 
     public function home()
     {
+        $sampleGroupByVirus = $this->sample->getAllGroupByVirus();
         return view('frontend.home', [
-            'viruses' => Virus::all()
+            'sampleGroupByVirus' => $sampleGroupByVirus,
         ]);
     }
 

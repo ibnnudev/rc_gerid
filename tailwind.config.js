@@ -13,7 +13,12 @@ module.exports = {
         extend: {
             fontFamily: {
                 // sans: ["Figtree", ...defaultTheme.fontFamily.sans],
-                sans: ["Lexend Deca", "Plus Jakarta Sans", ...defaultTheme.fontFamily.sans],
+                sans: [
+                    "Lexend Deca",
+                    "Plus Jakarta Sans",
+                    "Fira Sans",
+                    ...defaultTheme.fontFamily.sans,
+                ],
             },
         },
     },
@@ -51,8 +56,5 @@ module.exports = {
             },
         ],
     },
-    plugins: [
-        require("daisyui"),
-        require("flowbite/plugin"),
-    ],
+    plugins: [require("daisyui"), require("flowbite/plugin")],
 };
