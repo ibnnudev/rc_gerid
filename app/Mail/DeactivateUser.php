@@ -21,9 +21,9 @@ class DeactivateUser extends Mailable implements ShouldQueue
     public function build()
     {
         return $this
-        ->from('rcgerid@mail.com')
-        ->to($this->user->email)
-        ->subject('Pengguna Berhasil Dinonaktifkan')
-        ->view('mail.deactivate-user');
+            ->from('rcgerid@mail.com')
+            ->to($this->user->email)
+            ->subject('Pengguna Berhasil Dinonaktifkan')
+            ->view('mail.deactivate-user');
     }
 }

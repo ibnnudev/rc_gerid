@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 
 class VirusController extends Controller
 {
-
     private $virus;
+
     private $hivCase;
 
     public function __construct(VirusInterface $virus, HivCaseInterface $hivCase)
@@ -21,22 +21,22 @@ class VirusController extends Controller
 
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->virus->get())
-            ->addColumn('name', function($virus) {
-                return view('admin.virus.columns.name', ['virus' => $virus]);
-            })
-            ->addColumn('genotipe', function($virus) {
-                return view('admin.virus.columns.genotipe', ['virus' => $virus]);
-            })
-            ->addColumn('action', function($virus) {
-                return view('admin.virus.columns.action', ['virus' => $virus]);
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->virus->get())
+                ->addColumn('name', function ($virus) {
+                    return view('admin.virus.columns.name', ['virus' => $virus]);
+                })
+                ->addColumn('genotipe', function ($virus) {
+                    return view('admin.virus.columns.genotipe', ['virus' => $virus]);
+                })
+                ->addColumn('action', function ($virus) {
+                    return view('admin.virus.columns.action', ['virus' => $virus]);
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
-        
+
         return view('admin.virus.index', [
             'viruses' => $this->virus->getTotalGenotipeForEachVirus(),
         ]);
@@ -57,9 +57,11 @@ class VirusController extends Controller
     {
         try {
             $this->virus->store($request->all());
+
             return redirect()->route('admin.virus.index')->with('success', 'Virus berhasil ditambahkan');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return back()->with('error', 'Virus gagal ditambahkan');
         }
     }
@@ -70,7 +72,7 @@ class VirusController extends Controller
     public function show($id)
     {
         return view('admin.virus.show', [
-            'virus' => $this->virus->find($id)
+            'virus' => $this->virus->find($id),
         ]);
     }
 
@@ -80,7 +82,7 @@ class VirusController extends Controller
     public function edit($id)
     {
         return view('admin.virus.edit', [
-            'virus' => $this->virus->find($id)
+            'virus' => $this->virus->find($id),
         ]);
     }
 
@@ -91,9 +93,11 @@ class VirusController extends Controller
     {
         try {
             $this->virus->update($request->all(), $id);
+
             return redirect()->route('admin.virus.index')->with('success', 'Virus berhasil diubah');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return back()->with('error', 'Virus gagal diubah');
         }
     }
@@ -105,9 +109,11 @@ class VirusController extends Controller
     {
         try {
             $this->virus->destroy($id);
+
             return redirect()->route('admin.virus.index')->with('success', 'Virus berhasil dihapus');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return back()->with('error', 'Virus gagal dihapus');
         }
     }

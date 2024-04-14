@@ -34,7 +34,7 @@ class Sample extends Model
         'is_active',
         'sequence_data_file',
         'created_by',
-        'is_queue'
+        'is_queue',
     ];
 
     // Relationship
@@ -42,7 +42,7 @@ class Sample extends Model
     {
         return $this->belongsTo(Citation::class, 'citation_id');
     }
-    
+
     public function hasCitation()
     {
         return $this->hasOne(Citation::class, 'citation_id');
@@ -77,8 +77,8 @@ class Sample extends Model
         $month = $date[1];
         $day = $date[2];
 
-        $sampleCode = 'SMP-' . $year . '-' . $month . '-' . $day . '-';
-        $lastSampleCode = Sample::where('sample_code', 'like', $sampleCode . '%')->orderBy('sample_code', 'desc')->first();
+        $sampleCode = 'SMP-'.$year.'-'.$month.'-'.$day.'-';
+        $lastSampleCode = Sample::where('sample_code', 'like', $sampleCode.'%')->orderBy('sample_code', 'desc')->first();
 
         if ($lastSampleCode) {
             $lastSampleCode = explode('-', $lastSampleCode->sample_code);

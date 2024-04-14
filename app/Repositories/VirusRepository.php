@@ -23,7 +23,7 @@ class VirusRepository implements VirusInterface
     public function store($data): bool
     {
         if ($data['image']) {
-            $filename = time() . '.' . $data['image']->getClientOriginalExtension();
+            $filename = time().'.'.$data['image']->getClientOriginalExtension();
             $data['image']->storeAs('public/virus', $filename);
 
             $data['image'] = $filename;
@@ -47,21 +47,21 @@ class VirusRepository implements VirusInterface
 
             // delete old files
             if ($virus->image) {
-                $oldFile = 'public/virus/' . $virus->image;
+                $oldFile = 'public/virus/'.$virus->image;
                 if (Storage::exists($oldFile)) {
                     Storage::delete($oldFile);
                 }
             }
 
-            $filename = time() . '.' . $data['image']->getClientOriginalExtension();
+            $filename = time().'.'.$data['image']->getClientOriginalExtension();
             $data['image']->storeAs('public/virus', $filename);
 
             $data['image'] = $filename;
             $virus->image = $data['image'];
         }
 
-        $virus->name        = $data['name'];
-        $virus->latin_name  = $data['latin_name'];
+        $virus->name = $data['name'];
+        $virus->latin_name = $data['latin_name'];
         $virus->description = $data['description'];
 
         $virus->save();
@@ -82,4 +82,3 @@ class VirusRepository implements VirusInterface
         return $this->virus->withCount('genotipes')->get();
     }
 }
-

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Mail;
 class UserManagementController extends Controller
 {
     private $virus;
+
     public function __construct(VirusInterface $virus)
     {
         $this->virus = $virus;
@@ -51,12 +52,13 @@ class UserManagementController extends Controller
                 })
                 ->addColumn('menu', function ($data) {
                     return view('admin.user-management.columns.menu', [
-                        'user' => $data
+                        'user' => $data,
                     ]);
                 })
                 ->addIndexColumn()
                 ->make(true);
         }
+
         return view('admin.user-management.index');
     }
 
@@ -66,7 +68,7 @@ class UserManagementController extends Controller
     public function create()
     {
         return view('admin.user-management.create', [
-            'viruses' => $this->virus->get()
+            'viruses' => $this->virus->get(),
         ]);
     }
 
@@ -76,7 +78,7 @@ class UserManagementController extends Controller
             'name' => ['required'],
             'email' => ['required', 'unique:users,email'],
             'role' => ['required'],
-            'virus_id' => ['required_if:role,validator']
+            'virus_id' => ['required_if:role,validator'],
         ]);
 
         try {
@@ -90,7 +92,7 @@ class UserManagementController extends Controller
                     'role' => $data['role'],
                     'virus_id' => $data['virus_id'],
                     'password' => password_hash($password, PASSWORD_DEFAULT),
-                    'is_active' => 1
+                    'is_active' => 1,
                 ]);
             } else {
                 $user = User::create([
@@ -98,7 +100,7 @@ class UserManagementController extends Controller
                     'email' => $data['email'],
                     'role' => $data['role'],
                     'password' => password_hash($password, PASSWORD_DEFAULT),
-                    'is_active' => 1
+                    'is_active' => 1,
                 ]);
             }
 
@@ -125,7 +127,7 @@ class UserManagementController extends Controller
     {
         return view('admin.user-management.edit', [
             'user' => User::find($id),
-            'viruses' => $this->virus->get()
+            'viruses' => $this->virus->get(),
         ]);
     }
 
@@ -137,7 +139,7 @@ class UserManagementController extends Controller
         $request->validate([
             'name' => ['required'],
             'role' => ['required'],
-            'virus_id' => ['required_if:role,validator']
+            'virus_id' => ['required_if:role,validator'],
         ]);
 
         try {
@@ -147,7 +149,7 @@ class UserManagementController extends Controller
                 'name' => $data['name'],
                 'role' => $data['role'],
                 'virus_id' => $request->has('virus_id') ? $data['virus_id'] : null,
-                'is_active' => 1
+                'is_active' => 1,
             ]);
 
             return redirect()->route('admin.user-management.index')->with('success', 'Berhasil mengubah user');
@@ -186,7 +188,7 @@ class UserManagementController extends Controller
         return redirect()->back()->with('success', 'Berhasil menonaktifkan akun');
     }
 
-    function role(Request $request)
+    public function role(Request $request)
     {
         $user = User::find($request->id);
         $user->role = $request->role;

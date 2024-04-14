@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\SampleInterface;
 use App\Models\Author;
 use App\Models\Citation;
+use App\Models\Genotipe;
 use App\Models\ImportRequest;
 use App\Models\Sample;
 use App\Models\Virus;
@@ -15,18 +16,25 @@ use Illuminate\Support\Facades\Storage;
 class SampleRepository implements SampleInterface
 {
     private $sample;
+
     private $citation;
+
     private $virus;
+
     private $author;
+
     private $importRequest;
 
-    public function __construct(Sample $sample, Citation $citation, Virus $virus, Author $author, ImportRequest $importRequest)
+    private $genotipe;
+
+    public function __construct(Sample $sample, Citation $citation, Virus $virus, Author $author, ImportRequest $importRequest, Genotipe $genotipe)
     {
-        $this->sample   = $sample;
+        $this->sample = $sample;
         $this->citation = $citation;
-        $this->virus    = $virus;
-        $this->author   = $author;
+        $this->virus = $virus;
+        $this->author = $author;
         $this->importRequest = $importRequest;
+        $this->genotipe = $genotipe;
     }
 
     public function get()
@@ -39,7 +47,7 @@ class SampleRepository implements SampleInterface
         DB::beginTransaction();
 
         if (isset($data['sequence_data_file'])) {
-            $filename = time() . '.' . $data['sequence_data_file']->getClientOriginalExtension();
+            $filename = time().'.'.$data['sequence_data_file']->getClientOriginalExtension();
             $data['sequence_data_file']->storeAs('public/sequence_data', $filename);
 
             $data['sequence_data_file'] = $filename;
@@ -49,8 +57,8 @@ class SampleRepository implements SampleInterface
             // insert to authors
             try {
                 $author = $this->author->create([
-                    'name'   => $data['new_author'],
-                    'member' => $data['new_member']
+                    'name' => $data['new_author'],
+                    'member' => $data['new_member'],
                 ]);
             } catch (\Throwable $th) {
                 DB::rollBack();
@@ -59,30 +67,30 @@ class SampleRepository implements SampleInterface
 
             // insert to citations
             $citation = $this->citation->create([
-                'title'     => $data['new_title'],
+                'title' => $data['new_title'],
                 'author_id' => $author->id,
-                'users_id'  => auth()->user()->id,
+                'users_id' => auth()->user()->id,
             ]);
         }
 
         // insert to samples
         try {
             $sample = $this->sample->create([
-                'sample_code'        => $data['sample_code'],
-                'viruses_id'         => $data['viruses_id'],
-                'file_code'          => $data['file_code'] ?? null,
-                'gene_name'          => $data['gene_name'],
-                'size_gene'          => $data['size_gene'],
-                'sequence_data'      => $data['sequence_data'] ?? null,
-                'place'              => $data['place'],
-                'regency_id'         => $data['regency_id'],
-                'province_id'        => $data['province_id'],
-                'pickup_date'        => date('Y-m-d', strtotime($data['pickup_date'])),
-                'citation_id'        => isset($data['new_title']) ? $citation->id : $data['citation_id'],
-                'genotipes_id'       => $data['genotipes_id'],
-                'virus_code'         => $this->generateVirusCode($data['viruses_id']),
+                'sample_code' => $data['sample_code'],
+                'viruses_id' => $data['viruses_id'],
+                'file_code' => $data['file_code'] ?? null,
+                'gene_name' => $data['gene_name'],
+                'size_gene' => $data['size_gene'],
+                'sequence_data' => $data['sequence_data'] ?? null,
+                'place' => $data['place'],
+                'regency_id' => $data['regency_id'],
+                'province_id' => $data['province_id'],
+                'pickup_date' => date('Y-m-d', strtotime($data['pickup_date'])),
+                'citation_id' => isset($data['new_title']) ? $citation->id : $data['citation_id'],
+                'genotipes_id' => $data['genotipes_id'],
+                'virus_code' => $this->generateVirusCode($data['viruses_id']),
                 'sequence_data_file' => $data['sequence_data_file'] ?? null,
-                'created_by'         => auth()->user()->id,
+                'created_by' => auth()->user()->id,
             ]);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -102,7 +110,8 @@ class SampleRepository implements SampleInterface
         $virusName = str_replace(' ', '-', $virus->name);
         $virusName = strtoupper($virusName);
 
-        $code = $virusName . '-' . $count;
+        $code = $virusName.'-'.$count;
+
         return $code;
     }
 
@@ -116,31 +125,31 @@ class SampleRepository implements SampleInterface
             if (isset($data['sequence_data_file'])) {
                 // delete old file
                 if ($sample->sequence_data_file) {
-                    $oldFile = 'public/sequence_data/' . $sample->sequence_data_file;
+                    $oldFile = 'public/sequence_data/'.$sample->sequence_data_file;
                     if (Storage::exists($oldFile)) {
                         Storage::delete($oldFile);
                     }
                 }
 
-                $filename = time() . '.' . $data['sequence_data_file']->getClientOriginalExtension();
+                $filename = time().'.'.$data['sequence_data_file']->getClientOriginalExtension();
                 $data['sequence_data_file']->storeAs('public/sequence_data', $filename);
 
                 $data['sequence_data_file'] = $filename;
             }
 
             $sample->update([
-                'sample_code'        => $data['sample_code'],
-                'viruses_id'         => $data['viruses_id'],
-                'file_code'          => $data['file_code'] ?? null,
-                'gene_name'          => $data['gene_name'],
-                'size_gene'          => $data['size_gene'],
-                'sequence_data'      => $data['sequence_data'] ?? null,
-                'place'              => $data['place'],
-                'regency_id'         => $data['regency_id'],
-                'province_id'        => $data['province_id'],
-                'pickup_date'        => date('Y-m-d', strtotime($data['pickup_date'])),
-                'citation_id'        => $data['title'],
-                'genotipes_id'       => $data['genotipes_id'],
+                'sample_code' => $data['sample_code'],
+                'viruses_id' => $data['viruses_id'],
+                'file_code' => $data['file_code'] ?? null,
+                'gene_name' => $data['gene_name'],
+                'size_gene' => $data['size_gene'],
+                'sequence_data' => $data['sequence_data'] ?? null,
+                'place' => $data['place'],
+                'regency_id' => $data['regency_id'],
+                'province_id' => $data['province_id'],
+                'pickup_date' => date('Y-m-d', strtotime($data['pickup_date'])),
+                'citation_id' => $data['title'],
+                'genotipes_id' => $data['genotipes_id'],
                 'sequence_data_file' => isset($data['sequence_data_file']) ? $data['sequence_data_file'] : $sample->sequence_data_file,
             ]);
         } catch (\Throwable $th) {
@@ -177,22 +186,22 @@ class SampleRepository implements SampleInterface
         $samples = $this->sample->with('virus', 'genotipe', 'province')->get();
         // Attributes
         $sampleCodes = $samples->pluck('sample_code')->unique()->toArray();
-        $viruses     = $samples->pluck('virus')->unique('id')->toArray();
-        $geneNames   = $samples->pluck('gene_name')->unique()->toArray();
-        $genotipes   = $samples->pluck('genotipe')->unique('id')->toArray();
-        $provinces   = $samples->pluck('province')->unique('id')->toArray();
-        $years       = $samples->pluck('pickup_date')->unique()->toArray();
-        $years       = array_map(function ($year) {
+        $viruses = $samples->pluck('virus')->unique('id')->toArray();
+        $geneNames = $samples->pluck('gene_name')->unique()->toArray();
+        $genotipes = $samples->pluck('genotipe')->unique('id')->toArray();
+        $provinces = $samples->pluck('province')->unique('id')->toArray();
+        $years = $samples->pluck('pickup_date')->unique()->toArray();
+        $years = array_map(function ($year) {
             return date('Y', strtotime($year));
         }, $years);
 
         return [
             'sampleCodes' => $sampleCodes,
-            'viruses'     => $viruses,
-            'geneNames'   => $geneNames,
-            'genotipes'   => $genotipes,
-            'provinces'   => $provinces,
-            'years'       => $years,
+            'viruses' => $viruses,
+            'geneNames' => $geneNames,
+            'genotipes' => $genotipes,
+            'provinces' => $provinces,
+            'years' => $years,
         ];
     }
 
@@ -200,13 +209,13 @@ class SampleRepository implements SampleInterface
     {
         return $this->sample->with('virus', 'genotipe', 'province')
             ->when(isset($data['sample_code']), function ($query) use ($data) {
-                return $query->where('sample_code', 'like', '%' . $data['sample_code'] . '%');
+                return $query->where('sample_code', 'like', '%'.$data['sample_code'].'%');
             })
             ->when(isset($data['virus_id']), function ($query) use ($data) {
                 return $query->where('viruses_id', $data['virus_id']);
             })
             ->when(isset($data['gene_name']), function ($query) use ($data) {
-                return $query->where('gene_name', 'like', '%' . $data['gene_name'] . '%');
+                return $query->where('gene_name', 'like', '%'.$data['gene_name'].'%');
             })
             ->when(isset($data['genotipe_id']), function ($query) use ($data) {
                 return $query->where('genotipes_id', $data['genotipe_id']);
@@ -284,6 +293,32 @@ class SampleRepository implements SampleInterface
         }
 
         $viruses = $viruses->sortByDesc('samples');
+
         return $viruses;
+    }
+
+    public function getSampleVirusByGen($name)
+    {
+        $virus = $this->virus->where('name', $name)->first();
+        $currentYear = 2017;
+        $samples = $this->sample->where('viruses_id', $virus->id)
+            ->whereYear('pickup_date', $currentYear)
+            ->get();
+
+        // group by 12 month in a year
+        $months = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember',
+        ];
+
+        $samplesPerMonth = [];
+        foreach ($months as $month) {
+            $samplesPerMonth[$month] = $this->sample->where('viruses_id', $virus->id)
+                ->where('pickup_date', '>=', date('Y-m-d', strtotime($currentYear.'-'.array_search($month, $months) + 1 .'-01')))
+                ->where('pickup_date', '<=', date('Y-m-d', strtotime('+30 days', strtotime($currentYear.'-'.array_search($month, $months) + 1 .'-01'))))->get();
+        }
+
+        // dd($samplesPerMonth);
+        return $samplesPerMonth;
     }
 }

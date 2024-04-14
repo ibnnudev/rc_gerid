@@ -8,9 +8,8 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
-class NewImportRequestValidator implements WithValidation, WithStartRow, WithBatchInserts, ToModel, WithMultipleSheets
+class NewImportRequestValidator implements ToModel, WithBatchInserts, WithMultipleSheets, WithStartRow, WithValidation
 {
-
     public function sheets(): array
     {
         return [
@@ -56,7 +55,7 @@ class NewImportRequestValidator implements WithValidation, WithStartRow, WithBat
             '*.1.required' => 'Kolom virus harus diisi',
             '*.2.required' => 'Kolom genotipe harus diisi',
             '*.3.required' => 'Kolom bulan pengambilan sampel harus diisi',
-            '*.3.regex'    => 'Kolom bulan pengambilan sampel harus diisi dengan bulan menggunakan bahasa indonesia',
+            '*.3.regex' => 'Kolom bulan pengambilan sampel harus diisi dengan bulan menggunakan bahasa indonesia',
             '*.4.required' => 'Kolom tahun pengambilan sampel harus diisi',
             '*.5.required' => 'Kolom tempat pengambilan sampel harus diisi',
             '*.6.required' => 'Kolom provinsi harus diisi',

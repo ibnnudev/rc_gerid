@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 class CitationController extends Controller
 {
     private $citation;
+
     private $author;
 
     public function __construct(CitationInterface $citation, AuthorInterface $author)
@@ -39,6 +40,7 @@ class CitationController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+
         return view('admin.citation.index');
     }
 
@@ -48,7 +50,7 @@ class CitationController extends Controller
     public function create()
     {
         return view('admin.citation.create', [
-            'authors' => $this->author->get()
+            'authors' => $this->author->get(),
         ]);
     }
 
@@ -58,15 +60,17 @@ class CitationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'  => 'required|unique:citations,title',
+            'title' => 'required|unique:citations,title',
             'author' => 'required',
         ]);
 
         try {
             $this->citation->store($request->all());
+
             return redirect()->route('admin.citation.index')->with('success', 'Sitasi berhasil ditambahkan');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return redirect()->route('admin.citation.index')->with('error', 'Terjadi kesalahan');
         }
     }
@@ -77,7 +81,7 @@ class CitationController extends Controller
     public function show($id)
     {
         return view('admin.citation.show', [
-            'author'   => $this->author->find($id),
+            'author' => $this->author->find($id),
             'citation' => $this->citation->find($id),
         ]);
     }
@@ -89,7 +93,7 @@ class CitationController extends Controller
     {
         return view('admin.citation.edit', [
             'citation' => $this->citation->find($id),
-            'authors' => $this->author->get()
+            'authors' => $this->author->get(),
         ]);
     }
 
@@ -99,15 +103,17 @@ class CitationController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => 'required|unique:citations,title,' . $id,
+            'title' => 'required|unique:citations,title,'.$id,
             'author' => 'required',
         ]);
 
         try {
             $this->citation->update($request->all(), $id);
+
             return redirect()->route('admin.citation.index')->with('success', 'Sitasi berhasil diubah');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return redirect()->route('admin.citation.index')->with('error', 'Terjadi kesalahan');
         }
     }
@@ -119,9 +125,11 @@ class CitationController extends Controller
     {
         try {
             $this->citation->find($id)->setInactive();
+
             return redirect()->route('admin.citation.index')->with('success', 'Sitasi berhasil dihapus');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return redirect()->route('admin.citation.index')->with('error', 'Terjadi kesalahan');
         }
     }
@@ -129,6 +137,7 @@ class CitationController extends Controller
     public function getCitationByAuthor(Request $request)
     {
         $citations = Citation::where('author_id', $request->author_id)->get();
+
         return response()->json($citations);
     }
 }

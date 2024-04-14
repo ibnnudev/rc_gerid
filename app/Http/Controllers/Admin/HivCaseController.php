@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Imports\HivCasesImport;
 use App\Interfaces\HivCaseInterface;
 use App\Interfaces\TransmissionInterface;
-use App\Models\HivCases;
 use App\Models\Province;
 use App\Properties\Years;
 use Illuminate\Http\Request;
@@ -15,6 +14,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class HivCaseController extends Controller
 {
     private $hivCase;
+
     private $transmission;
 
     public function __construct(HivCaseInterface $hivCase, TransmissionInterface $transmission)
@@ -33,9 +33,9 @@ class HivCaseController extends Controller
     public function create()
     {
         return view('admin.hiv-cases.create', [
-            'provinces'     => Province::all(),
+            'provinces' => Province::all(),
             'transmissions' => $this->transmission->get(),
-            'years'         => Years::getYears()
+            'years' => Years::getYears(),
         ]);
     }
 
@@ -45,27 +45,29 @@ class HivCaseController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'idkd'            => ['unique:hiv_cases,idkd', 'required'],
-            'idkd_address'    => ['required', 'string', 'max:255'],
-            'latitude'        => ['required', 'string', 'max:255'],
-            'longitude'       => ['required', 'string', 'max:255'],
-            'province_id'     => ['required'],
-            'regency_id'      => ['required'],
-            'district_id'     => ['required'],
-            'region'          => ['required'],
-            'count_of_cases'  => ['required', 'numeric'],
-            'age'             => ['required', 'numeric'],
-            'age_group'       => ['required'],
-            'sex'             => ['required'],
+            'idkd' => ['unique:hiv_cases,idkd', 'required'],
+            'idkd_address' => ['required', 'string', 'max:255'],
+            'latitude' => ['required', 'string', 'max:255'],
+            'longitude' => ['required', 'string', 'max:255'],
+            'province_id' => ['required'],
+            'regency_id' => ['required'],
+            'district_id' => ['required'],
+            'region' => ['required'],
+            'count_of_cases' => ['required', 'numeric'],
+            'age' => ['required', 'numeric'],
+            'age_group' => ['required'],
+            'sex' => ['required'],
             'transmission_id' => ['required', 'numeric'],
-            'year'            => ['required'],
+            'year' => ['required'],
         ]);
 
         try {
             $this->hivCase->store($request->all());
+
             return redirect()->route('admin.hiv-case.index')->with('success', 'Data HIV berhasil ditambahkan!');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return back()->with('error', 'Data HIV gagal ditambahkan!');
         }
     }
@@ -76,7 +78,7 @@ class HivCaseController extends Controller
     public function show($id)
     {
         return view('admin.hiv-cases.show', [
-            'case' => $this->hivCase->find($id)
+            'case' => $this->hivCase->find($id),
         ]);
     }
 
@@ -86,10 +88,10 @@ class HivCaseController extends Controller
     public function edit($id)
     {
         return view('admin.hiv-cases.edit', [
-            'provinces'     => Province::all(),
+            'provinces' => Province::all(),
             'transmissions' => $this->transmission->get(),
-            'years'         => Years::getYears(),
-            'case' => $this->hivCase->find($id)
+            'years' => Years::getYears(),
+            'case' => $this->hivCase->find($id),
         ]);
     }
 
@@ -99,24 +101,25 @@ class HivCaseController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'idkd'            => ['required', 'unique:hiv_cases,idkd,' . $id],
-            'idkd_address'    => ['required', 'string', 'max:255'],
-            'latitude'        => ['required', 'string', 'max:255'],
-            'longitude'       => ['required', 'string', 'max:255'],
-            'province_id'     => ['required'],
-            'regency_id'      => ['required'],
-            'district_id'     => ['required'],
-            'region'          => ['required'],
-            'count_of_cases'  => ['required', 'numeric'],
-            'age'             => ['required', 'numeric'],
-            'age_group'       => ['required'],
-            'sex'             => ['required'],
+            'idkd' => ['required', 'unique:hiv_cases,idkd,'.$id],
+            'idkd_address' => ['required', 'string', 'max:255'],
+            'latitude' => ['required', 'string', 'max:255'],
+            'longitude' => ['required', 'string', 'max:255'],
+            'province_id' => ['required'],
+            'regency_id' => ['required'],
+            'district_id' => ['required'],
+            'region' => ['required'],
+            'count_of_cases' => ['required', 'numeric'],
+            'age' => ['required', 'numeric'],
+            'age_group' => ['required'],
+            'sex' => ['required'],
             'transmission_id' => ['required', 'numeric'],
-            'year'            => ['required'],
+            'year' => ['required'],
         ]);
 
         try {
             $this->hivCase->update($request->all(), $id);
+
             return redirect()->route('admin.hiv-case.index')->with('success', 'Data HIV berhasil diubah!');
         } catch (\Throwable $th) {
             return back()->with('error', 'Data HIV gagal diubah!');
@@ -130,6 +133,7 @@ class HivCaseController extends Controller
     {
         try {
             $this->hivCase->destroy($id);
+
             return redirect()->route('admin.hiv-case.index')->with('success', 'Data HIV berhasil dihapus!');
         } catch (\Throwable $th) {
             return back()->with('error', 'Data HIV gagal dihapus!');
@@ -141,7 +145,7 @@ class HivCaseController extends Controller
     public function import(Request $request)
     {
         $request->validate([
-            'import_file' => 'required|mimes:xlsx,xls,csv'
+            'import_file' => 'required|mimes:xlsx,xls,csv',
         ]);
 
         Excel::import(new HivCasesImport, $request->file('import_file'));

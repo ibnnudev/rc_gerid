@@ -23,18 +23,20 @@ use Maatwebsite\Excel\Validators\ValidationException;
 
 class ImportRequestController extends Controller
 {
-
     private $importRequest;
+
     private $author;
+
     private $virus;
+
     private $sample;
 
     public function __construct(ImportRequestInterface $importRequest, AuthorInterface $author, VirusInterface $virus, SampleInterface $sample)
     {
         $this->importRequest = $importRequest;
-        $this->author        = $author;
-        $this->virus         = $virus;
-        $this->sample        = $sample;
+        $this->author = $author;
+        $this->virus = $virus;
+        $this->sample = $sample;
     }
 
     public function index(Request $request)
@@ -51,7 +53,8 @@ class ImportRequestController extends Controller
                 ->addColumn('file_code', function ($data) {
                     $file_code = $data->file_code;
                     $file_code = substr($file_code, 0, -3);
-                    $file_code = $file_code . "***";
+                    $file_code = $file_code.'***';
+
                     return $file_code;
                 })
                 ->addColumn('created_at', function ($data) {
@@ -69,29 +72,32 @@ class ImportRequestController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+
         return view('admin.bank.import-request.index');
     }
 
     public function create()
     {
         return view('admin.bank.import-request.create', [
-            'viruses' => $this->virus->get()
+            'viruses' => $this->virus->get(),
         ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'viruses_id'  => ['required'],
-            'file'        => ['required', 'file', 'mimes:xlsx'],
+            'viruses_id' => ['required'],
+            'file' => ['required', 'file', 'mimes:xlsx'],
             'description' => ['required'],
         ]);
 
         try {
             $this->importRequest->store($request->all());
+
             return redirect()->route('admin.import-request.index')->with('success', 'Permintaan import berhasil dibuat');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return redirect()->back()->with('error', 'Permintaan import gagal dibuat');
         }
     }
@@ -109,7 +115,8 @@ class ImportRequestController extends Controller
                 ->addColumn('file_code', function ($sample) {
                     $file_code = $sample->file_code;
                     $file_code = substr($file_code, 0, -3);
-                    $file_code = $file_code . "***";
+                    $file_code = $file_code.'***';
+
                     return $file_code ?? null;
                 })
                 ->addColumn('virus', function ($sample) {
@@ -141,7 +148,7 @@ class ImportRequestController extends Controller
                 })
                 ->addColumn('action', function ($sample) {
                     return view('admin.bank.import-request.detail-columns.action', [
-                        'sample' => $sample
+                        'sample' => $sample,
                     ]);
                 })
                 ->addIndexColumn()
@@ -149,7 +156,7 @@ class ImportRequestController extends Controller
         }
 
         return view('admin.bank.import-request.show', [
-            'importRequest' => $this->importRequest->find($id)
+            'importRequest' => $this->importRequest->find($id),
         ]);
     }
 
@@ -157,7 +164,7 @@ class ImportRequestController extends Controller
     {
         return view('admin.bank.import-request.edit', [
             'data' => $this->importRequest->find($id),
-            'viruses' => $this->virus->get()
+            'viruses' => $this->virus->get(),
         ]);
     }
 
@@ -165,14 +172,16 @@ class ImportRequestController extends Controller
     {
         $request->validate([
             'file' => ['nullable', 'file', 'mimes:xlsx'],
-            'description' => ['required']
+            'description' => ['required'],
         ]);
 
         try {
             $this->importRequest->update($request->all(), $id);
+
             return redirect()->route('admin.import-request.index')->with('success', 'Permintaan import berhasil diupdate');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return redirect()->back()->with('error', 'Permintaan import gagal diupdate');
         }
     }
@@ -181,6 +190,7 @@ class ImportRequestController extends Controller
     {
         try {
             $this->importRequest->destroy($id);
+
             return response()->json(true);
         } catch (\Throwable $th) {
             return response()->json(false);
@@ -205,7 +215,8 @@ class ImportRequestController extends Controller
                 ->addColumn('file_code', function ($data) {
                     $file_code = $data->file_code;
                     $file_code = substr($file_code, 0, -3);
-                    $file_code = $file_code . "***";
+                    $file_code = $file_code.'***';
+
                     return $file_code;
                 })
                 ->addColumn('created_at', function ($data) {
@@ -223,6 +234,7 @@ class ImportRequestController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+
         return view('admin.bank.import-request.admin.index');
     }
 
@@ -231,6 +243,7 @@ class ImportRequestController extends Controller
         $status = $request->status == 'accepted' ? 1 : ($request->status == 'rejected' ? 2 : 0);
         try {
             $this->importRequest->changeStatus($request->id, $status, $request->reason);
+
             return response()->json(true);
         } catch (\Throwable $th) {
             return response()->json(false);
@@ -241,6 +254,7 @@ class ImportRequestController extends Controller
     {
         try {
             Excel::import(new NewImportRequestValidator, $request->file('file'));
+
             return response()->json(true);
         } catch (ValidationException $e) {
             // send row number and error message
@@ -248,10 +262,10 @@ class ImportRequestController extends Controller
             $error = [];
             foreach ($failures as $failure) {
                 $error[] = [
-                    'row'       => $failure->row(),
+                    'row' => $failure->row(),
                     'attribute' => $failure->attribute(),
-                    'errors'    => $failure->errors(),
-                    'values'    => $failure->values()
+                    'errors' => $failure->errors(),
+                    'values' => $failure->values(),
                 ];
             }
 
@@ -263,14 +277,15 @@ class ImportRequestController extends Controller
     {
         try {
             $this->importRequest->import($request->id);
+
             return response()->json([
                 'status' => true,
-                'message' => 'Import berhasil'
+                'message' => 'Import berhasil',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }
@@ -279,12 +294,12 @@ class ImportRequestController extends Controller
     {
         return view('admin.bank.import-request.create-single-data', [
             'fileCode' => $fileCode,
-            'authors'   => $this->author->get(),
-            'viruses'   => $this->virus->get(),
+            'authors' => $this->author->get(),
+            'viruses' => $this->virus->get(),
             'provinces' => Province::all(),
-            'months'    => Months::getMonths(),
-            'years'     => Years::getYears(),
-            'citations' => Citation::all()
+            'months' => Months::getMonths(),
+            'years' => Years::getYears(),
+            'citations' => Citation::all(),
         ]);
     }
 
@@ -295,12 +310,13 @@ class ImportRequestController extends Controller
         $year = explode('/', $pickup_date)[1];
 
         // conver to date
-        $pickup_date = date('Y-m-d', strtotime($year . '-' . $month . '-01'));
+        $pickup_date = date('Y-m-d', strtotime($year.'-'.$month.'-01'));
         $request->merge(['pickup_date' => $pickup_date]);
 
         try {
             $this->importRequest->storeSingle($request->all());
             Mail::send(new ActivationSingleRequest(auth()->user(), '2'));
+
             return redirect()->route('admin.import-request.index')->with('success', 'Data berhasil ditambahkan');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Data gagal ditambahkan');
@@ -311,11 +327,12 @@ class ImportRequestController extends Controller
     {
         $sample = $this->sample->find($id);
         $importRequest = $this->importRequest->findByFileCode($sample->file_code);
+
         return view('admin.bank.import-request.show-single-data', [
-            'sample'        => $sample,
-            'provinces'     => Province::all(),
-            'authors'       => $this->author->get(),
-            'viruses'       => $this->virus->get(),
+            'sample' => $sample,
+            'provinces' => Province::all(),
+            'authors' => $this->author->get(),
+            'viruses' => $this->virus->get(),
             'importRequest' => $importRequest,
         ]);
     }
@@ -323,23 +340,23 @@ class ImportRequestController extends Controller
     public function editSingle($id)
     {
         return view('admin.bank.import-request.edit-single-data', [
-            'sample'    => $this->sample->find($id),
-            'authors'   => $this->author->get(),
-            'viruses'   => $this->virus->get(),
+            'sample' => $this->sample->find($id),
+            'authors' => $this->author->get(),
+            'viruses' => $this->virus->get(),
             'provinces' => Province::all(),
             'genotipes' => Genotipe::all(),
             'regencies' => Regency::all(),
-            'months'    => Months::getMonths(),
-            'years'     => Years::getYears(),
-            'citations' => Citation::all()
+            'months' => Months::getMonths(),
+            'years' => Years::getYears(),
+            'citations' => Citation::all(),
         ]);
     }
 
     public function updateSingle(Request $request, $id)
     {
-        $months         = Months::getMonths();
-        $month          = array_search($request->pickup_month, $months) + 1;
-        $pickup_date    = date('Y-m-d', strtotime($request->pickup_year . '-' . $month . '-01'));
+        $months = Months::getMonths();
+        $month = array_search($request->pickup_month, $months) + 1;
+        $pickup_date = date('Y-m-d', strtotime($request->pickup_year.'-'.$month.'-01'));
 
         $request->merge(['pickup_date' => $pickup_date]);
 
@@ -351,6 +368,7 @@ class ImportRequestController extends Controller
             return redirect()->back()->with('success', 'Data berhasil diubah');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return back()->with('error', 'Data gagal disimpan');
         }
     }
@@ -360,14 +378,15 @@ class ImportRequestController extends Controller
         try {
             $this->importRequest->changeStatusSingle($id, $request->status);
             Mail::send(new ActivationSingleRequest(auth()->user(), $request->status));
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Status berhasil diubah'
+                'message' => 'Status berhasil diubah',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
-                'message' => $th->getMessage()
+                'message' => $th->getMessage(),
             ]);
         }
     }

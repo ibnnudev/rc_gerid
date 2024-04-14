@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ImportRequest extends Model
 {
-
     protected static function booted()
     {
         static::addGlobalScope(new HasActiveScope);
@@ -31,7 +30,7 @@ class ImportRequest extends Model
         'description',
         'is_active',
         'removed_by',
-        'created_by'
+        'created_by',
     ];
 
     // RELATIONSHIP

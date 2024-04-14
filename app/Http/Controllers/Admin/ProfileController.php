@@ -10,11 +10,10 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-
     public function index()
     {
         return view('admin.profile.index', [
-            'user' => auth()->user()
+            'user' => auth()->user(),
         ]);
     }
 
@@ -22,19 +21,19 @@ class ProfileController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+            'email' => 'required|email|unique:users,email,'.$id,
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $user = User::find($id);
 
         if ($request->hasFile('avatar')) {
-            $oldFile = 'public/avatar/' . $user->avatar;
+            $oldFile = 'public/avatar/'.$user->avatar;
             if (Storage::exists($oldFile)) {
                 Storage::delete($oldFile);
             }
 
-            $filename = uniqid() . '.' . $request->avatar->getClientOriginalExtension();
+            $filename = uniqid().'.'.$request->avatar->getClientOriginalExtension();
             $request->avatar->storeAs('public/avatar', $filename);
 
             $user->avatar = $filename;
@@ -52,7 +51,7 @@ class ProfileController extends Controller
         $request->validate([
             'old_password' => 'required|string|min:8',
             'new_password' => 'required|string|min:8',
-            'new_password_confirmation' => 'required|string|min:8|same:new_password'
+            'new_password_confirmation' => 'required|string|min:8|same:new_password',
         ], [
             'new_password_confirmation.same' => 'Konfirmasi password tidak sesuai',
             'new_password_confirmation.required' => 'Konfirmasi password tidak boleh kosong',
@@ -62,7 +61,7 @@ class ProfileController extends Controller
 
         $user = User::find(auth()->user()->id);
 
-        if (!password_verify($request->old_password, $user->password)) {
+        if (! password_verify($request->old_password, $user->password)) {
             return back()->with('error', 'Password lama tidak sesuai');
         }
 

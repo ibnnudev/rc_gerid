@@ -23,15 +23,18 @@ use Maatwebsite\Excel\Validators\ValidationException;
 class BankController extends Controller
 {
     private $author;
+
     private $virus;
+
     private $sample;
+
     private $importRequest;
 
     public function __construct(AuthorInterface $author, VirusInterface $virus, SampleInterface $sample, ImportRequestInterface $importRequest)
     {
-        $this->author        = $author;
-        $this->virus         = $virus;
-        $this->sample        = $sample;
+        $this->author = $author;
+        $this->virus = $virus;
+        $this->sample = $sample;
         $this->importRequest = $importRequest;
     }
 
@@ -75,6 +78,7 @@ class BankController extends Controller
                 ->addIndexColumn()
                 ->make(true);
         }
+
         return view('admin.bank.index', [
             'totalSample' => $this->sample->get(),
         ]);
@@ -83,12 +87,12 @@ class BankController extends Controller
     public function create()
     {
         return view('admin.bank.create', [
-            'authors'   => $this->author->get(),
-            'viruses'   => $this->virus->get(),
+            'authors' => $this->author->get(),
+            'viruses' => $this->virus->get(),
             'provinces' => Province::all(),
-            'months'    => Months::getMonths(),
-            'years'     => Years::getYears(),
-            'citations' => Citation::all()
+            'months' => Months::getMonths(),
+            'years' => Years::getYears(),
+            'citations' => Citation::all(),
         ]);
     }
 
@@ -98,20 +102,22 @@ class BankController extends Controller
     public function store(Request $request)
     {
         $pickup_date = $request->pickup_date;
-        $month       = explode('/', $pickup_date)[0];
-        $year        = explode('/', $pickup_date)[1];
+        $month = explode('/', $pickup_date)[0];
+        $year = explode('/', $pickup_date)[1];
 
         // conver to date
-        $pickup_date = date('Y-m-d', strtotime($year . '-' . $month . '-01'));
+        $pickup_date = date('Y-m-d', strtotime($year.'-'.$month.'-01'));
         $request->merge(['pickup_date' => $pickup_date]);
 
         // dd($request->all());
 
         try {
             $this->sample->store($request->all());
+
             return redirect()->route('admin.bank.index')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return back()->with('error', 'Data gagal disimpan');
         }
     }
@@ -124,26 +130,26 @@ class BankController extends Controller
         $fasta = $this->sample->find($id)->sequence_data;
         $fasta = wordwrap($fasta, 10, ' ', true);
         $fasta = wordwrap($fasta, 70, '<br>', true);
-        $fasta = '<pre>' . $fasta . '</pre>';
+        $fasta = '<pre>'.$fasta.'</pre>';
 
-        $fasta    = explode('<br>', $fasta);
-        $fasta[0] = '[<span>1</span>]' . "\t\t\t" . $fasta[0];
+        $fasta = explode('<br>', $fasta);
+        $fasta[0] = '[<span>1</span>]'."\t\t\t".$fasta[0];
         $fasta[0] = str_replace('<pre>', '', $fasta[0]);
         for ($i = 1; $i < count($fasta); $i++) {
-            $fasta[$i] = '[<span>' . (60 * $i + 1) . '</span>] ' . "\t\t" . $fasta[$i];
+            $fasta[$i] = '[<span>'.(60 * $i + 1).'</span>] '."\t\t".$fasta[$i];
         }
         for ($i = 0; $i < count($fasta); $i++) {
-            $fasta[$i] = '<pre>' . $fasta[$i] . '</pre>';
+            $fasta[$i] = '<pre>'.$fasta[$i].'</pre>';
         }
         $fasta[0] = str_replace('<br>', '', $fasta[0]);
-        $fasta    = implode('<br>', $fasta);
+        $fasta = implode('<br>', $fasta);
 
         return view('admin.bank.show', [
-            'fasta'     => $fasta,
-            'sample'    => $this->sample->find($id),
+            'fasta' => $fasta,
+            'sample' => $this->sample->find($id),
             'provinces' => Province::all(),
-            'authors'   => $this->author->get(),
-            'viruses'   => $this->virus->get(),
+            'authors' => $this->author->get(),
+            'viruses' => $this->virus->get(),
         ]);
     }
 
@@ -153,15 +159,15 @@ class BankController extends Controller
     public function edit(string $id)
     {
         return view('admin.bank.edit', [
-            'sample'    => $this->sample->find($id),
-            'authors'   => $this->author->get(),
-            'viruses'   => $this->virus->get(),
+            'sample' => $this->sample->find($id),
+            'authors' => $this->author->get(),
+            'viruses' => $this->virus->get(),
             'provinces' => Province::all(),
             'genotipes' => Genotipe::all(),
             'regencies' => Regency::all(),
-            'months'    => Months::getMonths(),
-            'years'     => Years::getYears(),
-            'citations' => Citation::all()
+            'months' => Months::getMonths(),
+            'years' => Years::getYears(),
+            'citations' => Citation::all(),
         ]);
     }
 
@@ -170,17 +176,19 @@ class BankController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $months      = Months::getMonths();
-        $month       = array_search($request->pickup_month, $months) + 1;
-        $pickup_date = date('Y-m-d', strtotime($request->pickup_year . '-' . $month . '-01'));
+        $months = Months::getMonths();
+        $month = array_search($request->pickup_month, $months) + 1;
+        $pickup_date = date('Y-m-d', strtotime($request->pickup_year.'-'.$month.'-01'));
 
         $request->merge(['pickup_date' => $pickup_date]);
 
         try {
             $this->sample->update($request->all(), $id);
+
             return redirect()->route('admin.bank.index')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return back()->with('error', 'Data gagal disimpan');
         }
     }
@@ -192,6 +200,7 @@ class BankController extends Controller
     {
         try {
             $this->sample->destroy($id);
+
             return redirect()->route('admin.bank.index')->with('success', 'Data berhasil dihapus');
         } catch (\Throwable $th) {
             return back()->with('error', 'Data gagal dihapus');
@@ -203,31 +212,34 @@ class BankController extends Controller
     public function getRegency(Request $request)
     {
         $regencies = Regency::where('province_id', $request->province_id)->get();
+
         return response()->json($regencies);
     }
 
     public function getGenotipe(Request $request)
     {
         $genotipes = Genotipe::where('viruses_id', $request->virus_id)->get();
+
         return response()->json($genotipes);
     }
 
     public function getDistrict(Request $request)
     {
         $districts = District::where('regency_id', $request->regency_id)->get();
+
         return response()->json($districts);
     }
 
     public function import(Request $request)
     {
         $request->validate([
-            'import_file' => 'required|mimes:xls,xlsx'
+            'import_file' => 'required|mimes:xls,xlsx',
         ]);
 
         try {
             $file_code = uniqid();
             Excel::import(new SampleImport($file_code), $request->file('import_file'));
-            $filename = $file_code . '.' . $request->file('import_file')->getClientOriginalExtension();
+            $filename = $file_code.'.'.$request->file('import_file')->getClientOriginalExtension();
             $request->file('import_file')->storeAs('public/imported', $filename);
 
             // TODO: save file to table import request and set status as 4 (imported) and set imported_by as current user
@@ -235,7 +247,7 @@ class BankController extends Controller
             return redirect()->route('admin.bank.index')->with('success', 'Data berhasil diimport');
         } catch (ValidationException $e) {
             return view('admin.bank.index', [
-                'failures'    => $e->failures(),
+                'failures' => $e->failures(),
                 'totalSample' => $this->sample->get(),
             ]);
         }
@@ -244,6 +256,7 @@ class BankController extends Controller
     public function advancedSearch(Request $request)
     {
         $attributes = $this->sample->getAttributes();
+
         return view('admin.bank.advance-search', [
             'attributes' => $attributes,
         ]);
@@ -252,6 +265,7 @@ class BankController extends Controller
     public function getData(Request $request)
     {
         $samples = $this->sample->advancedSearch($request->all());
+
         return view('admin.bank.tables.table-content', [
             'samples' => $samples,
         ])->render();
@@ -269,7 +283,8 @@ class BankController extends Controller
                     ->addColumn('file_code', function ($data) {
                         $file_code = $data->file_code;
                         $file_code = substr($file_code, 0, -3);
-                        $file_code = $file_code . "***";
+                        $file_code = $file_code.'***';
+
                         return $file_code;
                     })
                     ->addColumn('created_at', function ($data) {
@@ -293,6 +308,7 @@ class BankController extends Controller
                     ->addIndexColumn()
                     ->make(true);
             }
+
             return view('admin.bank.imported.index');
         } else {
             if ($request->ajax()) {
@@ -304,7 +320,8 @@ class BankController extends Controller
                     ->addColumn('file_code', function ($sample) {
                         $file_code = $sample->file_code;
                         $file_code = substr($file_code, 0, -3);
-                        $file_code = $file_code . "***";
+                        $file_code = $file_code.'***';
+
                         return $file_code ?? null;
                     })
                     ->addColumn('virus', function ($sample) {
@@ -316,6 +333,7 @@ class BankController extends Controller
                     ->addColumn('pickup_date', function ($sample) {
                         // translate to indonesian date format
                         $date = date('F Y', strtotime($sample->pickup_date));
+
                         return $date ?? null;
                     })
                     ->addColumn('place', function ($sample) {
@@ -336,6 +354,7 @@ class BankController extends Controller
                     ->addIndexColumn()
                     ->make(true);
             }
+
             return view('admin.bank.imported.user.index', [
                 'totalSample' => $this->sample->get(),
             ]);
@@ -346,15 +365,16 @@ class BankController extends Controller
     {
         try {
             $this->sample->deleteByFileCode($request->file_code);
+
             return response()->json([
-                'status'  => 'success',
-                'message' => 'Data sekuen pada file ' . $request->file_code . ' berhasil dihapus',
+                'status' => 'success',
+                'message' => 'Data sekuen pada file '.$request->file_code.' berhasil dihapus',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'status'  => 'error',
-                'message' => 'Data sekuen pada file ' . $request->file_code . ' gagal dihapus',
-                'error'   => $th->getMessage(),
+                'status' => 'error',
+                'message' => 'Data sekuen pada file '.$request->file_code.' gagal dihapus',
+                'error' => $th->getMessage(),
             ]);
         }
     }
@@ -363,15 +383,16 @@ class BankController extends Controller
     {
         try {
             $this->sample->recoveryByFileCode($request->file_code);
+
             return response()->json([
-                'status'  => 'success',
-                'message' => 'Data sekuen pada file ' . $request->file_code . ' berhasil direcovery',
+                'status' => 'success',
+                'message' => 'Data sekuen pada file '.$request->file_code.' berhasil direcovery',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
-                'status'  => 'error',
-                'message' => 'Data sekuen pada file ' . $request->file_code . ' gagal direcovery',
-                'error'   => $th->getMessage(),
+                'status' => 'error',
+                'message' => 'Data sekuen pada file '.$request->file_code.' gagal direcovery',
+                'error' => $th->getMessage(),
             ]);
         }
     }

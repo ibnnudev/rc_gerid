@@ -18,48 +18,50 @@ class AuthorController extends Controller
 
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->author->get())
-            ->addColumn('name', function($author) {
-                return $author->name;
-            })
-            ->addColumn('member', function($author) {
-                return $author->member;
-            })
-            ->addColumn('institution', function($author) {
-                return $author->institution->name ?? '-';
-            })
-            ->addColumn('action', function($author) {
-                return view('admin.author.columns.action', [
-                    'author' => $author
-                ]);
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->author->get())
+                ->addColumn('name', function ($author) {
+                    return $author->name;
+                })
+                ->addColumn('member', function ($author) {
+                    return $author->member;
+                })
+                ->addColumn('institution', function ($author) {
+                    return $author->institution->name ?? '-';
+                })
+                ->addColumn('action', function ($author) {
+                    return view('admin.author.columns.action', [
+                        'author' => $author,
+                    ]);
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
+
         return view('admin.author.index');
     }
 
     public function create()
     {
         return view('admin.author.create', [
-            'institutions' => Institution::all()
+            'institutions' => Institution::all(),
         ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name'            => ['required', 'string', 'max:255'],
-            'member'          => ['required', 'string', 'max:255'],
-            'phone'           => ['nullable', 'string', 'max:255'],
-            'address'         => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'member' => ['required', 'string', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:255'],
+            'address' => ['required', 'string', 'max:255'],
             'institutions_id' => ['required'],
         ]);
 
         try {
             $this->author->store($request->all());
+
             return redirect()->route('admin.author.index')->with('success', 'Penulis berhasil ditambahkan');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Penulis gagal ditambahkan');
@@ -69,7 +71,7 @@ class AuthorController extends Controller
     public function show(string $id)
     {
         return view('admin.author.show', [
-            'author' => $this->author->find($id)
+            'author' => $this->author->find($id),
         ]);
     }
 
@@ -77,7 +79,7 @@ class AuthorController extends Controller
     {
         return view('admin.author.edit', [
             'author' => $this->author->find($id),
-            'institutions' => Institution::all()
+            'institutions' => Institution::all(),
         ]);
     }
 
@@ -85,6 +87,7 @@ class AuthorController extends Controller
     {
         try {
             $this->author->update($request->all(), $id);
+
             return redirect()->route('admin.author.index')->with('success', 'Penulis berhasil diubah');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Penulis gagal diubah');
@@ -95,6 +98,7 @@ class AuthorController extends Controller
     {
         try {
             $this->author->destroy($id);
+
             return back()->with('success', 'Penulis berhasil dihapus');
         } catch (\Throwable $th) {
             return back()->with('error', 'Penulis gagal dihapus');

@@ -18,7 +18,6 @@ class NewUserRegistered extends Mailable implements ShouldQueue
      *
      * @return void
      */
-
     public function __construct($user)
     {
         $this->user = $user;
@@ -29,13 +28,12 @@ class NewUserRegistered extends Mailable implements ShouldQueue
      *
      * @return $this
      */
-
     public function build()
     {
         return $this
-        ->from('rcgerid@mail.com')
-        ->to($this->user->email)
-        ->subject('Pendaftaran Berhasil')
-        ->view('mail.new-user-registered');
+            ->from('rcgerid@mail.com')
+            ->to($this->user->email)
+            ->subject('Pendaftaran Berhasil')
+            ->view('mail.new-user-registered');
     }
 }

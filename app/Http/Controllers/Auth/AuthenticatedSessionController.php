@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Jobs\NotifyUserLoggedIn;
-use App\Models\Visitor;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,6 +32,7 @@ class AuthenticatedSessionController extends Controller
 
             if (Auth::user()->is_active == 0) {
                 Auth::guard('web')->logout();
+
                 return redirect()->back()->with('error', 'Akun kamu belum aktif, silahkan hubungi admin');
             }
 

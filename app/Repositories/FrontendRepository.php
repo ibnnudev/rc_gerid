@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Interfaces\FrontendInterface;
 use App\Models\Author;
 use App\Models\Citation;
-use App\Models\District;
 use App\Models\HivCases;
 use App\Models\Province;
 use App\Models\Regency;
@@ -16,23 +15,26 @@ use Illuminate\Support\Facades\DB;
 
 class FrontendRepository implements FrontendInterface
 {
-
     private $virus;
-    private $hivCases;
-    private $citation;
-    private $user;
-    private $author;
-    private $sample;
 
+    private $hivCases;
+
+    private $citation;
+
+    private $user;
+
+    private $author;
+
+    private $sample;
 
     public function __construct(Virus $virus, HivCases $hivCases, Citation $citation, User $user, Author $author, Sample $sample)
     {
-        $this->virus    = $virus;
+        $this->virus = $virus;
         $this->hivCases = $hivCases;
         $this->citation = $citation;
-        $this->user     = $user;
-        $this->author   = $author;
-        $this->sample   = $sample;
+        $this->user = $user;
+        $this->author = $author;
+        $this->sample = $sample;
     }
 
     public function getVirus($id)
@@ -55,8 +57,9 @@ class FrontendRepository implements FrontendInterface
         $arr = [];
         foreach ($data as $item) {
             $arr['label'][] = $item->genotipe_code;
-            $arr['data'][]  = $item->jumlah;
+            $arr['data'][] = $item->jumlah;
         }
+
         return $arr;
     }
 
@@ -116,21 +119,21 @@ class FrontendRepository implements FrontendInterface
             ->join('genotipes', 'genotipes.id', '=', 'samples.genotipes_id')
             ->where('samples.viruses_id', $request['virus_id'])
             ->Orwhere('genotipes.genotipe_code', $request['q'])
-            ->orWhere('samples.sequence_data', 'LIKE', '%' . $request['q'] . '%')
+            ->orWhere('samples.sequence_data', 'LIKE', '%'.$request['q'].'%')
             ->get();
 
         // return $data;
         return $data->map(function ($item, $key) {
             return [
-                'id_citation'      => $item->id,
-                'user'             => $item->name,
-                'title'            => $item->title,
-                'province'         => $this->getProvince($item->province_id),
-                'regency'          => $this->getRegency($item->regency_id),
-                'author'           => $this->getAuthor($item->author_id),
-                'monthYear'        => $this->getMonthYear($item->pickup_date),
-                'accession_ncbi'   => $item->sample_code,
-                'accession_indagi' => substr($item->virus_code, 0, 3) . date('Ym', strtotime($item->pickup_date)) . $item->id,
+                'id_citation' => $item->id,
+                'user' => $item->name,
+                'title' => $item->title,
+                'province' => $this->getProvince($item->province_id),
+                'regency' => $this->getRegency($item->regency_id),
+                'author' => $this->getAuthor($item->author_id),
+                'monthYear' => $this->getMonthYear($item->pickup_date),
+                'accession_ncbi' => $item->sample_code,
+                'accession_indagi' => substr($item->virus_code, 0, 3).date('Ym', strtotime($item->pickup_date)).$item->id,
             ];
         });
     }
@@ -156,15 +159,15 @@ class FrontendRepository implements FrontendInterface
 
         return $data->map(function ($item, $key) {
             return [
-                'id'            => $item->id,
-                'user'          => $item->name,
-                'title'         => $item->title,
-                'gene_name'     => $item->gene_name,
+                'id' => $item->id,
+                'user' => $item->name,
+                'title' => $item->title,
+                'gene_name' => $item->gene_name,
                 'sequence_data' => $item->sequence_data,
-                'province'      => $this->getProvince($item->province_id),
-                'regency'       => $this->getRegency($item->regency_id),
-                'author'        => $this->getAuthor($item->author_id),
-                'monthYear'     => $this->getMonthYear($item->pickup_date),
+                'province' => $this->getProvince($item->province_id),
+                'regency' => $this->getRegency($item->regency_id),
+                'author' => $this->getAuthor($item->author_id),
+                'monthYear' => $this->getMonthYear($item->pickup_date),
                 // // accession ncbi from sample code
                 'accession_ncbi' => $item->sample_code,
                 // // accession indagi from virus code
@@ -192,18 +195,19 @@ class FrontendRepository implements FrontendInterface
             // ->where('samples.viruses_id', $request['virus_id'])
             // ->Orwhere('genotipes.genotipe_code', $request['q'])
             ->get();
+
         // return $data;
         return $data->map(function ($item, $key) {
             return [
-                'id'            => $item->id,
-                'user'          => $item->name,
-                'title'         => $item->title,
-                'gene_name'     => $item->gene_name,
+                'id' => $item->id,
+                'user' => $item->name,
+                'title' => $item->title,
+                'gene_name' => $item->gene_name,
                 'sequence_data' => $item->sequence_data,
-                'province'      => $this->getProvince($item->province_id),
-                'regency'       => $this->getRegency($item->regency_id),
-                'author'        => $this->getAuthor($item->author_id),
-                'monthYear'     => $this->getMonthYear($item->pickup_date),
+                'province' => $this->getProvince($item->province_id),
+                'regency' => $this->getRegency($item->regency_id),
+                'author' => $this->getAuthor($item->author_id),
+                'monthYear' => $this->getMonthYear($item->pickup_date),
                 // // accession ncbi from sample code
                 'accession_ncbi' => $item->sample_code,
                 // // accession indagi from virus code
@@ -234,9 +238,10 @@ class FrontendRepository implements FrontendInterface
 
     public function getMonthYear($date)
     {
-        $month = array(1 =>   'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
+        $month = [1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
         $split = explode('-', $date);
-        return $month[(int)$split[1]] . " " . $split[0];
+
+        return $month[(int) $split[1]].' '.$split[0];
     }
 
     public function getVirusByName($name)

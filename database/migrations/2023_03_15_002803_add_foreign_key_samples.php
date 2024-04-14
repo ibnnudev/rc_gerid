@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::table('samples', function (Blueprint $table) {
             // check if province_id and regency_id column exists
-            if (!Schema::hasColumn('samples', 'province_id')) {
+            if (! Schema::hasColumn('samples', 'province_id')) {
                 $table->unsignedBigInteger('province_id')->nullable();
             }
 
-            if (!Schema::hasColumn('samples', 'regency_id')) {
+            if (! Schema::hasColumn('samples', 'regency_id')) {
                 $table->unsignedBigInteger('regency_id')->nullable();
             }
 

@@ -2,13 +2,13 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\EnsureHasRole;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
     protected $routeMiddleware = [
     ];
+
     /**
      * The application's global HTTP middleware stack.
      *

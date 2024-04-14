@@ -3,14 +3,14 @@
 namespace App\Repositories;
 
 use App\Interfaces\CitationInterface;
-use App\Models\Author;
 use App\Models\Citation;
 
 class CitationRepository implements CitationInterface
 {
     private $citation;
 
-    public function __construct(Citation $citation) {
+    public function __construct(Citation $citation)
+    {
         $this->citation = $citation;
     }
 
@@ -22,9 +22,9 @@ class CitationRepository implements CitationInterface
     public function store($data)
     {
         return $this->citation->create([
-            'title'     => $data['title'],
+            'title' => $data['title'],
             'author_id' => $data['author'],
-            'users_id' => auth()->user()->id
+            'users_id' => auth()->user()->id,
         ]);
     }
 
@@ -37,7 +37,7 @@ class CitationRepository implements CitationInterface
     {
         return $this->citation->find($id)->update([
             'title' => $data['title'],
-            'author_id' => $data['author']
+            'author_id' => $data['author'],
         ]);
     }
 }

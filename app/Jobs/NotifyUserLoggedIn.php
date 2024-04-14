@@ -18,13 +18,13 @@ class NotifyUserLoggedIn implements ShouldQueue
         Visitor::create([
             'ip_address' => request()->ip(),
             'user_agent' => request()->header('User-Agent'),
-            'date'       => date('Y-m-d')
+            'date' => date('Y-m-d'),
         ]);
 
         logger()->info('User logged in', [
             'ip_address' => request()->ip(),
             'user_agent' => request()->header('User-Agent'),
-            'date'       => date('Y-m-d')
+            'date' => date('Y-m-d'),
         ]);
     }
 }

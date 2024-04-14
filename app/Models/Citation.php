@@ -21,7 +21,7 @@ class Citation extends Model
         'title',
         'author_id', // multi author (separated by comma)
         'users_id',
-        'is_active'
+        'is_active',
     ];
 
     // Relationships
@@ -42,7 +42,7 @@ class Citation extends Model
 
     public function sampleCitation()
     {
-        return $this->hasMany(Sample::class, 'citation_id')->with('virus','genotipe');
+        return $this->hasMany(Sample::class, 'citation_id')->with('virus', 'genotipe');
     }
 
     public function setInactive()

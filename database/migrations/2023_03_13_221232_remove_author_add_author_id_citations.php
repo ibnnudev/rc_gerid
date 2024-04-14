@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('citations', function (Blueprint $table) {
-            if (!Schema::hasColumn('citations', 'author_id')) {
+            if (! Schema::hasColumn('citations', 'author_id')) {
                 $table->unsignedBigInteger('author_id')->nullable();
                 $table->foreign('author_id')->references('id')->on('authors');
             }

@@ -22,7 +22,8 @@ class Transmission extends Model
         'is_active',
     ];
 
-    public function setInactive() {
+    public function setInactive()
+    {
         $this->is_active = false;
         $this->save();
     }

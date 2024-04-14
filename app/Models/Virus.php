@@ -22,7 +22,7 @@ class Virus extends Model
         'name',
         'latin_name',
         'description',
-        'is_active'
+        'is_active',
     ];
 
     // Relationship

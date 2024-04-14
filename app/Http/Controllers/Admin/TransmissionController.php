@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class TransmissionController extends Controller
 {
-
     private $transmission;
 
     public function __construct(TransmissionInterface $transmission)
@@ -18,18 +17,19 @@ class TransmissionController extends Controller
 
     public function index(Request $request)
     {
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return datatables()
-            ->of($this->transmission->get())
-            ->addColumn('name', function($transmission) {
-                return $transmission->name;
-            })
-            ->addColumn('action', function($transmission) {
-                return view('admin.transmission.columns.action', ['transmission' => $transmission]);
-            })
-            ->addIndexColumn()
-            ->make(true);
+                ->of($this->transmission->get())
+                ->addColumn('name', function ($transmission) {
+                    return $transmission->name;
+                })
+                ->addColumn('action', function ($transmission) {
+                    return view('admin.transmission.columns.action', ['transmission' => $transmission]);
+                })
+                ->addIndexColumn()
+                ->make(true);
         }
+
         return view('admin.transmission.index');
     }
 
@@ -47,14 +47,16 @@ class TransmissionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:transmissions,name,NULL,id,is_active,1'
+            'name' => 'required|unique:transmissions,name,NULL,id,is_active,1',
         ]);
 
         try {
             $this->transmission->store($request->all());
+
             return redirect()->route('admin.transmission.index')->with('success', 'Transmisi berhasil ditambahkan');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return back()->with('error', 'Transmisi gagal ditambahkan');
         }
     }
@@ -73,7 +75,7 @@ class TransmissionController extends Controller
     public function edit($id)
     {
         return view('admin.transmission.edit', [
-            'transmission' => $this->transmission->find($id)
+            'transmission' => $this->transmission->find($id),
         ]);
     }
 
@@ -83,14 +85,16 @@ class TransmissionController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|unique:transmissions,name,' . $id . ',id,is_active,1'
+            'name' => 'required|unique:transmissions,name,'.$id.',id,is_active,1',
         ]);
 
         try {
             $this->transmission->update($request->all(), $id);
+
             return redirect()->route('admin.transmission.index')->with('success', 'Transmisi berhasil diubah');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return back()->with('error', 'Transmisi gagal diubah');
         }
     }
@@ -102,9 +106,11 @@ class TransmissionController extends Controller
     {
         try {
             $this->transmission->destroy($id);
+
             return redirect()->route('admin.transmission.index')->with('success', 'Transmisi berhasil dihapus');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return back()->with('error', 'Transmisi gagal dihapus');
         }
     }

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Scopes\HasActiveScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,8 +11,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    const USER_ROLE  = 'user';
+    const USER_ROLE = 'user';
+
     const ADMIN_ROLE = 'admin';
+
     const VALIDATOR_ROLE = 'validator';
 
     protected $fillable = [
@@ -26,7 +27,7 @@ class User extends Authenticatable
         'avatar',
         'remember_token',
         'virus_id',
-        'is_active'
+        'is_active',
     ];
 
     protected $hidden = [
@@ -38,11 +39,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getRole() {
+    public function getRole()
+    {
         return $this->role;
     }
-    
-    public function getName($id) {
+
+    public function getName($id)
+    {
         return $this->where('id', $id)->first()->name;
     }
 

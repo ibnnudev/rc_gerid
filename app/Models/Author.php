@@ -23,7 +23,7 @@ class Author extends Model
         'phone',
         'member',
         'institutions_id',
-        'is_active'
+        'is_active',
     ];
 
     // Relationship

@@ -2,12 +2,12 @@
 
 namespace App\View\Components;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\Component;
 
 class Breadcrumb extends Component
 {
     public $data;
+
     public $name;
 
     public function __construct($data, $name)

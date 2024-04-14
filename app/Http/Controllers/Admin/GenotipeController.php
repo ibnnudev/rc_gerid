@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Interfaces\GenotipeInterface;
 use App\Models\Virus;
-use App\Scopes\HasActiveScope;
+use Illuminate\Http\Request;
 
 class GenotipeController extends Controller
 {
@@ -16,6 +15,7 @@ class GenotipeController extends Controller
     {
         $this->genotipe = $genotipe;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -32,7 +32,7 @@ class GenotipeController extends Controller
     public function create()
     {
         return view('admin.genotipe.create', [
-            'viruses' => Virus::all()
+            'viruses' => Virus::all(),
         ]);
     }
 
@@ -42,14 +42,16 @@ class GenotipeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'genotipe_code' => 'required|unique:genotipes,genotipe_code,NULL,id,viruses_id,' . $request->viruses_id,
+            'genotipe_code' => 'required|unique:genotipes,genotipe_code,NULL,id,viruses_id,'.$request->viruses_id,
         ]);
 
         try {
             $this->genotipe->store($request->all());
+
             return redirect()->route('admin.genotipe.index')->with('success', 'Genotipe berhasil ditambahkan');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return back()->with('error', 'Genotipe gagal ditambahkan');
         }
     }
@@ -61,7 +63,7 @@ class GenotipeController extends Controller
     {
         return view('admin.genotipe.show', [
             'genotipe' => $this->genotipe->find($id),
-            'viruses' => Virus::all()
+            'viruses' => Virus::all(),
         ]);
     }
 
@@ -72,7 +74,7 @@ class GenotipeController extends Controller
     {
         return view('admin.genotipe.edit', [
             'genotipe' => $this->genotipe->find($id),
-            'viruses' => Virus::all()
+            'viruses' => Virus::all(),
         ]);
     }
 
@@ -82,11 +84,12 @@ class GenotipeController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'genotipe_code' => 'required|unique:genotipes,genotipe_code,' . $id . ',id,viruses_id,' . $request->viruses_id,
+            'genotipe_code' => 'required|unique:genotipes,genotipe_code,'.$id.',id,viruses_id,'.$request->viruses_id,
         ]);
 
         try {
             $this->genotipe->update($request->all(), $id);
+
             return redirect()->route('admin.genotipe.index')->with('success', 'Genotipe berhasil diubah');
         } catch (\Throwable $th) {
             return back()->with('error', 'Genotipe gagal diubah');
@@ -100,9 +103,11 @@ class GenotipeController extends Controller
     {
         try {
             $this->genotipe->destroy($id);
+
             return redirect()->route('admin.genotipe.index')->with('success', 'Virus berhasil dihapus');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return back()->with('error', 'Virus gagal dihapus');
         }
     }

@@ -5,10 +5,12 @@ namespace App\Repositories;
 use App\Interfaces\AuthorInterface;
 use App\Models\Author;
 
-class AuthorRepository implements AuthorInterface {
+class AuthorRepository implements AuthorInterface
+{
     private $author;
 
-    public function __construct(Author $author) {
+    public function __construct(Author $author)
+    {
         $this->author = $author;
     }
 
@@ -21,10 +23,10 @@ class AuthorRepository implements AuthorInterface {
     {
 
         $this->author->create([
-            'name'            => $data['name'],
-            'member'          => $data['member'],
-            'phone'           => $data['phone'] ?? null,
-            'address'         => $data['address'],
+            'name' => $data['name'],
+            'member' => $data['member'],
+            'phone' => $data['phone'] ?? null,
+            'address' => $data['address'],
             'institutions_id' => $data['institutions_id'],
         ]);
 
@@ -47,10 +49,10 @@ class AuthorRepository implements AuthorInterface {
     public function update($data, $id): bool
     {
         $this->author->where('id', $id)->update([
-            'name'            => $data['name'],
-            'member'          => $data['member'],
-            'phone'           => $data['phone'] ?? null,
-            'address'         => $data['address'],
+            'name' => $data['name'],
+            'member' => $data['member'],
+            'phone' => $data['phone'] ?? null,
+            'address' => $data['address'],
             'institutions_id' => $data['institutions_id'],
         ]);
 

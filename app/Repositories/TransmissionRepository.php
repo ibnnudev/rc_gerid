@@ -7,10 +7,10 @@ use App\Models\Transmission;
 
 class TransmissionRepository implements TransmissionInterface
 {
-
     private $transmission;
 
-    public function __construct(Transmission $transmission) {
+    public function __construct(Transmission $transmission)
+    {
         $this->transmission = $transmission;
     }
 

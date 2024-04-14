@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\HivCaseInterface;
-use App\Interfaces\TransmissionInterface;
-use App\Interfaces\VirusInterface;
 use App\Models\Province;
 use App\Properties\Years;
 use Illuminate\Http\Request;
@@ -23,11 +21,11 @@ class CasesController extends Controller
     {
         $cases = $this->hivCase->get();
 
-        if(request()->has('province')) {
+        if (request()->has('province')) {
             $cases = $cases->where('province_id', request('province'));
         }
 
-        if(request()->has('year')) {
+        if (request()->has('year')) {
             $cases = $cases->where('year', request('year'));
         }
 
@@ -61,7 +59,7 @@ class CasesController extends Controller
 
         return view('admin.hiv-cases.index', [
             'provinces' => Province::all(),
-            'years'     => Years::getYears()
+            'years' => Years::getYears(),
         ]);
     }
 }

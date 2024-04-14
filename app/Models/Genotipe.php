@@ -12,6 +12,7 @@ class Genotipe extends Model
     {
         static::addGlobalScope(new HasActiveScope);
     }
+
     use HasFactory;
 
     public $table = 'genotipes';

@@ -5,18 +5,17 @@ use App\Http\Controllers\Admin\BankController;
 use App\Http\Controllers\Admin\CasesController;
 use App\Http\Controllers\Admin\CitationController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\Admin\GenotipeController;
 use App\Http\Controllers\Admin\HivCaseController;
 use App\Http\Controllers\Admin\ImportRequestController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\TransmissionController;
 use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\Frontend\FrontendController;
 use Illuminate\Support\Facades\Route;
 
 // Frontend
-Route::get('/chartPieYear', [FrontendController::class, 'pieChart'])->name('chartPieYear');
 Route::get('/chartGroupYear', [FrontendController::class, 'groupChartYear'])->name('groupChartYear');
 Route::get('/chartGroupCity', [FrontendController::class, 'groupChartCity'])->name('groupChartCity');
 Route::get('/setStateMaps', [FrontendController::class, 'getGrouping'])->name('getGrouping');
@@ -98,4 +97,4 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::resource('profile', ProfileController::class, ['as' => 'admin'])->only(['index', 'update']);
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

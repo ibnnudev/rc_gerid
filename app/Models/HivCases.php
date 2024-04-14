@@ -32,7 +32,7 @@ class HivCases extends Model
         'sex',
         'transmission_id',
         'year',
-        'is_active'
+        'is_active',
     ];
 
     // Relationships
@@ -56,7 +56,8 @@ class HivCases extends Model
         return $this->belongsTo(Transmission::class);
     }
 
-    public function setInactive() {
+    public function setInactive()
+    {
         $this->is_active = false;
         $this->save();
     }
