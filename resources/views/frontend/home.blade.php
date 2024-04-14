@@ -87,6 +87,8 @@
                     <h1 class="mb-2 text-xl font-bold">
                         {{ $data->samples }}
                     </h1>
+                    <a href="{{ route('detail-virus', $data->name) }}"
+                        class="text-xs text-blue-500 hover:underline font-medium">Selengkapnya</a>
                 </div>
             </div>
         @endforeach
