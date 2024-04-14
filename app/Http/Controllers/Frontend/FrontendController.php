@@ -25,15 +25,10 @@ use stdClass;
 class FrontendController extends Controller
 {
     private $frontend;
-
     private $hivCases;
-
     private $virus;
-
     private $sample;
-
     private $author;
-
     private $genotipe;
 
     public function __construct(FrontendInterface $frontend, HivCaseRepository $hivCases, VirusInterface $virus, SampleInterface $sample, AuthorInterface $author, GenotipeInterface $genotipe)
@@ -122,11 +117,29 @@ class FrontendController extends Controller
     {
         $sample = DB::table('samples')->where('id', $id)->first();
         $virus = DB::table('viruses')->where('id', $sample->viruses_id)->first();
+        $citation = $this->frontend->detailCitation($id);
+        $fasta = $citation['sequence_data'];
+        $fasta = wordwrap($fasta, 10, ' ', true);
+        $fasta = wordwrap($fasta, 70, '<br>', true);
+        $fasta = '<pre>' . $fasta . '</pre>';
+
+        $fasta = explode('<br>', $fasta);
+        $fasta[0] = '[<span>1</span>]' . "\t\t\t" . $fasta[0];
+        $fasta[0] = str_replace('<pre>', '', $fasta[0]);
+        for ($i = 1; $i < count($fasta); $i++) {
+            $fasta[$i] = '[<span>' . (60 * $i + 1) . '</span>] ' . "\t\t" . $fasta[$i];
+        }
+        for ($i = 0; $i < count($fasta); $i++) {
+            $fasta[$i] = '<pre class="w-fit">' . $fasta[$i] . '</pre>';
+        }
+        $fasta[0] = str_replace('<br>', '', $fasta[0]);
+        $fasta = implode('', $fasta);
 
         return view('frontend.citation.detail', [
             'request' => null,
             'virus' => $virus,
-            'citation' => $this->frontend->detailCitation($id),
+            'citation' => $citation,
+            'fasta' => $fasta
         ]);
     }
 
