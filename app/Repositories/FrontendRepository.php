@@ -11,30 +11,26 @@ use App\Models\Regency;
 use App\Models\Sample;
 use App\Models\User;
 use App\Models\Virus;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class FrontendRepository implements FrontendInterface
 {
     private $virus;
-
     private $hivCases;
-
     private $citation;
-
     private $user;
-
     private $author;
-
     private $sample;
 
     public function __construct(Virus $virus, HivCases $hivCases, Citation $citation, User $user, Author $author, Sample $sample)
     {
-        $this->virus = $virus;
+        $this->virus    = $virus;
         $this->hivCases = $hivCases;
         $this->citation = $citation;
-        $this->user = $user;
-        $this->author = $author;
-        $this->sample = $sample;
+        $this->user     = $user;
+        $this->author   = $author;
+        $this->sample   = $sample;
     }
 
     public function getVirus($id)
@@ -57,7 +53,7 @@ class FrontendRepository implements FrontendInterface
         $arr = [];
         foreach ($data as $item) {
             $arr['label'][] = $item->genotipe_code;
-            $arr['data'][] = $item->jumlah;
+            $arr['data'][]  = $item->jumlah;
         }
 
         return $arr;
@@ -70,26 +66,40 @@ class FrontendRepository implements FrontendInterface
 
     public function listCitations($request)
     {
-        $data = DB::table('samples')
-            ->select('samples.id as id', 'samples.province_id', 'samples.regency_id', 'samples.sequence_data', 'samples.pickup_date', 'samples.virus_code', 'samples.sample_code', 'users.name', 'citations.title', 'citations.author_id', 'samples.viruses_id')
-            ->join('citations', 'citations.id', '=', 'samples.citation_id')
-            ->join('users', 'users.id', '=', 'samples.created_by')
-            ->join('viruses', 'viruses.id', '=', 'samples.viruses_id')
-            ->join('genotipes', 'genotipes.id', '=', 'samples.genotipes_id')
-            ->where('samples.viruses_id', $request['virus_id'])
-            ->orWhere('genotipes.genotipe_code', $request['genotipe'])
+        // dd(request()->all());
+        $data = $this->sample->with(['citation.author', 'province', 'regency', 'virus'])
+            ->where('viruses_id', $request['virus_id'])
+            ->when(request()->filled('province'), function ($query) {
+                return $query->where('province_id', request('province'));
+            })
+            ->when(request()->filled('regency'), function ($query) {
+                return $query->where('regency_id', request('regency'));
+            })
+            ->when(request()->filled('author'), function ($query) {
+                return $query->whereHas('citation.author', function ($query) {
+                    return $query->where('author_id', request('author'));
+                });
+            })
+            ->when(request()->filled('year'), function ($query) {
+                $year = request('year') . '-01-01';
+                return $query->where('pickup_date', '>=', $year);
+            })
+            ->when(request()->filled('genotipe'), function ($query) {
+                return $query->where('genotipes_id', request('genotipe'));
+            })
             ->get();
 
         return $data->map(function ($item, $key) {
             return [
-                'id_citation' => $item->id,
-                'user' => $item->name,
-                'title' => $item->title,
-                'province' => $this->getProvince($item->province_id),
-                'regency' => $this->getRegency($item->regency_id),
-                'author' => $this->getAuthor($item->author_id),
-                'monthYear' => $this->getMonthYear($item->pickup_date),
-                'accession_ncbi' => $item->sample_code,
+                'id_citation'      => $item->id,
+                'user'             => $item->citation->author->name,
+                'title'            => $item->title,
+                'province'         => $this->getProvince($item->province_id),
+                'regency'          => $this->getRegency($item->regency_id),
+                'citation'         => $item->citation->title,
+                'author'           => $item->citation->author,
+                'monthYear'        => $this->getMonthYear($item->pickup_date),
+                'accession_ncbi'   => $item->sample_code,
                 'accession_indagi' => substr($item->virus_code, 0, 3) . date('Ym', strtotime($item->pickup_date)) . $item->id,
             ];
         });
@@ -116,15 +126,15 @@ class FrontendRepository implements FrontendInterface
 
         return $data->map(function ($item, $key) {
             return [
-                'id' => $item->id,
-                'user' => $item->name,
-                'title' => $item->title,
-                'gene_name' => $item->gene_name,
+                'id'            => $item->id,
+                'user'          => $item->name,
+                'title'         => $item->title,
+                'gene_name'     => $item->gene_name,
                 'sequence_data' => $item->sequence_data,
-                'province' => $this->getProvince($item->province_id),
-                'regency' => $this->getRegency($item->regency_id),
-                'author' => $this->getAuthor($item->author_id),
-                'monthYear' => $this->getMonthYear($item->pickup_date),
+                'province'      => $this->getProvince($item->province_id),
+                'regency'       => $this->getRegency($item->regency_id),
+                'author'        => $this->getAuthor($item->author_id),
+                'monthYear'     => $this->getMonthYear($item->pickup_date),
                 // // accession ncbi from sample code
                 'accession_ncbi' => $item->sample_code,
                 // // accession indagi from virus code
@@ -156,15 +166,15 @@ class FrontendRepository implements FrontendInterface
         // return $data;
         return $data->map(function ($item, $key) {
             return [
-                'id' => $item->id,
-                'user' => $item->name,
-                'title' => $item->title,
-                'gene_name' => $item->gene_name,
+                'id'            => $item->id,
+                'user'          => $item->name,
+                'title'         => $item->title,
+                'gene_name'     => $item->gene_name,
                 'sequence_data' => $item->sequence_data,
-                'province' => $this->getProvince($item->province_id),
-                'regency' => $this->getRegency($item->regency_id),
-                'author' => $this->getAuthor($item->author_id),
-                'monthYear' => $this->getMonthYear($item->pickup_date),
+                'province'      => $this->getProvince($item->province_id),
+                'regency'       => $this->getRegency($item->regency_id),
+                'author'        => $this->getAuthor($item->author_id),
+                'monthYear'     => $this->getMonthYear($item->pickup_date),
                 // // accession ncbi from sample code
                 'accession_ncbi' => $item->sample_code,
                 // // accession indagi from virus code

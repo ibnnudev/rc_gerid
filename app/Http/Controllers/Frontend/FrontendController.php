@@ -67,7 +67,7 @@ class FrontendController extends Controller
             'lastYearSample' => $this->getLastYearSample($virus->id),
             'lastCitySampleId' => $this->getLastCitySample($virus->id),
             'request' => null,
-            'authors' => $this->author->get()->where('is_active', true),
+            'authors' => $this->sample->getByAuthorByVirusId($virus->id),
             'genotipes' => $this->genotipe->get(),
             'virusByGen' => $virusByGen,
         ]);
@@ -105,10 +105,16 @@ class FrontendController extends Controller
 
     public function listCitations(Request $request)
     {
+        $virus = $this->frontend->getVirus($request['virus_id']);
         return view('frontend.citation.listCitation', [
             'request' => $request,
             'virus' => $this->frontend->getVirus($request['virus_id']),
             'listCitations' => $this->frontend->listCitations($request),
+            'virus' => $virus,
+            'provinces' => Province::all(),
+            'years' => Years::getYears(),
+            'genotipes' => $this->genotipe->get(),
+            'authors' => $this->sample->getByAuthorByVirusId($request['virus_id']),
         ]);
     }
 

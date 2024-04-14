@@ -4,8 +4,7 @@
             Detail Informasi ({{ $virus->name }})
         </div>
         <div class="px-6 py-8">
-            <!-- Cari Sitasi -->
-            <form action="{{ route('listCitation') }}" method="POST">
+            <form action="{{ route('listCitation') }}" method="POST" class="px-6 py-8">
                 @csrf
                 <input type="hidden" name="virus_id" value="{{ $virus->id }}" />
                 <div class="grid lg:grid-cols-5 gap-4 items-center">
@@ -15,7 +14,7 @@
                         </label>
                         <select id="year" name="year"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
-                            <option selected disabled>Pilih tahun</option>
+                            <option selected value="">Pilih tahun</option>
                             @foreach ($years as $year)
                                 <option value="{{ $year }}">{{ $year }}</option>
                             @endforeach
@@ -27,7 +26,7 @@
                         </label>
                         <select id="province" name="province"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
-                            <option selected disabled>Pilih provinsi</option>
+                            <option selected value="">Pilih provinsi</option>
                             @foreach ($provinces as $province)
                                 <option value="{{ $province->id }}">{{ $province->name }}</option>
                             @endforeach
@@ -39,9 +38,9 @@
                         </label>
                         <select id="author" name="author"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
-                            <option selected disabled>Pilih penulis</option>
-                            @foreach ($authors as $author)
-                                <option value="{{ $author->id }}">{{ $author->name }}</option>
+                            <option selected value="">Pilih penulis</option>
+                            @foreach ($authors as $key => $val)
+                                <option value="{{ $val['author']['id'] }}">{{ $val['author']['name'] }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -51,7 +50,7 @@
                         </label>
                         <select id="genotipe" name="genotipe"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
-                            <option selected disabled>Pilih genotipe</option>
+                            <option selected value="">Pilih genotipe</option>
                             @foreach ($virus->genotipes as $genotipe)
                                 <option value="{{ $genotipe->id }}">{{ $genotipe->genotipe_code }}</option>
                             @endforeach

@@ -16,7 +16,6 @@ interface SampleInterface
 
     // Advanced Search
     public function getAttributes();
-
     public function advancedSearch($data);
 
     // Sequence
@@ -29,4 +28,6 @@ interface SampleInterface
     public function getAllGroupByVirus();
 
     public function getSampleVirusByGen($name);
+
+    public function getByAuthorByVirusId($id);
 }

@@ -12,13 +12,73 @@
         <div href="#" class="rounded-t-xl bg-blue-700 text-white py-3 px-6 font-semibold">
             Daftar Sitasi
         </div>
+        <!-- Cari Sitasi -->
+        <form action="{{ route('listCitation') }}" method="POST" class="px-6 py-8">
+            @csrf
+            <input type="hidden" name="virus_id" value="{{ $virus->id }}" />
+            <div class="grid lg:grid-cols-5 gap-4 items-center">
+                <div>
+                    <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Tahun
+                    </label>
+                    <select id="year" name="year"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
+                        <option selected value="">Pilih tahun</option>
+                        @foreach ($years as $year)
+                            <option value="{{ $year }}">{{ $year }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label for="province" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Provinsi
+                    </label>
+                    <select id="province" name="province"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
+                        <option selected value="">Pilih provinsi</option>
+                        @foreach ($provinces as $province)
+                            <option value="{{ $province->id }}">{{ $province->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label for="author" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Penulis
+                    </label>
+                    <select id="author" name="author"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
+                        <option selected value="">Pilih penulis</option>
+                        @foreach ($authors as $key => $val)
+                            <option value="{{ $val['author']['id'] }}">{{ $val['author']['name'] }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label for="genotipe" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Genotipe
+                    </label>
+                    <select id="genotipe" name="genotipe"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
+                        <option selected value="">Pilih genotipe</option>
+                        @foreach ($virus->genotipes as $genotipe)
+                            <option value="{{ $genotipe->id }}">{{ $genotipe->genotipe_code }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <button type="submit"
+                        class="text-white mt-7 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-normal rounded-lg text-sm px-9 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-full">Cari
+                        Sitasi</button>
+                </div>
+            </div>
+        </form>
         <div class="h-[30em] overflow-y-scroll" style="scrollbar-width: thin">
             <form action="{{ route('downloadFasta') }}" method="get">
                 <div class="dt-responsive table-responsive">
                     <table id="citationTable" class="table w-fit">
                         <thead class="hidden">
                             <tr>
-                                <th></th>
+                                {{-- <th></th> --}}
                                 <th>No</th>
                                 <th>Judul</th>
                             </tr>
@@ -26,16 +86,16 @@
                         <tbody>
                             @foreach ($listCitations as $item)
                                 <tr>
-                                    <td>
+                                    {{-- <td>
                                         <input class="form-check-input" type="checkbox" id="id_fasta" name="fasta[]"
                                             value="{{ $item['id_citation'] }}" class="id_fasta">
-                                    </td>
+                                    </td> --}}
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
                                         <div>
                                             <div>{{ $item['user'] }}</div>
                                             <div><a href="{{ route('detailCitation', $item['id_citation']) }}"
-                                                    class="text-blue-500">{{ $item['title'] }}</a></div>
+                                                    class="text-blue-500">{{ $item['citation'] }}</a></div>
                                             <div>{{ $item['province'] . ',' . $item['regency'] }}</div>
                                             <div class="text-sm">
                                                 @if (isset($item['author']))
@@ -59,10 +119,10 @@
                 </div>
             </form>
         </div>
-        <div class="p-6">
+        {{-- <div class="p-6">
             <button class="download" id="download" type="submit" class="hover:text-blue-800">Download
                 selected</button>
-        </div>
+        </div> --}}
     </div>
     @push('js-internal')
         <!-- Datatable -->
@@ -81,6 +141,7 @@
             $(document).ready(function() {
                 $('#citationTable').DataTable({
                     processing: true,
+                    responsive: true,
                     "drawCallback": function(settings) {
                         $('#citationTable thead').remove()
                         // $('#citationTable_filter').remove()
@@ -99,6 +160,27 @@
                     return false;
                 }
             });
+
+            // check if there's request and select the option
+            var year = "{{ $request->year }}";
+            var province = "{{ $request->province }}";
+            var author = "{{ $request->author }}";
+            var genotipe = "{{ $request->genotipe }}";
+            if (year != '') {
+                $('#year').val(year);
+            }
+
+            if (province != '') {
+                $('#province').val(province);
+            }
+
+            if (author != '') {
+                $('#author').val(author);
+            }
+
+            if (genotipe != '') {
+                $('#genotipe').val(genotipe);
+            }
         </script>
     @endpush
 </x-guest-layout>
