@@ -70,59 +70,16 @@ class FrontendRepository implements FrontendInterface
 
     public function listCitations($request)
     {
-        // get data from filtering
-
-        // one citation has many samples
-        // $data =  $this->citation->with(['author', 'sampleCitation'])
-        //     ->whereHas('sample', function ($q) use ($request) {
-        //         $q->where('viruses_id', $request['virus_id'])
-        //             ->Orwhere('sequence_data', 'like', '%' . $request['q'] . '%')
-        //             ->OrWhere('gene_name', 'like', '%' . $request['q'] . '%')
-        //             ->whereHas('virus', function ($r) use ($request) {
-        //                 $r->Orwhere('name', '=', $request['q']);
-        //             })
-        //             ->whereHas('genotipe', function ($r) use ($request) {
-        //                 $r->Orwhere('genotipe_code', '=', $request['q']);
-        //             });
-        //     })
-        //     ->wherehas('author', function ($q) use ($request) {
-        //         $q->Orwhere('name', 'like', '%' . $request['q'] . '%');
-        //     })
-        //     ->get();
-
-        // return $data->map(function ($item, $key) {
-        //     return [
-        //         'id_citation' => $item['id'],
-        //         'user' => $this->user->getName($item['users_id']),
-        //         'title' => $item->title,
-        //         'province' => $this->getProvince($item->sample[0]->province_id),
-        //         'regency' => $this->getRegency($item->sample[0]->regency_id),
-        //         'author' => $this->getAuthor($item->author_id),
-        //         'monthYear' => $this->getMonthYear($item->sample[0]->pickup_date),
-        //         // accession ncbi from sample code
-        //         'accession_ncbi' => $item->sample[0]->sample_code,
-        //         // accession indagi from virus code
-        //         'accession_indagi' => $item->sample[0]->virus_code,
-        //     ];
-        // });
-        // return $request;
         $data = DB::table('samples')
             ->select('samples.id as id', 'samples.province_id', 'samples.regency_id', 'samples.sequence_data', 'samples.pickup_date', 'samples.virus_code', 'samples.sample_code', 'users.name', 'citations.title', 'citations.author_id', 'samples.viruses_id')
             ->join('citations', 'citations.id', '=', 'samples.citation_id')
-            ->join(
-                'users',
-                'users.id',
-                '=',
-                'samples.created_by'
-            )
+            ->join('users', 'users.id', '=', 'samples.created_by')
             ->join('viruses', 'viruses.id', '=', 'samples.viruses_id')
             ->join('genotipes', 'genotipes.id', '=', 'samples.genotipes_id')
             ->where('samples.viruses_id', $request['virus_id'])
-            ->Orwhere('genotipes.genotipe_code', $request['q'])
-            ->orWhere('samples.sequence_data', 'LIKE', '%'.$request['q'].'%')
+            ->orWhere('genotipes.genotipe_code', $request['genotipe'])
             ->get();
 
-        // return $data;
         return $data->map(function ($item, $key) {
             return [
                 'id_citation' => $item->id,
@@ -133,7 +90,7 @@ class FrontendRepository implements FrontendInterface
                 'author' => $this->getAuthor($item->author_id),
                 'monthYear' => $this->getMonthYear($item->pickup_date),
                 'accession_ncbi' => $item->sample_code,
-                'accession_indagi' => substr($item->virus_code, 0, 3).date('Ym', strtotime($item->pickup_date)).$item->id,
+                'accession_indagi' => substr($item->virus_code, 0, 3) . date('Ym', strtotime($item->pickup_date)) . $item->id,
             ];
         });
     }
@@ -241,7 +198,7 @@ class FrontendRepository implements FrontendInterface
         $month = [1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
         $split = explode('-', $date);
 
-        return $month[(int) $split[1]].' '.$split[0];
+        return $month[(int) $split[1]] . ' ' . $split[0];
     }
 
     public function getVirusByName($name)
