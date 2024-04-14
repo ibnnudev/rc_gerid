@@ -45,8 +45,9 @@
                     </div>
                     <div>
                         <div class="text-center text-3xl font-semibold text-gray-700 py-6">
-                            1.000
-                            <p class="text-xs text-gray-500">Periode tahun 2023</p>
+                            {{ number_format($currentTotalSample, 0, ',', '.') }}
+                            <p class="text-xs text-gray-500">Periode tahun {{ $rangeSample->keys()->first() }} -
+                                {{ $rangeSample->keys()->last() }}</p>
                         </div>
                     </div>
                 </div>
@@ -56,7 +57,7 @@
                     </div>
                     <div>
                         <div class="text-center text-3xl font-semibold text-gray-700 py-6">
-                            1.000
+                            {{ number_format($totalCitation, 0, ',', '.') }}
                             <p class="text-xs text-gray-500">Kontribusi Peneliti</p>
                         </div>
                     </div>
@@ -67,8 +68,7 @@
                     Photogenic Tree
                 </div>
                 <div class="p-6">
-                    {{-- TODO: make it dynamic --}}
-                    <a href="/">
+                    <a href="http://phylo.indagi.rc-gerid.unair.ac.id">
                         <img src="{{ asset('assets/application/phylo.png') }}" class="w-full h-32" alt="">
                     </a>
                 </div>

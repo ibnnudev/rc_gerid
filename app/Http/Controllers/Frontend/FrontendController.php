@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\AuthorInterface;
+use App\Interfaces\CitationInterface;
 use App\Interfaces\FrontendInterface;
 use App\Interfaces\GenotipeInterface;
 use App\Interfaces\SampleInterface;
@@ -14,6 +15,7 @@ use App\Models\Sample;
 use App\Properties\Months;
 use App\Properties\Years;
 use App\Repositories\HivCaseRepository;
+use Carbon\Carbon;
 // use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,8 +32,9 @@ class FrontendController extends Controller
     private $sample;
     private $author;
     private $genotipe;
+    private $citation;
 
-    public function __construct(FrontendInterface $frontend, HivCaseRepository $hivCases, VirusInterface $virus, SampleInterface $sample, AuthorInterface $author, GenotipeInterface $genotipe)
+    public function __construct(FrontendInterface $frontend, HivCaseRepository $hivCases, VirusInterface $virus, SampleInterface $sample, AuthorInterface $author, GenotipeInterface $genotipe, CitationInterface $citation)
     {
         $this->frontend = $frontend;
         $this->hivCases = $hivCases;
@@ -39,14 +42,25 @@ class FrontendController extends Controller
         $this->sample = $sample;
         $this->author = $author;
         $this->genotipe = $genotipe;
+        $this->citation = $citation;
     }
 
     public function home()
     {
         $sampleGroupByVirus = $this->sample->getAllGroupByVirus();
+        $currentTotalSample = $this->sample->get()->count();
+        $rangeSample = $this->sample->get()->groupBy(function ($val) {
+            return Carbon::parse($val->pickup_date)->format('Y');
+        })->sortBy(function ($items, $key) {
+            return $key;
+        });
+        $totalCitation = $this->citation->get()->count();
 
         return view('frontend.home', [
             'sampleGroupByVirus' => $sampleGroupByVirus,
+            'currentTotalSample' => $currentTotalSample,
+            'rangeSample' => $rangeSample,
+            'totalCitation' => $totalCitation,
         ]);
     }
 
