@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\TransmissionController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Admin\VirusController;
 use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\SlideController;
 use Illuminate\Support\Facades\Route;
 
 // Frontend
@@ -31,11 +32,13 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
-
     // Dashboard
     Route::post('/filter-visitor', [DashboardController::class, 'filterVisitor'])->name('admin.dashboard.filter-visitor');
     Route::post('/filter-sample', [DashboardController::class, 'filterSample'])->name('admin.dashboard.filter-sample');
     Route::get('/', DashboardController::class)->name('admin.dashboard');
+
+    // Slide
+    Route::resource('slide', SlideController::class, ['as' => 'admin']);
 
     // Bank Data
     Route::post('bank/recovery-by-file-code', [BankController::class, 'recoveryByFileCode'])->name('admin.bank.recovery-by-file-code');
@@ -97,4 +100,4 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::resource('profile', ProfileController::class, ['as' => 'admin'])->only(['index', 'update']);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

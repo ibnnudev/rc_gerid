@@ -14,8 +14,8 @@
     <div class="h-full px-4 py-8 overflow-y-auto bg-white">
         {{-- Logo --}}
         <a href="#" class="flex items-center mb-4">
-            <img src="{{ asset('assets/application/logo.jpeg') }}" class="mr-3 object-contain"
-                alt="logo" class="mix-blend-multiply" />
+            <img src="{{ asset('assets/application/logo.jpeg') }}" class="mr-3 object-contain" alt="logo"
+                class="mix-blend-multiply" />
         </a>
         <ul class="space-y-3">
             <x-sidebar-menu name="Dashboard" icon="fas fa-home" route="{{ route('admin.dashboard') }}"
@@ -106,6 +106,9 @@
 
             <x-sidebar-menu name="Pengaturan" icon="fas fa-cog" route="{{ route('admin.profile.index') }}"
                 active="{{ request()->routeIs('admin.profile.*') }}" />
+
+            <x-sidebar-menu name="Slide" icon="fas fa-images" route="{{ route('admin.slide.index') }}"
+                active="{{ request()->routeIs('admin.slide.*') }}" />
 
             {{-- logout --}}
             <li>

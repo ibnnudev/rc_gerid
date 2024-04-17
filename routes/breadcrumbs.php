@@ -1,5 +1,6 @@
 <?php
 
+use App\View\Components\Breadcrumb;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
@@ -261,4 +262,28 @@ Breadcrumbs::for('user-management.edit', function (BreadcrumbTrail $trail, $user
 Breadcrumbs::for('profile', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
     $trail->push('Pengaturan', route('admin.profile.index'));
+});
+
+// Slide
+Breadcrumbs::for('slide', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Slide', route('admin.slide.index'));
+});
+
+// Slide > Create
+Breadcrumbs::for('slide.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('slide');
+    $trail->push('Tambah Slide', route('admin.slide.create'));
+});
+
+// Slide > Edit
+Breadcrumbs::for('slide.edit', function (BreadcrumbTrail $trail, $slide) {
+    $trail->parent('slide', $slide->title);
+    $trail->push('Edit', route('admin.slide.edit', $slide->id));
+});
+
+// Slide > Show
+Breadcrumbs::for('slide.show', function (BreadcrumbTrail $trail, $slide) {
+    $trail->parent('slide', $slide->title);
+    $trail->push('Detail', route('admin.slide.show', $slide->id));
 });

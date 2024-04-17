@@ -336,4 +336,9 @@ class SampleRepository implements SampleInterface
 
         return $data;
     }
+
+    public function getByVirusId($id)
+    {
+        return $this->sample->with('virus', 'genotipe', 'province')->where('viruses_id', $id)->get();
+    }
 }

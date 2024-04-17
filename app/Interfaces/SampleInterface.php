@@ -30,4 +30,6 @@ interface SampleInterface
     public function getSampleVirusByGen($name);
 
     public function getByAuthorByVirusId($id);
+
+    public function getByVirusId($id);
 }

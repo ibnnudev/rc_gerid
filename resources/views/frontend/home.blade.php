@@ -1,4 +1,7 @@
 <x-guest-layout>
+    @push('css-internal')
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    @endpush
     <div class="grid grid-cols-12 gap-6">
         <div class="col-span-8">
             <div class="bg-white border border-gray-200 rounded-xl shadow h-full">
@@ -6,34 +9,32 @@
                     Indonesian Database For Genomic Information
                 </div>
                 <div class="px-6 py-8">
-                    <swiper-container>
-                        <swiper-slide>
-                            <div class="grid grid-cols-12">
-                                <div class="col-span-8">
-                                    <h1 class="font-semibold text-sm">RESEARCH CENTER ON GLOBAL EMERGING AND
-                                        RE-EMERGING
-                                        INFECTIOUS DISEASE, INSTITUTE OF TROPICAL DISEASE, UNIVERSITAS AIRLANGGA</h1>
-                                    <div class="space-y-3 text-gray-600 text-xs mt-10">
-                                        <p class="leading-5">
-                                            Indonesia Database For Genomic Information (INDAGI) adalah aplikasi website
-                                            yang dikembangkan oleh Research Center on Global Emerging and Re-emerging
-                                            Infectious Diseases (RC-GERID) Institute of Tropical Disease (ITD)
-                                            Universitas Airlangga, Surabaya.
-                                        </p>
-                                        <p class="leading-5">
-                                            Indonesia dengan tujuan untuk mengakomodasi informasi sekuen dari patogen
-                                            penyebab penyakit infeksi emerging dan re-emerging khususnya isolat yang
-                                            didapatkan di Indonesia, antara lain virus HIV, Hepatitis B dan C, Dengue,
-                                            Influenza, Rotavirus dan Norovirus
-                                        </p>
+                    <div class="swiper h-full">
+                        <div class="swiper-wrapper">
+                            @forelse ($slides as $slide)
+                                <div class="swiper-slide">
+                                    <div class="grid grid-cols-12">
+                                        <div class="col-span-8">
+                                            <h1 class="font-semibold text-sm">
+                                                {{ $slide->title }}
+                                            </h1>
+                                            <div class="space-y-3 text-gray-600 text-xs mt-10">
+                                                {!! html_entity_decode($slide->content) !!}
+                                            </div>
+                                        </div>
+                                        <div class="col-span-4">
+                                            <img src="{{ asset('storage/slides/' . $slide->image) }}" alt="">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-span-4">
-                                    <img src="{{ asset('assets/application/indagi.png') }}" alt="">
+                            @empty
+                                <div class="flex justify-center items-center">
+                                    <p class="text-gray-500">Slide belum tersedia</p>
                                 </div>
-                            </div>
-                        </swiper-slide>
-                    </swiper-container>
+                            @endforelse
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,6 +96,23 @@
     </div>
 
     @push('js-internal')
-        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        <script>
+            // auto slide
+            const swiper = new Swiper('.swiper', {
+                slidesPerView: 1,
+                spaceBetween: 10,
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                    position: 'bottom',
+                },
+            })
+        </script>
     @endpush
 </x-guest-layout>

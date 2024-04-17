@@ -21,11 +21,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(\App\Interfaces\CitationInterface::class, \App\Repositories\CitationRepository::class);
         $this->app->bind(\App\Interfaces\FrontendInterface::class, \App\Repositories\FrontendRepository::class);
         $this->app->bind(\App\Interfaces\ImportRequestInterface::class, \App\Repositories\ImportRequestRepository::class);
+        $this->app->bind(\App\Interfaces\SlideInterface::class, \App\Repositories\SlideRepository::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         ImportRequest::observe(ImportRequestObserver::class);
