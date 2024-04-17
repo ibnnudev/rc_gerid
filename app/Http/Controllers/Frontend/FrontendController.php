@@ -96,22 +96,25 @@ class FrontendController extends Controller
             $stdOne                = new stdClass();
             $stdOne->province_id   = $province->province_id;
             $stdOne->province_name = $province->province->name;
-            $stdOne->potensi       = Sample::where('viruses_id', $request->id)
-                ->where('pickup_date', Carbon::parse($request->year . '-01-01'))
+            $stdOne->totalSample = Sample::where('viruses_id', $request->id)
+                // ->where('pickup_date', Carbon::parse($request->year . '-01-01'))
                 ->where('province_id', $province->province_id)
-                ->count() > 50 ? 'Tinggi' : 'Rendah';
+                ->get();
+            $stdOne->potensi       = $stdOne->totalSample->count() > 50 ? 'Tinggi' : 'Rendah';
             $samplesPerMonth[] = $stdOne;
+            // dd($stdOne);
             foreach ($genotipes as $indexGenotipe => $genotipe) {
                 $stdTwo              = new stdClass();
                 $stdTwo->genotipe    = $genotipe->genotipe_code;
                 $stdTwo->genotipe_id = $genotipe->id;
                 $stdTwo->jumlah      = Sample::with('genotipe')->where('viruses_id', $request->id)
-                    ->where('pickup_date', Carbon::parse($request->year . '-01-01'))
+                    // ->where('pickup_date', Carbon::parse($request->year . '-01-01'))
                     ->where('genotipes_id', $genotipe->id)
                     ->where('province_id', $province->province_id)
                     ->count();
                 $stdOne->genotipes[] = $stdTwo;
             }
+            // dd($stdOne);
         }
 
         return $samplesPerMonth;

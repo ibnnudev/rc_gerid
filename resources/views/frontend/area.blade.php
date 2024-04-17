@@ -511,8 +511,8 @@
                         url: "{{ route('getGrouping') }}",
                         data: {
                             id: virus.id,
-                            year: $("#map-year").val(),
-                            province: $("#map-province").val()
+                            // year: $("#map-year").val(),
+                            // province: $("#map-province").val()
                         }
                     }).done(function(result) {
                         getPotensi(result);
