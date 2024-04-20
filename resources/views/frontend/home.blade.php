@@ -2,8 +2,8 @@
     @push('css-internal')
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     @endpush
-    <div class="grid grid-cols-12 gap-6">
-        <div class="col-span-8">
+    <div class="grid lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-8">
             <div class="bg-white border border-gray-200 rounded-xl shadow h-full">
                 <div href="#" class="rounded-t-xl bg-blue-700 text-white py-3 px-6 font-semibold">
                     Indonesian Database For Genomic Information
@@ -13,7 +13,7 @@
                         <div class="swiper-wrapper">
                             @forelse ($slides as $slide)
                                 <div class="swiper-slide">
-                                    <div class="grid grid-cols-12">
+                                    <div class="grid grid-cols-1 md:grid-cols-12">
                                         <div class="col-span-8">
                                             <h1 class="font-semibold text-sm">
                                                 {{ $slide->title }}
@@ -38,8 +38,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-span-4 space-y-4">
-            <div class="grid grid-cols-2 gap-4">
+        <div class="lg:col-span-4 space-y-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div class="bg-white border border-gray-200 rounded-xl shadow">
                     <div href="#" class="rounded-t-xl bg-blue-200 text-gray-700 py-3 px-6 font-medium text-sm">
                         Jumlah Sekuen
@@ -70,14 +70,15 @@
                 </div>
                 <div class="p-6">
                     <a href="http://phylo.indagi.rc-gerid.unair.ac.id">
-                        <img src="{{ asset('assets/application/phylo.png') }}" class="w-full h-32" alt="">
+                        <img src="{{ asset('assets/application/phylo.png') }}" class="w-full h-32 object-contain"
+                            alt="">
                     </a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-6 gap-6 mt-5">
+    <div class="grid lg:grid-cols-6 gap-6 mt-5">
         @foreach ($sampleGroupByVirus as $data)
             <div class="bg-white border border-gray-200 rounded-xl shadow h-full">
                 <div href="#" class="rounded-t-xl bg-blue-700 text-white py-3 px-3 text-sm font-semibold">

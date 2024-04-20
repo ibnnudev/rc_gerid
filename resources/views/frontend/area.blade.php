@@ -4,7 +4,7 @@
             Detail Informasi ({{ $virus->name }})
         </div>
         <div class="px-6 py-8">
-            <form action="{{ route('listCitation') }}" method="POST" class="px-6 py-8">
+            <form action="{{ route('listCitation') }}" method="POST" class="py-8">
                 @csrf
                 <input type="hidden" name="virus_id" value="{{ $virus->id }}" />
                 <div class="grid lg:grid-cols-5 gap-4 items-center">
@@ -64,25 +64,26 @@
                 </div>
             </form>
             <!-- Konten -->
-            <div class="grid lg:grid-cols-12 gap-6 mt-8">
-                <div class="col-span-8">
+            <div class="flex flex-wrap lg:grid grid-cols-1 lg:grid-cols-12 gap-6 mt-8">
+                <div class="lg:col-span-8 w-fit">
                     <h1 class="font-semibold">{{ $virus->name }}</h1>
-                    <div class="mt-5 overflow-y-auto h-80 text-sm leading-6" style="scrollbar-width: thin;">
-                        <p>
-                            {!! htmlspecialchars_decode($virus->description) !!}
-                        </p>
+                    <div class="mt-5 overflow-y-auto max-h-80 text-sm leading-6 w-full sm:w-fit"
+                        style="scrollbar-width: thin;">
+                        <div class="hidden md:block">
+                            {!! html_entity_decode($virus->description) !!}
+                        </div>
                     </div>
                 </div>
-                <div class="col-span-4 justify-center lg:justify-start">
+                <div class="lg:col-span-4 justify-center lg:justify-start">
                     <img src="{{ asset('storage/virus/' . $virus->image) }}" alt="{{ $virus->name }}"
-                        class="w-full h-64 object-contain rounded-lg">
+                        class="w-full h-40 lg:h-64 object-contain rounded-lg">
                 </div>
             </div>
             <!-- Map & Chart -->
             <div class="mt-8">
                 <h1 class="font-semibold">Visualisasi</h1>
                 <div class="grid lg:grid-cols-2 gap-6 mt-8">
-                    <div class="map-form">
+                    <div class="map-form h-80">
                         <div class="flex items-center gap-4 mb-4 hidden">
                             <select id="map-province" name="map-province"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
@@ -112,20 +113,19 @@
                         <div id="map"></div>
                     </div>
                     <div>
-                        <div class="flex justify-between items-center">
-                            <h3 class="font-semibold text-sm">Persebaran Virus {{ $virus->name }} berdasarkan Gen</h3>
-                            <div>
-                                <div>
-                                    <select id="groupChartYear" name="groupChartYear"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
-                                        @foreach ($years as $year)
-                                            <option value="{{ $year }}"
-                                                {{ $year == $lastYearSample ? 'selected' : '' }}>
-                                                {{ $year }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                        <div class="space-y-4 flex flex-col md:flex-row md:justify-between items-center">
+                            <h3 class="font-semibold text-sm">Persebaran Virus {{ $virus->name }}
+                                berdasarkan Gen</h3>
+                            <div class="w-full md:w-fit">
+                                <select id="groupChartYear" name="groupChartYear"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
+                                    @foreach ($years as $year)
+                                        <option value="{{ $year }}"
+                                            {{ $year == $lastYearSample ? 'selected' : '' }}>
+                                            {{ $year }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div style="height: 300px" class="relative flex items-center justify-center h-full"
@@ -137,9 +137,9 @@
                     </div>
                 </div>
                 <div class="mt-24">
-                    <div class="flex justify-between items-center">
+                    <div class="flex flex-col md:flex-row justify-between items-center">
                         <h3 class="font-semibold">Persebaran Virus {{ $virus->name }} berdasarkan Gen</h3>
-                        <div class="flex items-center gap-4">
+                        <div class="space-y-4 md:flex items-end gap-4 w-full">
                             <select id="provincy" name="provincy"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
                                 @foreach ($provinces as $province)
@@ -160,8 +160,7 @@
                             </select>
                             <div>
                                 <button type="button" id="renderGroupChart"
-                                    class="inline-flex items-center ml-2 px-4 py-2 text-white bg-blue-700  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    <span class="sr-only">Search</span>
+                                    class="inline-flex items-center md:ml-2 px-4 py-2 text-white bg-blue-700  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full justify-center md:w-fit dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     Filter
                                 </button>
                             </div>
@@ -511,8 +510,6 @@
                         url: "{{ route('getGrouping') }}",
                         data: {
                             id: virus.id,
-                            // year: $("#map-year").val(),
-                            // province: $("#map-province").val()
                         }
                     }).done(function(result) {
                         getPotensi(result);

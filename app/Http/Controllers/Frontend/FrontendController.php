@@ -152,7 +152,7 @@ class FrontendController extends Controller
             $fasta[$i] = '[<span>' . (60 * $i + 1) . '</span>] ' . "\t\t" . $fasta[$i];
         }
         for ($i = 0; $i < count($fasta); $i++) {
-            $fasta[$i] = '<pre class="w-fit">' . $fasta[$i] . '</pre>';
+            $fasta[$i] = '<pre>' . $fasta[$i] . '</pre>';
         }
         $fasta[0] = str_replace('<br>', '', $fasta[0]);
         $fasta    = implode('', $fasta);
