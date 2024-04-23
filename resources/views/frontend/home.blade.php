@@ -18,7 +18,7 @@
                                             <h1 class="font-semibold text-sm">
                                                 {{ $slide->title }}
                                             </h1>
-                                            <div class="space-y-3 text-gray-600 text-xs mt-10  overflow-y-auto h-[24em]"
+                                            <div class="space-y-3 text-gray-600 text-xs mt-10  overflow-y-auto h-[17em]"
                                                 style="scrollbar-width: thin;">
                                                 {!! html_entity_decode($slide->content) !!}
                                             </div>
