@@ -9,21 +9,23 @@
                     Indonesian Database For Genomic Information
                 </div>
                 <div class="px-6 py-8">
-                    <div class="swiper h-full">
+                    <div class="swiper h-full w-[300px] md:w-[650px] lg:w-full">
                         <div class="swiper-wrapper">
                             @forelse ($slides as $slide)
                                 <div class="swiper-slide">
-                                    <div class="grid grid-cols-1 md:grid-cols-12">
+                                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
                                         <div class="col-span-8">
                                             <h1 class="font-semibold text-sm">
                                                 {{ $slide->title }}
                                             </h1>
-                                            <div class="space-y-3 text-gray-600 text-xs mt-10">
+                                            <div class="space-y-3 text-gray-600 text-xs mt-10  overflow-y-auto h-[24em]"
+                                                style="scrollbar-width: thin;">
                                                 {!! html_entity_decode($slide->content) !!}
                                             </div>
                                         </div>
-                                        <div class="col-span-4">
-                                            <img src="{{ asset('storage/slides/' . $slide->image) }}" alt="">
+                                        <div class="col-span-4 flex justify-end items-start">
+                                            <img src="{{ asset('storage/slides/' . $slide->image) }}" alt=""
+                                                height="200" width="200" class="object-contain rounded-lg">
                                         </div>
                                     </div>
                                 </div>
@@ -33,7 +35,7 @@
                                 </div>
                             @endforelse
                         </div>
-                        <div class="swiper-pagination"></div>
+                        <div class="swiper-pagination justify-end flex"></div>
                     </div>
                 </div>
             </div>
@@ -111,7 +113,9 @@
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,
-                    position: 'bottom',
+                    renderBullet: function(index, className) {
+                        return '<span class="' + className + '"></span>';
+                    },
                 },
             })
         </script>
