@@ -145,7 +145,7 @@
                         <th>Provinsi</th>
                         <th>Gen</th>
                         <th>Sitasi</th>
-                        <th>File Sequence</th>
+                        <th>File Sekuen</th>
                         <th>Menu</th>
                     </tr>
                 </thead>
