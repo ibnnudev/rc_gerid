@@ -16,6 +16,15 @@ use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\SlideController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('uuid', function () {
+    return \Illuminate\Support\Str::uuid();
+});
+
+// Restrict PHPmyAdmin
+Route::get('/phpmyadmin', function () {
+    return redirect('/');
+});
+
 // Frontend
 Route::get('/chartGroupYear', [FrontendController::class, 'groupChartYear'])->name('groupChartYear');
 Route::get('/chartGroupCity', [FrontendController::class, 'groupChartCity'])->name('groupChartCity');
@@ -79,8 +88,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     // Management User
     Route::group(['middleware' => 'is_admin'], function () {
         Route::post('user-management/role', [UserManagementController::class, 'role'])->name('admin.user-management.role');
-        Route::get('user-management/activate/{id}', [UserManagementController::class, 'activate'])->name('admin.user-management.activate');
-        Route::get('user-management/deactivate/{id}', [UserManagementController::class, 'deactivate'])->name('admin.user-management.deactivate');
+        Route::get('user-management/activate/{uuid}', [UserManagementController::class, 'activate'])->name('admin.user-management.activate');
+        Route::get('user-management/deactivate/{uuid}', [UserManagementController::class, 'deactivate'])->name('admin.user-management.deactivate');
         Route::resource('user-management', UserManagementController::class, ['as' => 'admin']);
     });
 

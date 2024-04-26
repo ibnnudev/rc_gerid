@@ -45,7 +45,7 @@ class UserManagementController extends Controller
                 })
                 ->addColumn('action', function ($data) {
                     return view('admin.user-management.columns.action', [
-                        'id' => $data->id,
+                        'id' => $data->uuid,
                         'name' => $data->email,
                         'is_active' => $data->is_active,
                     ]);
@@ -168,7 +168,7 @@ class UserManagementController extends Controller
 
     public function activate(string $id)
     {
-        $user = User::find($id);
+        $user = User::where('uuid', $id)->first();
         $user->is_active = 1;
         $user->save();
 
@@ -179,7 +179,7 @@ class UserManagementController extends Controller
 
     public function deactivate(string $id)
     {
-        $user = User::find($id);
+        $user = User::where('uuid', $id)->first();
         $user->is_active = 0;
         $user->save();
 
