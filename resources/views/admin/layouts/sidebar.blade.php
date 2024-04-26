@@ -107,8 +107,10 @@
             <x-sidebar-menu name="Pengaturan" icon="fas fa-cog" route="{{ route('admin.profile.index') }}"
                 active="{{ request()->routeIs('admin.profile.*') }}" />
 
-            <x-sidebar-menu name="Slide" icon="fas fa-images" route="{{ route('admin.slide.index') }}"
-                active="{{ request()->routeIs('admin.slide.*') }}" />
+            @if (auth()->user()->role == 'admin')
+                <x-sidebar-menu name="Slide" icon="fas fa-images" route="{{ route('admin.slide.index') }}"
+                    active="{{ request()->routeIs('admin.slide.*') }}" />
+            @endif
 
             {{-- logout --}}
             <li>
