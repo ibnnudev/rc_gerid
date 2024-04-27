@@ -1,6 +1,5 @@
 <?php
 
-use App\View\Components\Breadcrumb;
 use Diglactic\Breadcrumbs\Breadcrumbs;
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 

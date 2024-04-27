@@ -47,7 +47,7 @@ class SampleRepository implements SampleInterface
         DB::beginTransaction();
 
         if (isset($data['sequence_data_file'])) {
-            $filename = time() . '.' . $data['sequence_data_file']->getClientOriginalExtension();
+            $filename = time().'.'.$data['sequence_data_file']->getClientOriginalExtension();
             $data['sequence_data_file']->storeAs('public/sequence_data', $filename);
 
             $data['sequence_data_file'] = $filename;
@@ -110,7 +110,7 @@ class SampleRepository implements SampleInterface
         $virusName = str_replace(' ', '-', $virus->name);
         $virusName = strtoupper($virusName);
 
-        $code = $virusName . '-' . $count;
+        $code = $virusName.'-'.$count;
 
         return $code;
     }
@@ -125,13 +125,13 @@ class SampleRepository implements SampleInterface
             if (isset($data['sequence_data_file'])) {
                 // delete old file
                 if ($sample->sequence_data_file) {
-                    $oldFile = 'public/sequence_data/' . $sample->sequence_data_file;
+                    $oldFile = 'public/sequence_data/'.$sample->sequence_data_file;
                     if (Storage::exists($oldFile)) {
                         Storage::delete($oldFile);
                     }
                 }
 
-                $filename = time() . '.' . $data['sequence_data_file']->getClientOriginalExtension();
+                $filename = time().'.'.$data['sequence_data_file']->getClientOriginalExtension();
                 $data['sequence_data_file']->storeAs('public/sequence_data', $filename);
 
                 $data['sequence_data_file'] = $filename;
@@ -209,13 +209,13 @@ class SampleRepository implements SampleInterface
     {
         return $this->sample->with('virus', 'genotipe', 'province')
             ->when(isset($data['sample_code']), function ($query) use ($data) {
-                return $query->where('sample_code', 'like', '%' . $data['sample_code'] . '%');
+                return $query->where('sample_code', 'like', '%'.$data['sample_code'].'%');
             })
             ->when(isset($data['virus_id']), function ($query) use ($data) {
                 return $query->where('viruses_id', $data['virus_id']);
             })
             ->when(isset($data['gene_name']), function ($query) use ($data) {
-                return $query->where('gene_name', 'like', '%' . $data['gene_name'] . '%');
+                return $query->where('gene_name', 'like', '%'.$data['gene_name'].'%');
             })
             ->when(isset($data['genotipe_id']), function ($query) use ($data) {
                 return $query->where('genotipes_id', $data['genotipe_id']);
@@ -314,8 +314,8 @@ class SampleRepository implements SampleInterface
         $samplesPerMonth = [];
         foreach ($months as $month) {
             $samplesPerMonth[$month] = $this->sample->where('viruses_id', $virus->id)
-                ->where('pickup_date', '>=', date('Y-m-d', strtotime($currentYear . '-' . array_search($month, $months) + 1 . '-01')))
-                ->where('pickup_date', '<=', date('Y-m-d', strtotime('+30 days', strtotime($currentYear . '-' . array_search($month, $months) + 1 . '-01'))))->get();
+                ->where('pickup_date', '>=', date('Y-m-d', strtotime($currentYear.'-'.array_search($month, $months) + 1 .'-01')))
+                ->where('pickup_date', '<=', date('Y-m-d', strtotime('+30 days', strtotime($currentYear.'-'.array_search($month, $months) + 1 .'-01'))))->get();
         }
 
         // dd($samplesPerMonth);

@@ -327,8 +327,8 @@ class ImportRequestRepository implements ImportRequestInterface
             $this->sample
                 ->withoutGlobalScope(HasActiveScope::class)
                 ->find($id)->update([
-                'is_active' => $status,
-            ]);
+                    'is_active' => $status,
+                ]);
         } catch (\Throwable $th) {
             throw $th;
             DB::rollBack();

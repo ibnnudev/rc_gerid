@@ -28,31 +28,38 @@ use stdClass;
 class FrontendController extends Controller
 {
     private $frontend;
+
     private $hivCases;
+
     private $virus;
+
     private $sample;
+
     private $author;
+
     private $genotipe;
+
     private $citation;
+
     private $slide;
 
     public function __construct(FrontendInterface $frontend, HivCaseRepository $hivCases, VirusInterface $virus, SampleInterface $sample, AuthorInterface $author, GenotipeInterface $genotipe, CitationInterface $citation, SlideInterface $slide)
     {
         $this->frontend = $frontend;
         $this->hivCases = $hivCases;
-        $this->virus    = $virus;
-        $this->sample   = $sample;
-        $this->author   = $author;
+        $this->virus = $virus;
+        $this->sample = $sample;
+        $this->author = $author;
         $this->genotipe = $genotipe;
         $this->citation = $citation;
-        $this->slide    = $slide;
+        $this->slide = $slide;
     }
 
     public function home()
     {
         $sampleGroupByVirus = $this->sample->getAllGroupByVirus();
         $currentTotalSample = $this->sample->get()->count();
-        $rangeSample        = $this->sample->get()->groupBy(function ($val) {
+        $rangeSample = $this->sample->get()->groupBy(function ($val) {
             return Carbon::parse($val->pickup_date)->format('Y');
         })->sortBy(function ($items, $key) {
             return $key;
@@ -62,45 +69,46 @@ class FrontendController extends Controller
         return view('frontend.home', [
             'sampleGroupByVirus' => $sampleGroupByVirus,
             'currentTotalSample' => $currentTotalSample,
-            'rangeSample'        => $rangeSample,
-            'totalCitation'      => $totalCitation,
-            'slides'             => $this->slide->get()
+            'rangeSample' => $rangeSample,
+            'totalCitation' => $totalCitation,
+            'slides' => $this->slide->get(),
         ]);
     }
 
     public function detail($name)
     {
         $virusByGen = $this->sample->getSampleVirusByGen($name);
-        $virus      = $this->frontend->getVirusByName($name);
+        $virus = $this->frontend->getVirusByName($name);
         $listYear = Sample::where('viruses_id', $virus->id)->selectRaw('YEAR(pickup_date) as year')->groupBy('year')->get();
         $listProvinces = Sample::where('viruses_id', $virus->id)->with('province')->select('province_id')->groupBy('province_id')->get();
         $authors = Sample::where('viruses_id', $virus->id)->with('citation.author')->get()->pluck('citation.author')->flatten()->unique();
+
         //dd($listProvinces);
         return view('frontend.area', [
-            'listYear'        => $listYear,
-            'authors'         => $authors,
-            'listProvinces'   => $listProvinces,
-            'totalGenotipe'    => $this->frontend->getVirusByName($name)->genotipes->count(),
-            'virus'            => $virus,
-            'provinces'        => Province::all(),
-            'years'            => Years::getYears(),
-            'lastYearSample'   => $this->getLastYearSample($virus->id),
+            'listYear' => $listYear,
+            'authors' => $authors,
+            'listProvinces' => $listProvinces,
+            'totalGenotipe' => $this->frontend->getVirusByName($name)->genotipes->count(),
+            'virus' => $virus,
+            'provinces' => Province::all(),
+            'years' => Years::getYears(),
+            'lastYearSample' => $this->getLastYearSample($virus->id),
             'lastCitySampleId' => $this->getLastCitySample($virus->id),
-            'request'          => null,
-            'genotipes'        => $this->genotipe->get(),
-            'virusByGen'       => $virusByGen,
-            'samples'          => $this->sample->getByVirusId($virus->id),
+            'request' => null,
+            'genotipes' => $this->genotipe->get(),
+            'virusByGen' => $virusByGen,
+            'samples' => $this->sample->getByVirusId($virus->id),
         ]);
     }
 
     public function getGrouping(Request $request)
     {
-        $genotipes       = Genotipe::where('viruses_id', $request->id)->get();
+        $genotipes = Genotipe::where('viruses_id', $request->id)->get();
         $samplesPerMonth = [];
-        $provinces       = Sample::with('province')->select('province_id')->where('viruses_id', $request->id)->groupBy('province_id')->get();
+        $provinces = Sample::with('province')->select('province_id')->where('viruses_id', $request->id)->groupBy('province_id')->get();
         foreach ($provinces as $indexProvince => $province) {
-            $stdOne                = new stdClass();
-            $stdOne->province_id   = $province->province_id;
+            $stdOne = new stdClass();
+            $stdOne->province_id = $province->province_id;
             // if province_id = 0 then continue
             if ($province->province_id == 0) {
                 continue;
@@ -110,14 +118,14 @@ class FrontendController extends Controller
                 // ->where('pickup_date', Carbon::parse($request->year . '-01-01'))
                 ->where('province_id', $province->province_id)
                 ->get();
-            $stdOne->potensi       = $stdOne->totalSample->count() > 50 ? 'Tinggi' : 'Rendah';
+            $stdOne->potensi = $stdOne->totalSample->count() > 50 ? 'Tinggi' : 'Rendah';
             $samplesPerMonth[] = $stdOne;
             // dd($stdOne);
             foreach ($genotipes as $indexGenotipe => $genotipe) {
-                $stdTwo              = new stdClass();
-                $stdTwo->genotipe    = $genotipe->genotipe_code;
+                $stdTwo = new stdClass();
+                $stdTwo->genotipe = $genotipe->genotipe_code;
                 $stdTwo->genotipe_id = $genotipe->id;
-                $stdTwo->jumlah      = Sample::with('genotipe')->where('viruses_id', $request->id)
+                $stdTwo->jumlah = Sample::with('genotipe')->where('viruses_id', $request->id)
                     // ->where('pickup_date', Carbon::parse($request->year . '-01-01'))
                     ->where('genotipes_id', $genotipe->id)
                     ->where('province_id', $province->province_id)
@@ -133,56 +141,57 @@ class FrontendController extends Controller
     public function listCitations(Request $request)
     {
         $virus = $this->frontend->getVirus($request['virus_id']);
+
         return view('frontend.citation.listCitation', [
-            'request'       => $request,
-            'virus'         => $this->frontend->getVirus($request['virus_id']),
+            'request' => $request,
+            'virus' => $this->frontend->getVirus($request['virus_id']),
             'listCitations' => $this->frontend->listCitations($request),
-            'virus'         => $virus,
-            'provinces'     => Province::all(),
-            'years'         => Years::getYears(),
-            'genotipes'     => $this->genotipe->get(),
-            'authors'       => $this->sample->getByAuthorByVirusId($request['virus_id']),
+            'virus' => $virus,
+            'provinces' => Province::all(),
+            'years' => Years::getYears(),
+            'genotipes' => $this->genotipe->get(),
+            'authors' => $this->sample->getByAuthorByVirusId($request['virus_id']),
         ]);
     }
 
     public function detailCitation($id)
     {
-        $sample   = DB::table('samples')->where('id', $id)->first();
-        $virus    = DB::table('viruses')->where('id', $sample->viruses_id)->first();
+        $sample = DB::table('samples')->where('id', $id)->first();
+        $virus = DB::table('viruses')->where('id', $sample->viruses_id)->first();
         $citation = $this->frontend->detailCitation($id);
-        $fasta    = $citation['sequence_data'];
-        $fasta    = wordwrap($fasta, 10, ' ', true);
-        $fasta    = wordwrap($fasta, 70, '<br>', true);
-        $fasta    = '<pre>' . $fasta . '</pre>';
+        $fasta = $citation['sequence_data'];
+        $fasta = wordwrap($fasta, 10, ' ', true);
+        $fasta = wordwrap($fasta, 70, '<br>', true);
+        $fasta = '<pre>'.$fasta.'</pre>';
 
-        $fasta    = explode('<br>', $fasta);
-        $fasta[0] = '[<span>1</span>]' . "\t\t\t" . $fasta[0];
+        $fasta = explode('<br>', $fasta);
+        $fasta[0] = '[<span>1</span>]'."\t\t\t".$fasta[0];
         $fasta[0] = str_replace('<pre>', '', $fasta[0]);
         for ($i = 1; $i < count($fasta); $i++) {
-            $fasta[$i] = '[<span>' . (60 * $i + 1) . '</span>] ' . "\t\t" . $fasta[$i];
+            $fasta[$i] = '[<span>'.(60 * $i + 1).'</span>] '."\t\t".$fasta[$i];
         }
         for ($i = 0; $i < count($fasta); $i++) {
-            $fasta[$i] = '<pre>' . $fasta[$i] . '</pre>';
+            $fasta[$i] = '<pre>'.$fasta[$i].'</pre>';
         }
         $fasta[0] = str_replace('<br>', '', $fasta[0]);
-        $fasta    = implode('', $fasta);
+        $fasta = implode('', $fasta);
 
         return view('frontend.citation.detail', [
-            'request'  => null,
-            'virus'    => $virus,
+            'request' => null,
+            'virus' => $virus,
             'citation' => $citation,
-            'fasta'    => $fasta
+            'fasta' => $fasta,
         ]);
     }
 
     public function detailFasta($id)
     {
         $sample = DB::table('samples')->where('id', $id)->first();
-        $virus  = DB::table('viruses')->where('id', $sample->viruses_id)->first();
+        $virus = DB::table('viruses')->where('id', $sample->viruses_id)->first();
 
         return view('frontend.citation.fasta', [
-            'request'  => null,
-            'virus'    => $virus,
+            'request' => null,
+            'virus' => $virus,
             'citation' => $this->frontend->detailFasta($id),
         ]);
     }
@@ -193,15 +202,15 @@ class FrontendController extends Controller
             $contents = 'Maaf anda belum memilih file';
         } else {
             foreach ($request->fasta as $key => $value) {
-                $arr[$key]['sample_code']   = DB::table('samples')->find($value)->sample_code;
-                $arr[$key]['gene_name']     = DB::table('samples')->find($value)->gene_name;
+                $arr[$key]['sample_code'] = DB::table('samples')->find($value)->sample_code;
+                $arr[$key]['gene_name'] = DB::table('samples')->find($value)->gene_name;
                 $arr[$key]['sequence_data'] = DB::table('samples')->find($value)->sequence_data;
             }
         }
         // return $ke;
         $contents = json_encode($arr);
         $$headers = [
-            'Content-Type'        => 'application/plain',
+            'Content-Type' => 'application/plain',
             'Content-Description' => 'File name',
         ];
 
@@ -210,7 +219,7 @@ class FrontendController extends Controller
 
     public function groupChartYear(Request $request)
     {
-        $months    = Months::getMonths();
+        $months = Months::getMonths();
         $genotipes = Genotipe::where('viruses_id', $request->id)->get();
 
         $samplesPerMonth = [];
@@ -226,8 +235,8 @@ class FrontendController extends Controller
 
             foreach ($months as $month) {
                 $samplesPerMonth[$genotipe->genotipe_code][] = Sample::with('genotipe')->where('viruses_id', $request->id)
-                    ->where('pickup_date', '>=', date('Y-m-d', strtotime($request->year . '-' . array_search($month, $months) + 1 . '-01')))
-                    ->where('pickup_date', '<=', date('Y-m-d', strtotime('+30 days', strtotime($request->year . '-' . array_search($month, $months) + 1 . '-01'))))
+                    ->where('pickup_date', '>=', date('Y-m-d', strtotime($request->year.'-'.array_search($month, $months) + 1 .'-01')))
+                    ->where('pickup_date', '<=', date('Y-m-d', strtotime('+30 days', strtotime($request->year.'-'.array_search($month, $months) + 1 .'-01'))))
                     ->where('genotipes_id', $genotipe->id)
                     ->count();
             }
@@ -249,8 +258,8 @@ class FrontendController extends Controller
                 $samplePerYear[$year][$genotipe->genotipe_code] = [];
                 foreach ($provinces as $province) {
                     $samplePerYear[$year][$genotipe->genotipe_code] = Sample::with('genotipe')->where('viruses_id', $request->id)
-                        ->where('pickup_date', '>=', date('Y-m-d', strtotime($year . '-01-01')))
-                        ->where('pickup_date', '<=', date('Y-m-d', strtotime($year . '-12-31')))
+                        ->where('pickup_date', '>=', date('Y-m-d', strtotime($year.'-01-01')))
+                        ->where('pickup_date', '<=', date('Y-m-d', strtotime($year.'-12-31')))
                         ->where('genotipes_id', $genotipe->id)
                         ->where('province_id', $province->id)
                         ->count();
@@ -264,7 +273,7 @@ class FrontendController extends Controller
     public function getLastYearSample($id)
     {
         $data = DB::table('samples')->selectRaw('YEAR(MAX(pickup_date)) as lastYearSample')->where('viruses_id', $id)->first();
-        if (!empty($data)) {
+        if (! empty($data)) {
             return $data->lastYearSample;
         } else {
             return null;
@@ -274,7 +283,7 @@ class FrontendController extends Controller
     public function getLastCitySample($id)
     {
         $data = DB::table('samples')->select('province_id')->where('viruses_id', $id)->groupBy('province_id')->first();
-        if (!empty($data)) {
+        if (! empty($data)) {
             return $data->province_id;
         } else {
             return null;

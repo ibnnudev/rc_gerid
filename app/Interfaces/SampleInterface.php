@@ -16,6 +16,7 @@ interface SampleInterface
 
     // Advanced Search
     public function getAttributes();
+
     public function advancedSearch($data);
 
     // Sequence

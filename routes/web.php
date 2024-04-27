@@ -43,7 +43,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('/', DashboardController::class)->name('admin.dashboard');
 
     // Slide
-    Route::resource('slide', SlideController::class, ['as' => 'admin'])->middleware('is_admin');
+    Route::resource('slide', SlideController::class, ['as' => 'admin']);
 
     // Bank Data
     Route::post('bank/recovery-by-file-code', [BankController::class, 'recoveryByFileCode'])->name('admin.bank.recovery-by-file-code')->middleware('is_admin');

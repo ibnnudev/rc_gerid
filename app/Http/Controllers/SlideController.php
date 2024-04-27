@@ -3,11 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Interfaces\SlideInterface;
-use App\Models\Slide;
 use Illuminate\Http\Request;
-use Illuminate\Support\Composer;
-
-use function Pest\Laravel\json;
 
 class SlideController extends Controller
 {
@@ -51,13 +47,14 @@ class SlideController extends Controller
         ]);
 
         $this->slide->store($request->except('_token'));
+
         return redirect()->route('admin.slide.index')->with('success', 'Slide berhasil ditambahkan');
     }
 
     public function edit($id)
     {
         return view('admin.slide.edit', [
-            'data' => $this->slide->getById($id)
+            'data' => $this->slide->getById($id),
         ]);
     }
 
@@ -70,12 +67,14 @@ class SlideController extends Controller
         ]);
 
         $this->slide->update($id, $request->except('_token', '_method'));
+
         return redirect()->route('admin.slide.index')->with('success', 'Slide berhasil diubah');
     }
 
     public function destroy($id)
     {
         $this->slide->destroy($id);
+
         return json_encode(true);
     }
 }
