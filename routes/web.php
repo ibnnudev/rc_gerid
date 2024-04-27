@@ -98,7 +98,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('import-request/create-single/{fileCode}', [ImportRequestController::class, 'createSingle'])->name('admin.import-request.create-single');
     Route::post('import-request/import', [ImportRequestController::class, 'import'])->name('admin.import-request.import');
     Route::post('import-request/validation-file', [ImportRequestController::class, 'validationFile'])->name('admin.import-request.validation-file');
-    Route::post('import-request/change-status', [ImportRequestController::class, 'changeStatus'])->name('admin.import-request.change-status')->middleware('is_admin');
+    Route::post('import-request/change-status', [ImportRequestController::class, 'changeStatus'])->name('admin.import-request.change-status')->middleware('admin_and_validator');
     Route::get('import-request/admin', [ImportRequestController::class, 'admin'])->name('admin.import-request.admin')->middleware('admin_and_validator');
     Route::resource('import-request', ImportRequestController::class, ['as' => 'admin']);
 
