@@ -24,6 +24,10 @@ class UserManagementController extends Controller
     {
         $user = User::all();
         $user = $user->sortByDesc('created_at');
+        // filter only active user
+        $user = $user->filter(function ($value, $key) {
+            return $value->is_active == 1;
+        });
         if ($request->wantsJson()) {
             return datatables()
                 ->of($user)
