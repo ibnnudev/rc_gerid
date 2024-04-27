@@ -29,10 +29,12 @@
                         {!! $data->video !!}
                     </div>
                 @endif
-                <div class="mb-4 col-span-2 text-justify">{!! $data->content !!}</div>
+                <div class="mb-4 col-span-2 text-justify">
+                    {!! html_entity_decode($data->description) !!}
+                </div>
                 <div class="md:flex justify-end hidden">
                     <img src="{{ asset('storage/slides/' . $data->image) }}"
-                        class="w-full h-auto md:w-40 md:h-40 lg:w-72 lg:h-72 object-cover rounded-lg overflow-hidden cursor-pointer"
+                        class="w-full h-auto md:w-40 md:h-40 lg:w-72 lg:h-72 object-contain rounded-lg overflow-hidden cursor-pointer"
                         alt="{{ $data->slug }}"
                         onclick="window.open('{{ asset('storage/slides/' . $data->image) }}', '_blank')">
                 </div>
