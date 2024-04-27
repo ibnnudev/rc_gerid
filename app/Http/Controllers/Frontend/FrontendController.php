@@ -10,37 +10,31 @@ use App\Interfaces\GenotipeInterface;
 use App\Interfaces\SampleInterface;
 use App\Interfaces\SlideInterface;
 use App\Interfaces\VirusInterface;
+use App\Jobs\SaveVisitor;
 use App\Models\Genotipe;
 use App\Models\Province;
 use App\Models\Sample;
+use App\Models\User;
+use App\Models\Visitor;
 use App\Properties\Months;
 use App\Properties\Years;
 use App\Repositories\HivCaseRepository;
 use Carbon\Carbon;
-// use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use stdClass;
-
-// use Spatie\FlareClient\Http\Response;
+use Stevebauman\Location\Facades\Location;
 
 class FrontendController extends Controller
 {
     private $frontend;
-
     private $hivCases;
-
     private $virus;
-
     private $sample;
-
     private $author;
-
     private $genotipe;
-
     private $citation;
-
     private $slide;
 
     public function __construct(FrontendInterface $frontend, HivCaseRepository $hivCases, VirusInterface $virus, SampleInterface $sample, AuthorInterface $author, GenotipeInterface $genotipe, CitationInterface $citation, SlideInterface $slide)
@@ -57,6 +51,10 @@ class FrontendController extends Controller
 
     public function home()
     {
+        if ($position = Location::get()) {
+            SaveVisitor::dispatch($position->ip);
+        }
+
         $sampleGroupByVirus = $this->sample->getAllGroupByVirus();
         $currentTotalSample = $this->sample->get()->count();
         $rangeSample = $this->sample->get()->groupBy(function ($val) {
@@ -65,8 +63,20 @@ class FrontendController extends Controller
             return $key;
         });
         $totalCitation = $this->citation->get()->count();
+        $totalUser = User::all()->count();
+        $newUserToday = User::whereDate('created_at', Carbon::today())->count();
+        $visitorByCountry = Visitor::all()->groupBy('country')->map(function ($item, $key) {
+            return count($item);
+        });
+        $totalVisitor = Visitor::all()->count();
+        $newVisitorToday = Visitor::whereDate('created_at', Carbon::today())->count();
 
         return view('frontend.home', [
+            'totalUser' => $totalUser,
+            'newVisitorToday' => $newVisitorToday,
+            'totalVisitor' => $totalVisitor,
+            'visitorByCountry' => $visitorByCountry,
+            'newUserToday' => $newUserToday,
             'sampleGroupByVirus' => $sampleGroupByVirus,
             'currentTotalSample' => $currentTotalSample,
             'rangeSample' => $rangeSample,

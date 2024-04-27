@@ -85,22 +85,65 @@
         </div>
     </div>
 
-    <div class="grid lg:grid-cols-6 gap-6 mt-5">
-        @foreach ($sampleGroupByVirus as $data)
-            <div class="bg-white border border-gray-200 rounded-xl shadow h-full">
-                <div href="#" class="rounded-t-xl bg-blue-700 text-white py-3 px-3 text-sm font-semibold">
-                    {{ $data->name }}
+    <div class="grid lg:grid-cols-3 gap-6 mt-5 ">
+        <div class="grid lg:grid-cols-4 gap-6 col-span-2">
+            @foreach ($sampleGroupByVirus as $data)
+                <div class="bg-white border border-gray-200 rounded-xl shadow h-full">
+                    <div href="#" class="rounded-t-xl bg-blue-700 text-white py-3 px-3 text-sm font-semibold">
+                        {{ $data->name }}
+                    </div>
+                    <div class="text-center p-6">
+                        <p class="text-sm text-gray-600">Total Sekuen</p>
+                        <h1 class="text-xl font-bold">
+                            {{ $data->samples }}
+                        </h1>
+                        <a href="{{ route('detail-virus', $data->name) }}"
+                            class="text-xs text-blue-500 hover:underline font-medium">Selengkapnya</a>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        <div class="grid lg:grid-cols-2 gap-6 h-fit">
+            <div class="bg-white border border-gray-200 rounded-xl shadow h-fit">
+                <div href="#" class="rounded-t-xl bg-blue-200 text-gray-700 py-3 px-3 text-sm font-semibold">
+                    Total Pengguna
                 </div>
                 <div class="text-center p-6">
-                    <p class="text-sm text-gray-600">Total Sekuen</p>
                     <h1 class="text-xl font-bold">
-                        {{ $data->samples }}
+                        {{ $totalUser }}
                     </h1>
-                    <a href="{{ route('detail-virus', $data->name) }}"
-                        class="text-xs text-blue-500 hover:underline font-medium">Selengkapnya</a>
+                    <p class="text-xs">
+                        {{ $newUserToday }} pengguna baru <br>hari ini
+                    </p>
                 </div>
             </div>
-        @endforeach
+            <div class=" border-gray-200 rounded-xl h-fit">
+                <div href="#" class="rounded-t-xl bg-blue-200 text-gray-700 py-3 px-3 text-sm font-semibold">
+                    Total Pengunjung
+                </div>
+                <div class="p-6">
+                    <h1 class="text-xl font-bold text-center">
+                        {{ $totalVisitor }}
+                    </h1>
+                    <div class="mt-2">
+                        <p class="text-xs mb-1">
+                            Berdasarkan negara
+                        </p>
+                        @foreach ($visitorByCountry as $key => $value)
+                            <div class="text-xs text-gray-600 flex space-x-2 items-center">
+                                <img src="https://flagsapi.com/{{ $key }}/flat/64.png"
+                                    class="mr-1 w-auto h-6">
+                                <p>:
+                                    {{ $value }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                    <p class="text-xs mt-2">
+                        {{ $newVisitorToday }} pengunjung baru <br>hari ini
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 
     @push('js-internal')
