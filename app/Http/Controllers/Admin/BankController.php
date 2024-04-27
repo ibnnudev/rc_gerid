@@ -40,7 +40,7 @@ class BankController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->sample->get())
                 ->addColumn('sample_code', function ($sample) {
@@ -106,7 +106,7 @@ class BankController extends Controller
         $year = explode('/', $pickup_date)[1];
 
         // conver to date
-        $pickup_date = date('Y-m-d', strtotime($year.'-'.$month.'-01'));
+        $pickup_date = date('Y-m-d', strtotime($year . '-' . $month . '-01'));
         $request->merge(['pickup_date' => $pickup_date]);
 
         // dd($request->all());
@@ -130,16 +130,16 @@ class BankController extends Controller
         $fasta = $this->sample->find($id)->sequence_data;
         $fasta = wordwrap($fasta, 10, ' ', true);
         $fasta = wordwrap($fasta, 70, '<br>', true);
-        $fasta = '<pre>'.$fasta.'</pre>';
+        $fasta = '<pre>' . $fasta . '</pre>';
 
         $fasta = explode('<br>', $fasta);
-        $fasta[0] = '[<span>1</span>]'."\t\t\t".$fasta[0];
+        $fasta[0] = '[<span>1</span>]' . "\t\t\t" . $fasta[0];
         $fasta[0] = str_replace('<pre>', '', $fasta[0]);
         for ($i = 1; $i < count($fasta); $i++) {
-            $fasta[$i] = '[<span>'.(60 * $i + 1).'</span>] '."\t\t".$fasta[$i];
+            $fasta[$i] = '[<span>' . (60 * $i + 1) . '</span>] ' . "\t\t" . $fasta[$i];
         }
         for ($i = 0; $i < count($fasta); $i++) {
-            $fasta[$i] = '<pre>'.$fasta[$i].'</pre>';
+            $fasta[$i] = '<pre>' . $fasta[$i] . '</pre>';
         }
         $fasta[0] = str_replace('<br>', '', $fasta[0]);
         $fasta = implode('<br>', $fasta);
@@ -178,7 +178,7 @@ class BankController extends Controller
     {
         $months = Months::getMonths();
         $month = array_search($request->pickup_month, $months) + 1;
-        $pickup_date = date('Y-m-d', strtotime($request->pickup_year.'-'.$month.'-01'));
+        $pickup_date = date('Y-m-d', strtotime($request->pickup_year . '-' . $month . '-01'));
 
         $request->merge(['pickup_date' => $pickup_date]);
 
@@ -239,7 +239,7 @@ class BankController extends Controller
         try {
             $file_code = uniqid();
             Excel::import(new SampleImport($file_code), $request->file('import_file'));
-            $filename = $file_code.'.'.$request->file('import_file')->getClientOriginalExtension();
+            $filename = $file_code . '.' . $request->file('import_file')->getClientOriginalExtension();
             $request->file('import_file')->storeAs('public/imported', $filename);
 
             // TODO: save file to table import request and set status as 4 (imported) and set imported_by as current user
@@ -274,7 +274,7 @@ class BankController extends Controller
     public function imported(Request $request)
     {
         if (auth()->user()->role == 'admin') {
-            if ($request->ajax()) {
+            if ($request->wantsJson()) {
                 return datatables()
                     ->of($this->importRequest->imported())
                     ->addColumn('file', function ($data) {
@@ -283,7 +283,7 @@ class BankController extends Controller
                     ->addColumn('file_code', function ($data) {
                         $file_code = $data->file_code;
                         $file_code = substr($file_code, 0, -3);
-                        $file_code = $file_code.'***';
+                        $file_code = $file_code . '***';
 
                         return $file_code;
                     })
@@ -311,7 +311,7 @@ class BankController extends Controller
 
             return view('admin.bank.imported.index');
         } else {
-            if ($request->ajax()) {
+            if ($request->wantsJson()) {
                 return datatables()
                     ->of($this->sample->get()->where('created_by', auth()->user()->id))
                     ->addColumn('sample_code', function ($sample) {
@@ -320,7 +320,7 @@ class BankController extends Controller
                     ->addColumn('file_code', function ($sample) {
                         $file_code = $sample->file_code;
                         $file_code = substr($file_code, 0, -3);
-                        $file_code = $file_code.'***';
+                        $file_code = $file_code . '***';
 
                         return $file_code ?? null;
                     })
@@ -368,12 +368,12 @@ class BankController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Data sekuen pada file '.$request->file_code.' berhasil dihapus',
+                'message' => 'Data sekuen pada file ' . $request->file_code . ' berhasil dihapus',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Data sekuen pada file '.$request->file_code.' gagal dihapus',
+                'message' => 'Data sekuen pada file ' . $request->file_code . ' gagal dihapus',
                 'error' => $th->getMessage(),
             ]);
         }
@@ -386,12 +386,12 @@ class BankController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Data sekuen pada file '.$request->file_code.' berhasil direcovery',
+                'message' => 'Data sekuen pada file ' . $request->file_code . ' berhasil direcovery',
             ]);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Data sekuen pada file '.$request->file_code.' gagal direcovery',
+                'message' => 'Data sekuen pada file ' . $request->file_code . ' gagal direcovery',
                 'error' => $th->getMessage(),
             ]);
         }

@@ -22,7 +22,7 @@ class CitationController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->citation->get())
                 ->addColumn('title', function ($data) {
@@ -103,7 +103,7 @@ class CitationController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => 'required|unique:citations,title,'.$id,
+            'title' => 'required|unique:citations,title,' . $id,
             'author' => 'required',
         ]);
 

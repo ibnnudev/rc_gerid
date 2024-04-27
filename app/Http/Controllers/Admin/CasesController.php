@@ -29,7 +29,7 @@ class CasesController extends Controller
             $cases = $cases->where('year', request('year'));
         }
 
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($cases)
                 ->addColumn('idkd', function ($case) {

@@ -41,7 +41,7 @@ class ImportRequestController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->importRequest->get()->where(
                     'created_by',
@@ -53,7 +53,7 @@ class ImportRequestController extends Controller
                 ->addColumn('file_code', function ($data) {
                     $file_code = $data->file_code;
                     $file_code = substr($file_code, 0, -3);
-                    $file_code = $file_code.'***';
+                    $file_code = $file_code . '***';
 
                     return $file_code;
                 })
@@ -106,7 +106,7 @@ class ImportRequestController extends Controller
     {
         $importRequest = $this->importRequest->find($id);
         $sample = $this->sample->getByFileCode($importRequest->file_code)->where('is_queue', 1);
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($sample)
                 ->addColumn('sample_code', function ($sample) {
@@ -115,7 +115,7 @@ class ImportRequestController extends Controller
                 ->addColumn('file_code', function ($sample) {
                     $file_code = $sample->file_code;
                     $file_code = substr($file_code, 0, -3);
-                    $file_code = $file_code.'***';
+                    $file_code = $file_code . '***';
 
                     return $file_code ?? null;
                 })
@@ -199,7 +199,7 @@ class ImportRequestController extends Controller
 
     public function admin(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of(
                     auth()->user()->role == 'validator'
@@ -215,7 +215,7 @@ class ImportRequestController extends Controller
                 ->addColumn('file_code', function ($data) {
                     $file_code = $data->file_code;
                     $file_code = substr($file_code, 0, -3);
-                    $file_code = $file_code.'***';
+                    $file_code = $file_code . '***';
 
                     return $file_code;
                 })
@@ -310,7 +310,7 @@ class ImportRequestController extends Controller
         $year = explode('/', $pickup_date)[1];
 
         // conver to date
-        $pickup_date = date('Y-m-d', strtotime($year.'-'.$month.'-01'));
+        $pickup_date = date('Y-m-d', strtotime($year . '-' . $month . '-01'));
         $request->merge(['pickup_date' => $pickup_date]);
 
         try {
@@ -356,7 +356,7 @@ class ImportRequestController extends Controller
     {
         $months = Months::getMonths();
         $month = array_search($request->pickup_month, $months) + 1;
-        $pickup_date = date('Y-m-d', strtotime($request->pickup_year.'-'.$month.'-01'));
+        $pickup_date = date('Y-m-d', strtotime($request->pickup_year . '-' . $month . '-01'));
 
         $request->merge(['pickup_date' => $pickup_date]);
 

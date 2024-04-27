@@ -18,7 +18,7 @@ class AuthorController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->author->get())
                 ->addColumn('name', function ($author) {

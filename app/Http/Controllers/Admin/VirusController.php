@@ -21,7 +21,7 @@ class VirusController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->virus->get())
                 ->addColumn('name', function ($virus) {

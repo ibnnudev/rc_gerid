@@ -17,7 +17,7 @@ class SlideController extends Controller
     public function index(Request $request)
     {
         $slides = $this->slide->get();
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($slides)
                 ->addColumn('title', function ($data) {

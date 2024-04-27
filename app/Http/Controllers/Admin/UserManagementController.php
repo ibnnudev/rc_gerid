@@ -24,7 +24,7 @@ class UserManagementController extends Controller
     {
         $user = User::all();
         $user = $user->sortByDesc('created_at');
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($user)
                 ->addColumn('name', function ($data) {

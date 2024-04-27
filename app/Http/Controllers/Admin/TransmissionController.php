@@ -17,7 +17,7 @@ class TransmissionController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
+        if ($request->wantsJson()) {
             return datatables()
                 ->of($this->transmission->get())
                 ->addColumn('name', function ($transmission) {
@@ -85,7 +85,7 @@ class TransmissionController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|unique:transmissions,name,'.$id.',id,is_active,1',
+            'name' => 'required|unique:transmissions,name,' . $id . ',id,is_active,1',
         ]);
 
         try {
