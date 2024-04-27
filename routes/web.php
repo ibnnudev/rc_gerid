@@ -16,10 +16,8 @@ use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\SlideController;
 use Illuminate\Support\Facades\Route;
 
-// Restrict PHPmyAdmin
-Route::get('/phpmyadmin', function () {
-    return redirect('/');
-});
+// Slide
+Route::get('slide/{slug}', [SlideController::class, 'show'])->name('slide.show');
 
 // Frontend
 Route::get('/chartGroupYear', [FrontendController::class, 'groupChartYear'])->name('groupChartYear');

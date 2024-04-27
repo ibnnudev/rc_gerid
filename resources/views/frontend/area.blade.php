@@ -135,8 +135,8 @@
                     </div>
                 </div>
                 <div class="mt-24">
-                    <div class="md:grid grid-cols-3 items-center">
-                        <h3 class="font-semibold col-span-2">Persebaran Virus {{ $virus->name }} berdasarkan Provinsi
+                    <div class="md:grid grid-cols-2 items-center gap-6">
+                        <h3 class="font-semibold">Persebaran Virus {{ $virus->name }} berdasarkan Provinsi
                         </h3>
                         <div class="space-y-4 md:flex items-end gap-4 w-full">
                             <select id="provincy" name="provincy"
@@ -150,15 +150,36 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <!--select id="year-for-city" name="year-for-city"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
-                                @foreach ($years as $year)
-<option value="{{ $year }}"
-                                        {{ $year == $lastYearSample ? 'selected' : '' }}>
-                                        {{ $year }}
-                                    </option>
-@endforeach
-                            </!--select-->
+                            <div class="w-full">
+                                <label for="start-year"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Tahun Mulai
+                                </label>
+                                <select id="start-year" name="start-year"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
+                                    @foreach ($years as $year)
+                                        <option value="{{ $year }}"
+                                            {{ $year == date('Y') - 10 ? 'selected' : '' }}>
+                                            {{ $year }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="w-full">
+                                <label for="end-year"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                    Tahun Akhir
+                                </label>
+                                <select id="end-year" name="end-year"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
+                                    @foreach ($years as $year)
+                                        <option value="{{ $year }}"
+                                            {{ date('Y') == $year ? 'selected' : '' }}>
+                                            {{ $year }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div>
                                 <button type="button" id="renderGroupChart"
                                     class="inline-flex items-center md:ml-2 px-4 py-2 text-white bg-blue-700  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full justify-center md:w-fit dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -198,7 +219,7 @@
             <script>
                 $(document).ready(function() {
                     ajaxGetGroupChart($("#groupChartYear").val());
-                    ajaxGetGroupChartByCity($("#year-for-city").val(), $("#provincy").val());
+                    ajaxGetGroupChartByCity($("#start-year").val(), $('#end-year').val(), $("#provincy").val());
                 });
 
                 // on change group chart by year
@@ -303,12 +324,12 @@
                 }
                 // on change group chart by city
                 $('#renderGroupChart').on('click', function() {
-                    ajaxGetGroupChartByCity($("#year-for-city").val(), $("#provincy").val());
+                    ajaxGetGroupChartByCity($("#start-year").val(), $("#end-year").val(), $("#provincy").val());
                 })
                 // reload the group chart by city
                 var GroupChartByCity = null;
 
-                function ajaxGetGroupChartByCity(years, provincies) {
+                function ajaxGetGroupChartByCity(startYear, endYear, provincies) {
                     $.ajaxSetup({
                         cache: false
                     });
@@ -318,6 +339,8 @@
                         url: '/chartGroupCity',
                         data: {
                             provincy: provincies,
+                            startYear: startYear,
+                            endYear: endYear,
                             id: virus.id
                         },
                         async: true,
@@ -329,9 +352,9 @@
                             let samples = [];
                             Object.keys(result).forEach(function(key) {
                                 // avoid 0 value
-                                if (Object.values(result[key]).reduce((acc, curr) => acc + curr, 0) == 0) {
-                                    return;
-                                }
+                                // if (Object.values(result[key]).reduce((acc, curr) => acc + curr, 0) == 0) {
+                                //     return;
+                                // }
                                 samples.push({
                                     year: key,
                                     data: result[key]

@@ -44,6 +44,7 @@ class SlideController extends Controller
             'title' => 'required',
             'content' => 'required',
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'video' => 'nullable',
         ]);
 
         $this->slide->store($request->except('_token'));
@@ -64,6 +65,7 @@ class SlideController extends Controller
             'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048|nullable',
             'title' => 'required',
             'content' => 'required',
+            'video' => 'nullable',
         ]);
 
         $this->slide->update($id, $request->except('_token', '_method'));
@@ -76,5 +78,12 @@ class SlideController extends Controller
         $this->slide->destroy($id);
 
         return json_encode(true);
+    }
+
+    public function show($slug)
+    {
+        return view('guest.slide.show', [
+            'data' => $this->slide->getBySlug($slug),
+        ]);
     }
 }

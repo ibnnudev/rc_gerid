@@ -26,9 +26,6 @@
         }
     </style>
     <!-- Fonts -->
-    {{-- <link
-        href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet"> --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -137,7 +134,6 @@
             return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
         }
 
-        // set all tag <a> with cursor-pointer
         $('a').addClass('cursor-pointer');
         $('select').select2();
     </script>

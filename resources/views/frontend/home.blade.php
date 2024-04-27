@@ -18,16 +18,19 @@
                                             <h1 class="font-semibold text-sm">
                                                 {{ $slide->title }}
                                             </h1>
-                                            <div class="space-y-3 text-gray-600 text-sm mt-3 overflow-hidden h-[17em]">
-                                                {!! Str::words(html_entity_decode($slide->content), 100, '...') !!}
+                                            <div
+                                                class="space-y-3 text-gray-600 text-sm mt-3 overflow-hidden h-[17em] text-justify leading-6">
+                                                {!! Str::words(html_entity_decode($slide->content), 80, '...') !!}
                                                 <p class="text-blue-500 font-medium hover:underline">
-                                                    <a href="">Selengkapnya</a>
+                                                    <a href="{{ route('slide.show', $slide->slug) }}">Selengkapnya</a>
                                                 </p>
                                             </div>
                                         </div>
                                         <div class="col-span-4 flex justify-end items-start">
                                             <img src="{{ asset('storage/slides/' . $slide->image) }}" alt=""
-                                                height="200" width="200" class="object-contain rounded-lg">
+                                                height="200" width="200"
+                                                class="object-contain rounded-lg cursor-pointer"
+                                                onclick="window.open('{{ asset('storage/slides/' . $slide->image) }}', '_blank')">
                                         </div>
                                     </div>
                                 </div>

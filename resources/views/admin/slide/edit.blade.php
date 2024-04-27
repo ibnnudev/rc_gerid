@@ -14,7 +14,15 @@
             <x-input id="title" name="title" label="Judul" type="text" required :value="$data->title" />
             <x-textarea id="content" name="content" label="Konten" class="ckeditor"
                 required>{{ $data->content }}</x-textarea>
-            <x-button>Simpan Perubahan</x-button>
+            <x-input id="video" name="video" label="Link Video" type="text" :value="$data->video ?? null" />
+            @if ($data->video != null)
+                <div class="mt-4">
+                    {!! $data->video !!}
+                </div>
+            @endif
+            <div class="mt-4">
+                <x-button>Simpan Perubahan</x-button>
+            </div>
         </form>
     </x-card-container>
 

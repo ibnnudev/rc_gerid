@@ -29,7 +29,8 @@ class SlideRepository implements SlideInterface
 
     public function store($data)
     {
-        $filename = uniqid().'.'.$data['image']->getClientOriginalExtension();
+        dd($data);
+        $filename = uniqid() . '.' . $data['image']->getClientOriginalExtension();
         $data['image']->storeAs('public/slides', $filename);
         $data['image'] = $filename;
 
@@ -40,7 +41,7 @@ class SlideRepository implements SlideInterface
     {
         $slide = $this->slide->find($id);
         if (isset($data['image'])) {
-            $filename = uniqid().'.'.$data['image']->getClientOriginalExtension();
+            $filename = uniqid() . '.' . $data['image']->getClientOriginalExtension();
             $data['image']->storeAs('public/slides', $filename);
             $data['image'] = $filename;
         }
@@ -51,8 +52,13 @@ class SlideRepository implements SlideInterface
     public function destroy($id)
     {
         $slide = $this->slide->find($id);
-        Storage::delete('public/slides/'.$slide->image);
+        Storage::delete('public/slides/' . $slide->image);
 
         return $slide->delete();
+    }
+
+    public function getBySlug($slug)
+    {
+        return $this->slide->where('slug', $slug)->first();
     }
 }

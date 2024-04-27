@@ -84,13 +84,10 @@ class FrontendController extends Controller
         $listYear = $listYear->sortBy('year');
         $listProvinces = Sample::where('viruses_id', $virus->id)->with('province')->select('province_id')->groupBy('province_id')->get()->sortBy('province.name');
         $authors = Sample::where('viruses_id', $virus->id)->with('citation.author')->get()->pluck('citation.author')->flatten()->unique();
-        // sort author by name
         $authors = $authors->sortBy('name');
         $genotipes =  $this->genotipe->get();
-        // sort genotipe by name
         $genotipes = $genotipes->sortBy('genotipe_code');
 
-        //dd($listProvinces);
         return view('frontend.area', [
             'listYear' => $listYear,
             'authors' => $authors,
@@ -259,14 +256,20 @@ class FrontendController extends Controller
         $provinces = Province::where('id', $request->provincy)->get();
         $samplePerYear = [];
 
-        foreach (Years::getYears() as $year) {
+        if ($request->startYear && $request->endYear) {
+            $years = range($request->startYear, $request->endYear);
+        } else {
+            $years = Years::getYears();
+        }
+
+        // 10 years agp
+        foreach ($years as $year) {
             $samplePerYear[$year] = [];
             foreach ($genotipes as $genotipe) {
                 $samplePerYear[$year][$genotipe->genotipe_code] = [];
                 foreach ($provinces as $province) {
                     $samplePerYear[$year][$genotipe->genotipe_code] = Sample::with('genotipe')->where('viruses_id', $request->id)
-                        ->where('pickup_date', '>=', date('Y-m-d', strtotime($year . '-01-01')))
-                        ->where('pickup_date', '<=', date('Y-m-d', strtotime($year . '-12-31')))
+                        ->whereYear('pickup_date', $year)
                         ->where('genotipes_id', $genotipe->id)
                         ->where('province_id', $province->id)
                         ->count();
