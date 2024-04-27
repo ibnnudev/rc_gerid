@@ -17,7 +17,6 @@ module.exports = {
                     "Lexend Deca",
                     "Plus Jakarta Sans",
                     "Fira Sans",
-                    "Source Sans 3",
                     ...defaultTheme.fontFamily.sans,
                 ],
             },
