@@ -16,7 +16,7 @@ class AdminAndValidator
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->user()->role !== 'admin' && auth()->user()->role !== 'validator') {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            abort(403, 'Unauthorized action.');
         }
         return $next($request);
     }
