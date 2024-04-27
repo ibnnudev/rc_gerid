@@ -485,7 +485,7 @@
                                         <tr class="bg-gray-200">
                                             <th class="text-center">Properti</th>
                                             <th></th>
-                                            <th class="text-center">Data</th>
+                                            <th class="text-center">Jml. Sekuen</th>
                                         </tr>
                                     </thead>
                                     <tbody class="my-2">
@@ -494,14 +494,14 @@
                                             <td>:</td>
                                             <td class="text-center"><b>${param.province_name}</b></td>
                                         </tr>
-                                        <tr class="bg-gray-100 border">
-                                            <td>Total</td>
-                                            <td>:</td>
-                                            <td class="text-center"><b>${totalGenotipe}</b></td>
-                                        </tr>
                                         ` +
                         genotipe +
-                        `</body>
+                        ` <tr class="bg-gray-100 border">
+                                            <td>Total Sekuen</td>
+                                            <td>:</td>
+                                            <td class="text-center"><b>${totalGenotipe}</b></td>
+                                        </tr>` +
+                        `</tbody>
                                 <table>`;
                     return html;
                 }
