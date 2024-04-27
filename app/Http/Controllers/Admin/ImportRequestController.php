@@ -17,6 +17,7 @@ use App\Properties\Months;
 use App\Properties\Years;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
@@ -42,6 +43,10 @@ class ImportRequestController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
+            Log::info($this->importRequest->get()->where(
+                'created_by',
+                auth()->user()->id
+            ));
             return datatables()
                 ->of($this->importRequest->get()->where(
                     'created_by',
@@ -53,7 +58,7 @@ class ImportRequestController extends Controller
                 ->addColumn('file_code', function ($data) {
                     $file_code = $data->file_code;
                     $file_code = substr($file_code, 0, -3);
-                    $file_code = $file_code.'***';
+                    $file_code = $file_code . '***';
 
                     return $file_code;
                 })
@@ -115,7 +120,7 @@ class ImportRequestController extends Controller
                 ->addColumn('file_code', function ($sample) {
                     $file_code = $sample->file_code;
                     $file_code = substr($file_code, 0, -3);
-                    $file_code = $file_code.'***';
+                    $file_code = $file_code . '***';
 
                     return $file_code ?? null;
                 })
@@ -215,7 +220,7 @@ class ImportRequestController extends Controller
                 ->addColumn('file_code', function ($data) {
                     $file_code = $data->file_code;
                     $file_code = substr($file_code, 0, -3);
-                    $file_code = $file_code.'***';
+                    $file_code = $file_code . '***';
 
                     return $file_code;
                 })
@@ -310,7 +315,7 @@ class ImportRequestController extends Controller
         $year = explode('/', $pickup_date)[1];
 
         // conver to date
-        $pickup_date = date('Y-m-d', strtotime($year.'-'.$month.'-01'));
+        $pickup_date = date('Y-m-d', strtotime($year . '-' . $month . '-01'));
         $request->merge(['pickup_date' => $pickup_date]);
 
         try {
@@ -356,7 +361,7 @@ class ImportRequestController extends Controller
     {
         $months = Months::getMonths();
         $month = array_search($request->pickup_month, $months) + 1;
-        $pickup_date = date('Y-m-d', strtotime($request->pickup_year.'-'.$month.'-01'));
+        $pickup_date = date('Y-m-d', strtotime($request->pickup_year . '-' . $month . '-01'));
 
         $request->merge(['pickup_date' => $pickup_date]);
 
