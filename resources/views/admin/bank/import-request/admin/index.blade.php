@@ -69,7 +69,7 @@
                                 _token: '{{ csrf_token() }}',
                                 id: id,
                                 status: value,
-                                reason: $('#reason').val()
+                                reason: null
                             },
                             datatype: 'json',
                             success: function(response) {
