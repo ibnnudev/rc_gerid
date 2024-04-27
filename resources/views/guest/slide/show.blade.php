@@ -30,7 +30,7 @@
                     </div>
                 @endif
                 <div class="mb-4 col-span-2 text-justify">
-                    {!! html_entity_decode($data->description) !!}
+                    {!! html_entity_decode($data->content) !!}
                 </div>
                 <div class="md:flex justify-end hidden">
                     <img src="{{ asset('storage/slides/' . $data->image) }}"
