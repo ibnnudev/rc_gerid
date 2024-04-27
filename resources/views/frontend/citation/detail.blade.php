@@ -43,7 +43,7 @@
             </div>
             <div class="">
                 <h1 class="font-semibold mr-6">Fasta</h1>
-                <div class="text-sm hidden md:block" id="fasta">
+                <div class="text-sm hidden md:block lowercase" id="fasta">
                     {!! htmlspecialchars_decode($fasta) !!}
                 </div>
                 <span onclick="print()" class="text-blue-600 hover:underline cursor-pointer">Unduh Fasta</span>

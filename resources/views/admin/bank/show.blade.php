@@ -61,7 +61,9 @@
                     <label class="label" for="Fasta">
                         <span class="font-semibol lg:text-xs text-gray-700">Fasta</span>
                     </label>
-                    {!!$fasta !!}
+                    <div class="lowercase">
+                        {!! $fasta !!}
+                    </div>
                 </div>
             </div>
 
