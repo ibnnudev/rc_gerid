@@ -228,31 +228,27 @@ class FrontendController extends Controller
 
     public function groupChartCity(Request $request)
     {
-        $months    = Months::getMonths();
+        // show sample by city per year and per genotipe
         $genotipes = Genotipe::where('viruses_id', $request->id)->get();
+        $provinces = Province::where('id', $request->provincy)->get();
+        $samplePerYear = [];
 
-        $samplesPerMonth = [];
-
-        $samples = Sample::whereYear('pickup_date', $request->year ?? date('Y', strtotime(now())))->where('viruses_id', $request->id)->where('province_id', $request->provincy)->get();
-
-        if (count($samples) < 1) {
-            return $samples;
-        }
-
-        foreach ($genotipes as $genotipe) {
-            $samplesPerMonth[$genotipe->genotipe_code] = [];
-
-            foreach ($months as $month) {
-                $samplesPerMonth[$genotipe->genotipe_code][] = Sample::with('genotipe')->where('viruses_id', $request->id)
-                    ->where('pickup_date', '>=', date('Y-m-d', strtotime($request->year . '-' . array_search($month, $months) + 1 . '-01')))
-                    ->where('pickup_date', '<=', date('Y-m-d', strtotime('+30 days', strtotime($request->year . '-' . array_search($month, $months) + 1 . '-01'))))
-                    ->where('genotipes_id', $genotipe->id)
-                    ->where('province_id', $request->provincy)
-                    ->count();
+        foreach (Years::getYears() as $year) {
+            $samplePerYear[$year] = [];
+            foreach ($genotipes as $genotipe) {
+                $samplePerYear[$year][$genotipe->genotipe_code] = [];
+                foreach ($provinces as $province) {
+                    $samplePerYear[$year][$genotipe->genotipe_code] = Sample::with('genotipe')->where('viruses_id', $request->id)
+                        ->where('pickup_date', '>=', date('Y-m-d', strtotime($year . '-01-01')))
+                        ->where('pickup_date', '<=', date('Y-m-d', strtotime($year . '-12-31')))
+                        ->where('genotipes_id', $genotipe->id)
+                        ->where('province_id', $province->id)
+                        ->count();
+                }
             }
         }
 
-        return $samplesPerMonth;
+        return $samplePerYear;
     }
 
     public function getLastYearSample($id)

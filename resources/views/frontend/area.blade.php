@@ -149,15 +149,15 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <select id="year-for-city" name="year-for-city"
+                            <!--select id="year-for-city" name="year-for-city"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
                                 @foreach ($years as $year)
-                                    <option value="{{ $year }}"
+<option value="{{ $year }}"
                                         {{ $year == $lastYearSample ? 'selected' : '' }}>
                                         {{ $year }}
                                     </option>
-                                @endforeach
-                            </select>
+@endforeach
+                            </!--select-->
                             <div>
                                 <button type="button" id="renderGroupChart"
                                     class="inline-flex items-center md:ml-2 px-4 py-2 text-white bg-blue-700  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full justify-center md:w-fit dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
@@ -311,31 +311,28 @@
                     $.ajaxSetup({
                         cache: false
                     });
+
                     $.ajax({
                         method: 'GET',
                         url: '/chartGroupCity',
                         data: {
                             provincy: provincies,
-                            year: years,
                             id: virus.id
                         },
                         async: true,
                         success: function(result) {
-                            // console.log(result);
                             if (GroupChartByCity !== null) {
                                 GroupChartByCity.destroy();
                             }
-                            let samplesGroup = [];
 
-                            for (let i = 0; i < Object.keys(result).length; i++) {
-                                samplesGroup.push({
-                                    label: Object.keys(result)[i],
-                                    data: Object.values(result)[i],
-                                    // backgroundColor: backgroundColor[i],
-                                    // borderColor: borderColor[i],
-                                    borderWidth: 1,
+                            let samples = [];
+                            Object.keys(result).forEach(function(key) {
+                                samples.push({
+                                    year: key,
+                                    data: result[key]
                                 });
-                            }
+                            });
+
                             // when data nol
                             if (result.length == 0 || result == 'undefined') {
                                 $('#canvasGroupChartByCity').attr('hidden', true);
@@ -344,14 +341,25 @@
                             } else {
                                 $('#canvasGroupChartByCity').attr('hidden', false);
                                 $('#groupChartByCityNull').attr('hidden', true);
+
                                 GroupChartByCity = new Chart(document.getElementById("canvasGroupChartByCity")
-                                    .getContext('2d'), {
+                                    .getContext(
+                                        '2d'), {
                                         type: 'bar',
                                         data: {
-                                            labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                                                'September', 'Oktober', 'November', 'Desember'
-                                            ],
-                                            datasets: samplesGroup
+                                            labels: samples.map(function(e) {
+                                                return e.year;
+                                            }),
+                                            datasets: [{
+                                                label: 'Jumlah Sekuen',
+                                                data: samples.map(function(e) {
+                                                    console.log(e);
+                                                    return Object.values(e.data).reduce((acc,
+                                                            curr) => acc + curr,
+                                                        0);
+                                                }),
+                                                borderWidth: 1,
+                                            }],
                                         },
                                         options: {
                                             maintainAspectRatio: false,
@@ -394,12 +402,12 @@
                                         },
                                     });
                             }
-
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
                             console.log(thrownError);
                         }
                     });
+
                 }
             </script>
 
