@@ -38,6 +38,20 @@
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+    <style>
+        .bg-custom {
+            background: url("{{ asset('images/bg.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center top;
+            background-size: cover;
+            padding: 0;
+            border: none;
+            margin: 0;
+        }
+    </style>
+
     @stack('css-internal')
 
     <!-- Scripts -->
@@ -69,7 +83,7 @@
         </div>
     @else
         @include('layouts.guest-header')
-        <div class="min-h-screen bg-[#f2f2f2]">
+        <div class="min-h-screen bg-[#f2f2f2] bg-custom">
             <div class="px-8 py-12 mx-auto max-w-7xl">
                 {{ $slot }}
             </div>
