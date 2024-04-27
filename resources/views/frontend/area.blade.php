@@ -135,8 +135,9 @@
                     </div>
                 </div>
                 <div class="mt-24">
-                    <div class="flex flex-col md:flex-row justify-between items-center">
-                        <h3 class="font-semibold">Persebaran Virus {{ $virus->name }} berdasarkan Provinsi</h3>
+                    <div class="md:grid grid-cols-3 items-center">
+                        <h3 class="font-semibold col-span-2">Persebaran Virus {{ $virus->name }} berdasarkan Provinsi
+                        </h3>
                         <div class="space-y-4 md:flex items-end gap-4 w-full">
                             <select id="provincy" name="provincy"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
