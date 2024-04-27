@@ -15,8 +15,8 @@
                         <select id="year" name="year"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
                             <option selected value="">Pilih tahun</option>
-                            @foreach ($years as $year)
-                                <option value="{{ $year }}">{{ $year }}</option>
+                            @foreach ($listYear as $year)
+                                <option value="{{ $year['year'] }}">{{ $year['year'] }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -27,8 +27,12 @@
                         <select id="province" name="province"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
                             <option selected value="">Pilih provinsi</option>
-                            @foreach ($provinces as $province)
-                                <option value="{{ $province->id }}">{{ $province->name }}</option>
+                            @foreach ($listProvinces as $data)
+                                @if ($data->province_id == 0)
+                                    @continue
+                                @endif
+                                <option value="{{ $data->province->id ?? null }}">{{ $data->province->name ?? '-' }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -40,7 +44,7 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
                             <option selected value="">Pilih penulis</option>
                             @foreach ($authors as $key => $val)
-                                <option value="{{ $val['author']['id'] }}">{{ $val['author']['name'] }}</option>
+                                <option value="{{ $val['id'] }}">{{ $val['name'] }}</option>
                             @endforeach
                         </select>
                     </div>

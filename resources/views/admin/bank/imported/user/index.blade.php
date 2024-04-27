@@ -62,7 +62,7 @@
 
     <x-card-container>
         <div class="overflow-auto">
-            <table id="samplesTable" class="w-full">
+            <table id="sampleImportTable" class="w-full">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -86,7 +86,7 @@
     @push('js-internal')
         <script>
             $(function() {
-                $('#samplesTable').DataTable({
+                $('#sampleImportTable').DataTable({
                     responsive: true,
                     processing: true,
                     serverSide: true,

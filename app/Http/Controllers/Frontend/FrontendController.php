@@ -72,7 +72,14 @@ class FrontendController extends Controller
     {
         $virusByGen = $this->sample->getSampleVirusByGen($name);
         $virus      = $this->frontend->getVirusByName($name);
+        $listYear = Sample::where('viruses_id', $virus->id)->selectRaw('YEAR(pickup_date) as year')->groupBy('year')->get();
+        $listProvinces = Sample::where('viruses_id', $virus->id)->with('province')->select('province_id')->groupBy('province_id')->get();
+        $authors = Sample::where('viruses_id', $virus->id)->with('citation.author')->get()->pluck('citation.author')->flatten()->unique();
+        //dd($listProvinces);
         return view('frontend.area', [
+            'listYear'        => $listYear,
+            'authors'         => $authors,
+            'listProvinces'   => $listProvinces,
             'totalGenotipe'    => $this->frontend->getVirusByName($name)->genotipes->count(),
             'virus'            => $virus,
             'provinces'        => Province::all(),
@@ -80,7 +87,6 @@ class FrontendController extends Controller
             'lastYearSample'   => $this->getLastYearSample($virus->id),
             'lastCitySampleId' => $this->getLastCitySample($virus->id),
             'request'          => null,
-            'authors'          => $this->sample->getByAuthorByVirusId($virus->id),
             'genotipes'        => $this->genotipe->get(),
             'virusByGen'       => $virusByGen,
             'samples'          => $this->sample->getByVirusId($virus->id),
@@ -95,6 +101,10 @@ class FrontendController extends Controller
         foreach ($provinces as $indexProvince => $province) {
             $stdOne                = new stdClass();
             $stdOne->province_id   = $province->province_id;
+            // if province_id = 0 then continue
+            if ($province->province_id == 0) {
+                continue;
+            }
             $stdOne->province_name = $province->province->name;
             $stdOne->totalSample = Sample::where('viruses_id', $request->id)
                 // ->where('pickup_date', Carbon::parse($request->year . '-01-01'))
