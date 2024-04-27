@@ -244,6 +244,9 @@ class ImportRequestController extends Controller
         try {
             $this->importRequest->changeStatus($request->id, $status, $request->reason);
 
+            // send email
+            Mail::send(new ActivationSingleRequest(auth()->user(), $status));
+
             return response()->json(true);
         } catch (\Throwable $th) {
             return response()->json(false);
