@@ -14,7 +14,7 @@ module.exports = {
             fontFamily: {
                 // sans: ["Figtree", ...defaultTheme.fontFamily.sans],
                 sans: [
-                    "Source Sans Pro",
+                    "Source Sans 3",
                     "Lexend Deca",
                     "Plus Jakarta Sans",
                     "Fira Sans",
