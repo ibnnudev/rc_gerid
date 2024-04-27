@@ -18,9 +18,11 @@
                                             <h1 class="font-semibold text-sm">
                                                 {{ $slide->title }}
                                             </h1>
-                                            <div class="space-y-3 text-gray-600 text-sm mt-10  overflow-y-auto h-[17em]"
-                                                style="scrollbar-width: thin;">
-                                                {!! html_entity_decode($slide->content) !!}
+                                            <div class="space-y-3 text-gray-600 text-sm mt-3 overflow-hidden h-[17em]">
+                                                {!! Str::words(html_entity_decode($slide->content), 100, '...') !!}
+                                                <p class="text-blue-500 font-medium hover:underline">
+                                                    <a href="">Selengkapnya</a>
+                                                </p>
                                             </div>
                                         </div>
                                         <div class="col-span-4 flex justify-end items-start">
