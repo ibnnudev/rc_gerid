@@ -115,7 +115,7 @@
                     <div>
                         <div class="space-y-4 flex flex-col md:flex-row md:justify-between items-center">
                             <h3 class="font-semibold text-sm">Persebaran Virus {{ $virus->name }}
-                                berdasarkan Gen</h3>
+                                berdasarkan Tahun</h3>
                             <div class="w-full md:w-fit">
                                 <select id="groupChartYear" name="groupChartYear"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
