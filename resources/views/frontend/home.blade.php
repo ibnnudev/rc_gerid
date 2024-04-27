@@ -68,7 +68,7 @@
             </div>
             <div class="bg-white border border-gray-200 rounded-xl shadow">
                 <div href="#" class="rounded-t-xl bg-blue-200 text-gray-700 py-3 px-6 font-medium text-sm">
-                    Phylogenetic Tree
+                    Kunjungi Platform Phylogenetic Tree
                 </div>
                 <div class="p-6">
                     <a href="http://phylo.indagi.rc-gerid.unair.ac.id">

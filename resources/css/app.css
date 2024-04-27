@@ -363,7 +363,7 @@
 
 ::-webkit-scrollbar-thumb {
     height: 30px;
-    background-color: #19743b;
+    background-color: blue;
 }
 
 .swal2-title {
