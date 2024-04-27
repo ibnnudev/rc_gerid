@@ -23,7 +23,7 @@
             {{ $data->title }}
         </div>
         <div class="px-6 py-8">
-            <div class="md:grid grid-cols-3 mb-4 gap-4">
+            <div class="md:grid grid-cols-3 mb-4 gap-4 items-start">
                 @if ($data->video != null)
                     <div class="col-span-3 mt-4 video">
                         {!! $data->video !!}
@@ -34,7 +34,7 @@
                 </div>
                 <div class="md:flex justify-end hidden">
                     <img src="{{ asset('storage/slides/' . $data->image) }}"
-                        class="w-full h-auto md:w-40 md:h-40 lg:w-72 lg:h-72 object-contain rounded-lg overflow-hidden cursor-pointer"
+                        class="w-full h-auto md:w-40 md:h-40 lg:w-72 lg:h-auto object-contain rounded-lg overflow-hidden cursor-pointer"
                         alt="{{ $data->slug }}"
                         onclick="window.open('{{ asset('storage/slides/' . $data->image) }}', '_blank')">
                 </div>
