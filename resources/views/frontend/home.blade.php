@@ -20,7 +20,7 @@
                                             </h1>
                                             <div
                                                 class="space-y-3 text-gray-600 text-sm mt-3 overflow-hidden h-[17em] text-justify leading-6">
-                                                {!! Str::words(html_entity_decode($slide->content), 660, '...') !!}
+                                                {!! Str::words(html_entity_decode($slide->content), 60, '...') !!}
                                                 <p class="text-blue-500 font-medium hover:underline">
                                                     <a href="{{ route('slide.show', $slide->slug) }}">Selengkapnya</a>
                                                 </p>
