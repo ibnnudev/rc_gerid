@@ -1,7 +1,10 @@
 <div class="">
     <div>
-        <a class="text-primary" href="{{ asset('storage/import-request/' . $data->filename) }}" target="_blank">
-            {{-- <i class="fas fa-file-excel mr-2"></i> --}}
+        <a class="text-primary" target="_blank"
+            onclick="
+            event.preventDefault();
+            window.open('{{ asset('storage/import-request/' . $data->filename) }}', '_blank');
+            ">
             Unduh File Sekuen
         </a>
     </div>

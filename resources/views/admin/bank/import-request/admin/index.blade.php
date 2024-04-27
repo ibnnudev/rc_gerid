@@ -48,6 +48,16 @@
 
                 $('#reason').val('');
 
+                // check if there's empty value
+                if ($('#status').val() == '' || $('#reason').val() == '') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Ubah Status',
+                        text: 'Harap isi status dan alasan terlebih dahulu',
+                    });
+                    return;
+                }
+
                 if (value == 'accepted' || value == 'rejected') {
                     $('#my-modal-4').prop('checked', true);
                     $('input[name="status"]').val(value == 'accepted' ? 'Disetujui' : 'Ditolak');
