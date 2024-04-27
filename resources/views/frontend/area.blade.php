@@ -471,11 +471,13 @@
                     genotipe = "";
                     totalGenotipe = param.genotipes.reduce((acc, curr) => acc + curr.jumlah, 0);
                     param.genotipes.forEach(e => {
-                        genotipe += `<tr  class="bg-gray-100 border">
-                                            <td>${e.genotipe}</td>
-                                            <td>:</td>
-                                            <td class="text-center"><b>${e.jumlah}</b></td>
-                                        </tr>`;
+                        if (e.jumlah !== 0) {
+                            genotipe += `<tr  class="bg-gray-100 border">
+                                                <td>${e.genotipe}</td>
+                                                <td>:</td>
+                                                <td class="text-center"><b>${e.jumlah}</b></td>
+                                            </tr>`;
+                        }
                     });
                     html = `<h4 class="font-semibold text-md mb-2">Detail Informasi</h4>
                                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 p-2">
