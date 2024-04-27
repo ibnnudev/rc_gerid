@@ -100,11 +100,8 @@
                             </select>
                             <select id="map-year" name="map-year"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
-                                @foreach ($years as $year)
-                                    <option value="{{ $year }}"
-                                        {{ $year == $lastYearSample ? 'selected' : '' }}>
-                                        {{ $year }}
-                                    </option>
+                                @foreach ($listYear as $year)
+                                    <option value="{{ $year['year'] }}">{{ $year['year'] }}</option>
                                 @endforeach
                             </select>
                             <div>
@@ -123,11 +120,8 @@
                             <div class="w-full md:w-fit">
                                 <select id="groupChartYear" name="groupChartYear"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
-                                    @foreach ($years as $year)
-                                        <option value="{{ $year }}"
-                                            {{ $year == $lastYearSample ? 'selected' : '' }}>
-                                            {{ $year }}
-                                        </option>
+                                    @foreach ($listYear as $year)
+                                        <option value="{{ $year['year'] }}">{{ $year['year'] }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -141,15 +135,18 @@
                     </div>
                 </div>
                 <div class="mt-24">
-                    <div class="flex flex-col md:flex-row justify-between items-center">
-                        <h3 class="font-semibold">Persebaran Virus {{ $virus->name }} berdasarkan Provinsi</h3>
+                    <div class="md:grid grid-cols-3 items-center">
+                        <h3 class="font-semibold col-span-2">Persebaran Virus {{ $virus->name }} berdasarkan Provinsi
+                        </h3>
                         <div class="space-y-4 md:flex items-end gap-4 w-full">
                             <select id="provincy" name="provincy"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.50">
-                                @foreach ($provinces as $province)
-                                    <option value="{{ $province->id }}"
-                                        {{ $province->id == $lastCitySampleId ? 'selected' : '' }}>
-                                        {{ $province->name }}
+                                @foreach ($listProvinces as $data)
+                                    @if ($data->province_id == 0)
+                                        @continue
+                                    @endif
+                                    <option value="{{ $data->province->id ?? null }}">
+                                        {{ $data->province->name ?? '-' }}
                                     </option>
                                 @endforeach
                             </select>
@@ -331,6 +328,10 @@
 
                             let samples = [];
                             Object.keys(result).forEach(function(key) {
+                                // avoid 0 value
+                                if (Object.values(result[key]).reduce((acc, curr) => acc + curr, 0) == 0) {
+                                    return;
+                                }
                                 samples.push({
                                     year: key,
                                     data: result[key]

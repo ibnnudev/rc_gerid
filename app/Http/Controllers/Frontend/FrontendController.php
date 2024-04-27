@@ -80,8 +80,15 @@ class FrontendController extends Controller
         $virusByGen = $this->sample->getSampleVirusByGen($name);
         $virus = $this->frontend->getVirusByName($name);
         $listYear = Sample::where('viruses_id', $virus->id)->selectRaw('YEAR(pickup_date) as year')->groupBy('year')->get();
-        $listProvinces = Sample::where('viruses_id', $virus->id)->with('province')->select('province_id')->groupBy('province_id')->get();
+        // sort year asc
+        $listYear = $listYear->sortBy('year');
+        $listProvinces = Sample::where('viruses_id', $virus->id)->with('province')->select('province_id')->groupBy('province_id')->get()->sortBy('province.name');
         $authors = Sample::where('viruses_id', $virus->id)->with('citation.author')->get()->pluck('citation.author')->flatten()->unique();
+        // sort author by name
+        $authors = $authors->sortBy('name');
+        $genotipes =  $this->genotipe->get();
+        // sort genotipe by name
+        $genotipes = $genotipes->sortBy('genotipe_code');
 
         //dd($listProvinces);
         return view('frontend.area', [
@@ -95,7 +102,7 @@ class FrontendController extends Controller
             'lastYearSample' => $this->getLastYearSample($virus->id),
             'lastCitySampleId' => $this->getLastCitySample($virus->id),
             'request' => null,
-            'genotipes' => $this->genotipe->get(),
+            'genotipes' => $genotipes,
             'virusByGen' => $virusByGen,
             'samples' => $this->sample->getByVirusId($virus->id),
         ]);
@@ -162,16 +169,16 @@ class FrontendController extends Controller
         $fasta = $citation['sequence_data'];
         $fasta = wordwrap($fasta, 10, ' ', true);
         $fasta = wordwrap($fasta, 70, '<br>', true);
-        $fasta = '<pre>'.$fasta.'</pre>';
+        $fasta = '<pre>' . $fasta . '</pre>';
 
         $fasta = explode('<br>', $fasta);
-        $fasta[0] = '[<span>1</span>]'."\t\t\t".$fasta[0];
+        $fasta[0] = '[<span>1</span>]' . "\t\t\t" . $fasta[0];
         $fasta[0] = str_replace('<pre>', '', $fasta[0]);
         for ($i = 1; $i < count($fasta); $i++) {
-            $fasta[$i] = '[<span>'.(60 * $i + 1).'</span>] '."\t\t".$fasta[$i];
+            $fasta[$i] = '[<span>' . (60 * $i + 1) . '</span>] ' . "\t\t" . $fasta[$i];
         }
         for ($i = 0; $i < count($fasta); $i++) {
-            $fasta[$i] = '<pre>'.$fasta[$i].'</pre>';
+            $fasta[$i] = '<pre>' . $fasta[$i] . '</pre>';
         }
         $fasta[0] = str_replace('<br>', '', $fasta[0]);
         $fasta = implode('', $fasta);
@@ -235,8 +242,8 @@ class FrontendController extends Controller
 
             foreach ($months as $month) {
                 $samplesPerMonth[$genotipe->genotipe_code][] = Sample::with('genotipe')->where('viruses_id', $request->id)
-                    ->where('pickup_date', '>=', date('Y-m-d', strtotime($request->year.'-'.array_search($month, $months) + 1 .'-01')))
-                    ->where('pickup_date', '<=', date('Y-m-d', strtotime('+30 days', strtotime($request->year.'-'.array_search($month, $months) + 1 .'-01'))))
+                    ->where('pickup_date', '>=', date('Y-m-d', strtotime($request->year . '-' . array_search($month, $months) + 1 . '-01')))
+                    ->where('pickup_date', '<=', date('Y-m-d', strtotime('+30 days', strtotime($request->year . '-' . array_search($month, $months) + 1 . '-01'))))
                     ->where('genotipes_id', $genotipe->id)
                     ->count();
             }
@@ -258,8 +265,8 @@ class FrontendController extends Controller
                 $samplePerYear[$year][$genotipe->genotipe_code] = [];
                 foreach ($provinces as $province) {
                     $samplePerYear[$year][$genotipe->genotipe_code] = Sample::with('genotipe')->where('viruses_id', $request->id)
-                        ->where('pickup_date', '>=', date('Y-m-d', strtotime($year.'-01-01')))
-                        ->where('pickup_date', '<=', date('Y-m-d', strtotime($year.'-12-31')))
+                        ->where('pickup_date', '>=', date('Y-m-d', strtotime($year . '-01-01')))
+                        ->where('pickup_date', '<=', date('Y-m-d', strtotime($year . '-12-31')))
                         ->where('genotipes_id', $genotipe->id)
                         ->where('province_id', $province->id)
                         ->count();
@@ -273,7 +280,7 @@ class FrontendController extends Controller
     public function getLastYearSample($id)
     {
         $data = DB::table('samples')->selectRaw('YEAR(MAX(pickup_date)) as lastYearSample')->where('viruses_id', $id)->first();
-        if (! empty($data)) {
+        if (!empty($data)) {
             return $data->lastYearSample;
         } else {
             return null;
@@ -283,7 +290,7 @@ class FrontendController extends Controller
     public function getLastCitySample($id)
     {
         $data = DB::table('samples')->select('province_id')->where('viruses_id', $id)->groupBy('province_id')->first();
-        if (! empty($data)) {
+        if (!empty($data)) {
             return $data->province_id;
         } else {
             return null;
