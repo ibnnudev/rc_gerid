@@ -1,6 +1,6 @@
 <div class="">
     <div>
-        <a class="text-primary" target="_blank"
+        <a class="text-primary cursor-pointer" target="_blank"
             onclick="
             event.preventDefault();
             window.open('{{ asset('storage/import-request/' . $data->filename) }}', '_blank');
