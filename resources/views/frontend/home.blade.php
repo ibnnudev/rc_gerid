@@ -43,7 +43,7 @@
         <div class="lg:col-span-4 space-y-4">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div class="bg-white border border-gray-200 rounded-xl shadow">
-                    <div href="#" class="rounded-t-xl bg-blue-200 text-gray-700 py-3 px-6 font-medium text-sm">
+                    <div href="#" class="rounded-t-xl bg-blue-200 text-gray-700 py-3 px-6 font-medium text-md">
                         Jumlah Sekuen
                     </div>
                     <div>
@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="bg-white border border-gray-200 rounded-xl shadow">
-                    <div href="#" class="rounded-t-xl bg-blue-200 text-gray-700 py-3 px-6 font-medium text-sm">
+                    <div href="#" class="rounded-t-xl bg-blue-200 text-gray-700 py-3 px-6 font-medium text-md">
                         Jumlah Publikasi
                     </div>
                     <div>
@@ -67,8 +67,8 @@
                 </div>
             </div>
             <div class="bg-white border border-gray-200 rounded-xl shadow">
-                <div href="#" class="rounded-t-xl bg-blue-200 text-gray-700 py-3 px-6 font-medium text-sm">
-                    Kunjungi Phylodinamic Platform
+                <div href="#" class="rounded-t-xl bg-blue-200 text-gray-700 py-3 px-6 font-medium text-md">
+                    Kunjungi INDAGI Phylodynamic Platform
                 </div>
                 <div class="p-6">
                     <a href="http://phylo.indagi.rc-gerid.unair.ac.id">
