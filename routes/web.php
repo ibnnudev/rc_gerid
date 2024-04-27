@@ -16,10 +16,6 @@ use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\SlideController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('uuid', function () {
-    return \Illuminate\Support\Str::uuid();
-});
-
 // Restrict PHPmyAdmin
 Route::get('/phpmyadmin', function () {
     return redirect('/');
