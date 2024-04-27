@@ -88,7 +88,7 @@
                 </div>
                 <div class="text-center p-6">
                     <p class="text-sm text-gray-600">Total Sekuen</p>
-                    <h1 class="mb-2 text-xl font-bold">
+                    <h1 class="text-xl font-bold">
                         {{ $data->samples }}
                     </h1>
                     <a href="{{ route('detail-virus', $data->name) }}"
