@@ -33,6 +33,9 @@ class SlideRepository implements SlideInterface
         $data['image']->storeAs('public/slides', $filename);
         $data['image'] = $filename;
 
+
+        $data['slug'] = \Illuminate\Support\Str::slug($data['title']);
+
         return $this->slide->create($data);
     }
 
