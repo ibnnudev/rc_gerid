@@ -90,7 +90,7 @@
             <h1 class="font-semibold text-lg mb-3">Daftar Genome Virus</h1>
             <div class="grid lg:grid-cols-3 gap-6">
                 @foreach ($sampleGroupByVirus as $data)
-                    <div class="bg-white rounded-lg h-full">
+                    <div class="bg-white rounded-xl h-full">
                         <div href="#" class="rounded-t-xl bg-blue-700 text-white py-3 px-3 text-sm font-semibold">
                             {{ $data->name }}
                         </div>
