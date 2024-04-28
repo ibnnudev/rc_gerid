@@ -29,7 +29,6 @@ class SlideRepository implements SlideInterface
 
     public function store($data)
     {
-        dd($data);
         $filename = uniqid() . '.' . $data['image']->getClientOriginalExtension();
         $data['image']->storeAs('public/slides', $filename);
         $data['image'] = $filename;

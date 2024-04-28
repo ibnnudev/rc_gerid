@@ -85,8 +85,8 @@
         </div>
     </div>
 
-    <div class="grid lg:grid-cols-3 gap-6 mt-5">
-        <div class="bg-blue-50 border border-gray-200 rounded-lg col-span-2 p-6 shadow-sm">
+    <div class="lg:grid lg:grid-cols-3 lg:gap-6 mt-5">
+        <div class="bg-blue-50 border border-gray-200 rounded-lg lg:col-span-2 p-6 shadow-sm">
             <h1 class="font-semibold text-lg mb-3">Daftar Genome Virus</h1>
             <div class="grid lg:grid-cols-3 gap-6">
                 @foreach ($sampleGroupByVirus as $data)
@@ -106,7 +106,7 @@
                 @endforeach
             </div>
         </div>
-        <div class="grid lg:grid-cols-2 gap-6 h-fit p-6 bg-white rounded-lg shadow">
+        <div class="lg:grid lg:grid-cols-2 gap-6 h-fit p-6 bg-white rounded-lg shadow">
             <div class="bg-white border border-gray-200 rounded-xl h-fit">
                 <div href="#" class="rounded-t-xl bg-blue-200 text-gray-700 py-3 px-3 text-sm font-semibold">
                     Total Pengguna
