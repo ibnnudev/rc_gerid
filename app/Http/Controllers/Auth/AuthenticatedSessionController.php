@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Jobs\NotifyUserLoggedIn;
+use App\Jobs\SaveVisitor;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Stevebauman\Location\Facades\Location;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -36,7 +38,7 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->back()->with('error', 'Akun kamu belum aktif, silahkan hubungi admin');
             }
 
-            dispatch(new NotifyUserLoggedIn);
+            dispatch(new SaveVisitor($_SERVER['REMOTE_ADDR']));
 
             return redirect()->intended(RouteServiceProvider::HOME);
         } catch (\Throwable $th) {
