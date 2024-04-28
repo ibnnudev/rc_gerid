@@ -9,7 +9,9 @@
             <x-input id="title" name="title" label="Judul" type="text" required />
             <x-textarea id="content" name="content" label="Konten" class="ckeditor" required />
             <x-input id="video" name="video" label="Video" type="text" />
-            <x-button>Simpan</x-button>
+            <div class="mt-4">
+                <x-button>Simpan</x-button>
+            </div>
         </form>
     </x-card-container>
 
