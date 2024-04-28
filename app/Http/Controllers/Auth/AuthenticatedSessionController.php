@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->back()->with('error', 'Akun kamu belum aktif, silahkan hubungi admin');
             }
 
-            dispatch(new SaveVisitor($_SERVER['REMOTE_ADDR']));
+            dispatch(new SaveVisitor($_SERVER['REMOTE_ADDR']) ?? request()->ip());
 
             return redirect()->intended(RouteServiceProvider::HOME);
         } catch (\Throwable $th) {
