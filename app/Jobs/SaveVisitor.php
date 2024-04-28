@@ -24,6 +24,15 @@ class SaveVisitor implements ShouldQueue
     public function handle(): void
     {
         $ip = $this->ipAddress;
+
+        $visitor = \App\Models\Visitor::where('ip_address', $ip)
+            ->where('date', date('Y-m-d'))
+            ->first();
+
+        if ($visitor) {
+            return;
+        }
+
         $country_code = json_decode(file_get_contents("http://ipinfo.io/" . $ip))->country;
 
         $visitor = new \App\Models\Visitor();

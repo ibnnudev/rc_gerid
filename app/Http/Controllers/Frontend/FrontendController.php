@@ -51,8 +51,8 @@ class FrontendController extends Controller
 
     public function home()
     {
-        if ($position = Location::get() && !Visitor::where('ip_address', request()->ip())->whereDate('created_at', Carbon::today())->exists()) {
-            SaveVisitor::dispatch(request()->ip());
+        if ($position = Location::get()) {
+            SaveVisitor::dispatch($position->ip);
         }
 
         $sampleGroupByVirus = $this->sample->getAllGroupByVirus();
