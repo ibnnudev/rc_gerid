@@ -51,7 +51,9 @@ class FrontendController extends Controller
 
     public function home()
     {
-        dispatch(new SaveVisitor($_SERVER['REMOTE_ADDR']) ?? request()->ip());
+        if ($position = Location::get(request()->ip())) {
+            SaveVisitor::dispatch($position->ip);
+        }
 
         $sampleGroupByVirus = $this->sample->getAllGroupByVirus();
         $currentTotalSample = $this->sample->get()->count();
