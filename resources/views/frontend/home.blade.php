@@ -85,26 +85,29 @@
         </div>
     </div>
 
-    <div class="grid lg:grid-cols-3 gap-6 mt-5 ">
-        <div class="grid lg:grid-cols-4 gap-6 col-span-2">
-            @foreach ($sampleGroupByVirus as $data)
-                <div class="bg-white border border-gray-200 rounded-xl shadow h-full">
-                    <div href="#" class="rounded-t-xl bg-blue-700 text-white py-3 px-3 text-sm font-semibold">
-                        {{ $data->name }}
+    <div class="grid lg:grid-cols-3 gap-6 mt-5">
+        <div class="bg-blue-50 border border-gray-200 rounded-lg col-span-2 p-6 shadow-sm">
+            <h1 class="font-semibold text-lg mb-3">Daftar Genome Virus</h1>
+            <div class="grid lg:grid-cols-3 gap-6">
+                @foreach ($sampleGroupByVirus as $data)
+                    <div class="bg-white rounded-lg h-full">
+                        <div href="#" class="rounded-t-xl bg-blue-700 text-white py-3 px-3 text-sm font-semibold">
+                            {{ $data->name }}
+                        </div>
+                        <div class="text-center p-6">
+                            <p class="text-sm text-gray-600">Total Sekuen</p>
+                            <h1 class="text-xl font-bold">
+                                {{ $data->samples }}
+                            </h1>
+                            <a href="{{ route('detail-virus', $data->name) }}"
+                                class="text-xs text-blue-500 hover:underline font-medium">Selengkapnya</a>
+                        </div>
                     </div>
-                    <div class="text-center p-6">
-                        <p class="text-sm text-gray-600">Total Sekuen</p>
-                        <h1 class="text-xl font-bold">
-                            {{ $data->samples }}
-                        </h1>
-                        <a href="{{ route('detail-virus', $data->name) }}"
-                            class="text-xs text-blue-500 hover:underline font-medium">Selengkapnya</a>
-                    </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
-        <div class="grid lg:grid-cols-2 gap-6 h-fit">
-            <div class="bg-white border border-gray-200 rounded-xl shadow h-fit">
+        <div class="grid lg:grid-cols-2 gap-6 h-fit p-6 bg-white rounded-lg shadow">
+            <div class="bg-white border border-gray-200 rounded-xl h-fit">
                 <div href="#" class="rounded-t-xl bg-blue-200 text-gray-700 py-3 px-3 text-sm font-semibold">
                     Total Pengguna
                 </div>
@@ -117,7 +120,7 @@
                     </p>
                 </div>
             </div>
-            <div class=" border-gray-200 rounded-xl h-fit">
+            <div class="border border-gray-200 rounded-xl h-fit">
                 <div href="#" class="rounded-t-xl bg-blue-200 text-gray-700 py-3 px-3 text-sm font-semibold">
                     Total Pengunjung
                 </div>
