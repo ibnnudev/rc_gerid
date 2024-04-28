@@ -8,7 +8,7 @@
             <x-input id="image" name="image" label="Gambar" type="file" required />
             <x-input id="title" name="title" label="Judul" type="text" required />
             <x-textarea id="content" name="content" label="Konten" class="ckeditor" required />
-            <x-input id="video" name="video" label="Video" type="file" />
+            <x-input id="video" name="video" label="Video" type="text" />
             <x-button>Simpan</x-button>
         </form>
     </x-card-container>
