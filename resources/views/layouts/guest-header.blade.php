@@ -1,7 +1,7 @@
 <nav class="bg-white border-gray-200 dark:bg-gray-900 shadow-lg">
     <div class="max-w-7xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-            <img src="{{ asset('assets/application/guestlogo.png') }}" class="h-14" alt="Web Logo" />
+            <img src="{{ asset('assets/application/logo new complete.png') }}" class="h-14" alt="Web Logo" />
         </a>
         <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             <a href="{{ route('login') }}" type="button"

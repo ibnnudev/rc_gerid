@@ -41,7 +41,9 @@ class RegisteredUserController extends Controller
 
             event(new Registered($user));
 
-            Mail::send(new NewUserRegistered($user));
+            dispatch(function () use ($user) {
+                Mail::to($user->email)->send(new NewUserRegistered($user));
+            });
 
             return redirect('/')->with('success', 'Berhasil mendaftar');
         } catch (\Throwable $th) {

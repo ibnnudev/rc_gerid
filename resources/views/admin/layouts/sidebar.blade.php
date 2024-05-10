@@ -14,7 +14,7 @@
     <div class="h-full px-4 py-8 overflow-y-auto bg-white">
         {{-- Logo --}}
         <a href="#" class="flex items-center mb-4">
-            <img src="{{ asset('assets/application/logo.jpeg') }}" class="mr-3 object-contain" alt="logo"
+            <img src="{{ asset('assets/application/logo new.png') }}" class="mr-3 object-contain" alt="logo"
                 class="mix-blend-multiply" />
         </a>
         <ul class="space-y-3">
